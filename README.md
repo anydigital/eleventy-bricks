@@ -21,7 +21,7 @@ Import and use the entire plugin. You can configure which helpers to enable usin
 import eleventyBricks from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
-  eleventyBricks(eleventyConfig, {
+  eleventyConfig.addPlugin(eleventyBricks, {
     autoRaw: true  // Enable autoRaw preprocessor (default: false)
   });
   
@@ -34,7 +34,7 @@ export default function(eleventyConfig) {
 const eleventyBricks = require("@anydigital/11ty-bricks");
 
 module.exports = function(eleventyConfig) {
-  eleventyBricks(eleventyConfig, {
+  eleventyConfig.addPlugin(eleventyBricks, {
     autoRaw: true  // Enable autoRaw preprocessor (default: false)
   });
   
@@ -78,7 +78,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 
 **Example:**
 ```javascript
-eleventyBricks(eleventyConfig, {
+eleventyConfig.addPlugin(eleventyBricks, {
   autoRaw: true
 });
 ```
