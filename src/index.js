@@ -1,4 +1,4 @@
-import { autoRaw } from "./autoRaw.js";
+import { autoRaw, transformAutoRaw } from "./autoRaw.js";
 
 /**
  * 11ty Bricks Plugin
@@ -14,5 +14,5 @@ export default function eleventyBricksPlugin(eleventyConfig) {
 }
 
 // Export individual helpers for granular usage
-export { autoRaw };
+export { autoRaw, transformAutoRaw };
 

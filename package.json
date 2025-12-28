@@ -13,6 +13,9 @@
   "files": [
     "src"
   ],
+  "scripts": {
+    "test": "node --test src/**/*.test.js"
+  },
   "keywords": [
     "11ty",
     "eleventy",
