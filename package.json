@@ -1,0 +1,42 @@
+{
+  "name": "@anydigital/11ty-bricks",
+  "version": "1.0.0-dev",
+  "description": "A collection of helpful utilities and filters for Eleventy (11ty)",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./src/index.cjs"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "11ty",
+    "eleventy",
+    "plugin",
+    "helpers",
+    "filters",
+    "markdown",
+    "nunjucks"
+  ],
+  "author": "Anton Staroverov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anydigital/11ty-bricks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anydigital/11ty-bricks/issues"
+  },
+  "homepage": "https://github.com/anydigital/11ty-bricks#readme",
+  "peerDependencies": {
+    "@11ty/eleventy": "^2.0.0 || ^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
