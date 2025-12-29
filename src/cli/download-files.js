@@ -1,14 +1,42 @@
 #!/usr/bin/env node
 
 import { readFile, writeFile, mkdir } from 'fs/promises';
-import { dirname, resolve } from 'path';
+import { dirname, resolve, join } from 'path';
+
+/**
+ * Parse command line arguments
+ * 
+ * @returns {Object} Parsed arguments
+ */
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const parsed = {
+    outputDir: null
+  };
+  
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    
+    if (arg === '--output' || arg === '-o') {
+      if (i + 1 < args.length) {
+        parsed.outputDir = args[i + 1];
+        i++; // Skip next argument
+      } else {
+        throw new Error(`${arg} requires a directory path`);
+      }
+    }
+  }
+  
+  return parsed;
+}
 
 /**
  * Downloads files specified in package.json's _downloadFiles field
  * 
+ * @param {string|null} outputDir - Optional output directory to prepend to all paths
  * @returns {Promise<boolean>} True if all downloads succeeded, false if any failed
  */
-async function download() {
+async function download(outputDir = null) {
   try {
     // Find and read package.json from the current working directory
     const packageJsonPath = resolve(process.cwd(), 'package.json');
@@ -49,8 +77,11 @@ async function download() {
         const content = await response.arrayBuffer();
         const buffer = Buffer.from(content);
         
-        // Resolve the local path relative to cwd
-        const fullPath = resolve(process.cwd(), localPath);
+        // Resolve the local path relative to output directory or cwd
+        const basePath = outputDir 
+          ? resolve(process.cwd(), outputDir)
+          : process.cwd();
+        const fullPath = resolve(basePath, localPath);
         
         // Create directory if it doesn't exist
         const dir = dirname(fullPath);
@@ -87,10 +118,11 @@ async function download() {
  */
 async function main() {
   try {
-    const success = await download();
+    const args = parseArgs();
+    const success = await download(args.outputDir);
     process.exit(success ? 0 : 1);
   } catch (error) {
-    console.error(`Unexpected error: ${error.message}`);
+    console.error(`Error: ${error.message}`);
     process.exit(1);
   }
 }

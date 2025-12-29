@@ -83,7 +83,7 @@ eleventyConfig.addPlugin(eleventyBricks, {
 });
 ```
 
-## Available Helpers
+## Available 11ty Helpers
 
 ### autoRaw
 
@@ -102,7 +102,7 @@ Use {{ variable }} to output variables.
 
 Would try to process `{{ variable }}` as a template variable. With `autoRaw`, it displays exactly as written.
 
-## CLI Commands
+## CLI Helper Commands
 
 After installing this package, the `download-files` command becomes available:
 
@@ -127,6 +127,15 @@ A CLI command that downloads external files to your project based on URLs specif
 
 ```bash
 npx download-files
+```
+
+**Options:**
+
+- `-o, --output <dir>`: Specify an output directory where all files will be downloaded (relative paths in `_downloadFiles` will be resolved relative to this directory)
+
+```bash
+# Download all files to a specific directory
+npx download-files --output public
 ```
 
 **Features:**
