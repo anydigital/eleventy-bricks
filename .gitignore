@@ -6,3 +6,6 @@ node_modules/
 
 # Logs
 *.log
+
+# Ignore files/folders in root starting with ~ (for testing)
+~*

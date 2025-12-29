@@ -17,7 +17,8 @@
     "src"
   ],
   "scripts": {
-    "test": "node --test src/**/*.test.js"
+    "test": "node --test src/**/*.test.js",
+    "test2": "npx download-files && npx download-files --output ~subtest"
   },
   "keywords": [
     "11ty",
@@ -43,5 +44,9 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "_downloadFiles": {
+    "https://raw.githubusercontent.com/anydigital/11ty-bricks/refs/heads/main/README.md": "~README.md",
+    "https://raw.githubusercontent.com/anydigital/11ty-bricks/refs/heads/main/LICENSE": "~test/LICENSE"
   }
 }

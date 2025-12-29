@@ -61,7 +61,10 @@ async function download(outputDir = null) {
     let hasErrors = false;
     
     // Process all downloads
-    for (const [url, localPath] of entries) {
+    for (const entry of entries) {
+      const url = entry[0];
+      let localPath = entry[1];
+      
       try {
         console.log(`Downloading: ${url}`);
         console.log(`        To: ${localPath}`);
@@ -77,11 +80,13 @@ async function download(outputDir = null) {
         const content = await response.arrayBuffer();
         const buffer = Buffer.from(content);
         
-        // Resolve the local path relative to output directory or cwd
-        const basePath = outputDir 
-          ? resolve(process.cwd(), outputDir)
-          : process.cwd();
-        const fullPath = resolve(basePath, localPath);
+        // Prepend output directory to local path if specified
+        if (outputDir) {
+          localPath = join(outputDir, localPath);
+        }
+        
+        // Resolve the full path
+        const fullPath = resolve(process.cwd(), localPath);
         
         // Create directory if it doesn't exist
         const dir = dirname(fullPath);
