@@ -102,6 +102,49 @@ Use {{ variable }} to output variables.
 
 Would try to process `{{ variable }}` as a template variable. With `autoRaw`, it displays exactly as written.
 
+## CLI Commands
+
+After installing this package, the `download-files` command becomes available:
+
+### download-files
+
+A CLI command that downloads external files to your project based on URLs specified in your `package.json`.
+
+**Usage:**
+
+1. Add a `_downloadFiles` field to your project's `package.json` with URL-to-path mappings:
+
+```json
+{
+  "_downloadFiles": {
+    "https://example.com/library.js": "src/vendor/library.js",
+    "https://cdn.example.com/styles.css": "public/css/external.css"
+  }
+}
+```
+
+2. Run the download command:
+
+```bash
+npx download-files
+```
+
+**Features:**
+
+- Downloads multiple files from external URLs
+- Automatically creates directories if they don't exist
+- Overwrites existing files
+- Continues downloading remaining files even if some fail
+- Provides clear progress and error messages
+- Returns appropriate exit codes for CI/CD integration
+
+**Use Cases:**
+
+- Download third-party libraries and assets
+- Fetch external resources during build processes
+- Keep vendored files up to date
+- Automate dependency downloads that aren't available via npm
+
 ## Requirements
 
 - Node.js >= 18.0.0
