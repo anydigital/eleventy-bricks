@@ -102,7 +102,7 @@ When building reusable components (bricks) in Eleventy, you often need to includ
 
 **How it works:**
 
-1. Use the `rootBrick` shortcode in your base template to mark where dependencies should be injected
+1. Use the `bricksRegistry` shortcode in your base template to mark where dependencies should be injected
 2. Use the `brick` shortcode to register and render brick components that declare their dependencies
 3. The system automatically collects all dependencies and injects them when the page is built
 
@@ -120,13 +120,13 @@ export default function(eleventyConfig) {
 }
 ```
 
-2. Add the `rootBrick` shortcode in your base template (typically in the `<head>` section):
+2. Add the `bricksRegistry` shortcode in your base template (typically in the `<head>` section):
 
 ```njk
 <head>
   <meta charset="UTF-8">
   <title>My Site</title>
-  {% rootBrick %}
+  {% bricksRegistry %}
   <!-- Other head content -->
 </head>
 ```

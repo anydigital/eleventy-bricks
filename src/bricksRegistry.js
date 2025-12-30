@@ -53,13 +53,13 @@ export function bricksRegistry(eleventyConfig) {
     return '';
   });
 
-  // rootBrick shortcode: outputs placeholder and base dependencies
-  eleventyConfig.addShortcode("rootBrick", function(options = {}) {
+  // bricksRegistry shortcode: outputs placeholder and base dependencies
+  eleventyConfig.addShortcode("bricksRegistry", function(dependencies = []) {
     const registry = getPageRegistry(this.page);
     
     // Register root dependencies if provided (categorized later in transform)
-    if (options.dependencies) {
-      options.dependencies.forEach(dep => {
+    if (dependencies && Array.isArray(dependencies)) {
+      dependencies.forEach(dep => {
         registry.dependencies.add(dep);
       });
     }
