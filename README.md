@@ -144,6 +144,43 @@ A reusable Nunjucks macro for rendering navigation menus with proper accessibili
 </nav>
 ```
 
+### Google Tag Manager Macro (`_gtm.njk`)
+
+A reusable Nunjucks macro for integrating Google Tag Manager (GTM) into your site. Provides separate macros for the head and body GTM snippets.
+
+**Usage:**
+
+1. Import the macros in your base template:
+
+```njk
+{% import 'bricks/_gtm.njk' as gtm %}
+```
+
+2. Call the macros in the appropriate locations:
+
+```njk
+<head>
+  <!-- Other head content -->
+  {{ gtm.renderHead('GTM-XXXXXXX') }}
+</head>
+<body>
+  {{ gtm.renderBody('GTM-XXXXXXX') }}
+  <!-- Rest of body content -->
+</body>
+```
+
+**Parameters:**
+
+Both macros accept the same parameter:
+- `gtmId`: Your Google Tag Manager container ID (e.g., `'GTM-XXXXXXX'`)
+
+**Features:**
+
+- Separate macros for head and body placement as recommended by Google
+- Clean, standard GTM implementation
+- Easy to maintain and update across your site
+- Works with all GTM features including noscript fallback
+
 ## CLI Helper Commands
 
 After installing this package, the `download-files` command becomes available:
