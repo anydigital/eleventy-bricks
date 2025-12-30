@@ -48,9 +48,10 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { autoRaw } from "@anydigital/11ty-bricks";
+import { bricksRegistry, autoRaw } from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
+  bricksRegistry(eleventyConfig);
   autoRaw(eleventyConfig);
   
   // Your other configuration...
@@ -59,9 +60,10 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { autoRaw } = require("@anydigital/11ty-bricks");
+const { bricksRegistry, autoRaw } = require("@anydigital/11ty-bricks");
 
 module.exports = function(eleventyConfig) {
+  bricksRegistry(eleventyConfig);
   autoRaw(eleventyConfig);
   
   // Your other configuration...
@@ -74,16 +76,121 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `bricksRegistry` | boolean | `false` | Enable the bricksRegistry system for dependency management |
 | `autoRaw` | boolean | `false` | Enable the autoRaw preprocessor for Markdown files |
 
 **Example:**
 ```javascript
 eleventyConfig.addPlugin(eleventyBricks, {
+  bricksRegistry: true,
   autoRaw: true
 });
 ```
 
 ## Available 11ty Helpers
+
+### bricksRegistry
+
+A dependency management system for Eleventy that automatically collects and injects CSS and JavaScript dependencies (both external and inline) per page. This allows brick components to declare their dependencies, and the system will inject them in the correct location in your HTML.
+
+**Why use this?**
+
+When building reusable components (bricks) in Eleventy, you often need to include CSS and JavaScript dependencies. Instead of manually adding these to every page, `bricksRegistry` automatically:
+- Collects dependencies from all bricks used on a page
+- Categorizes them (external CSS, external JS, inline styles, inline scripts)
+- Injects them in the correct location in your HTML output
+
+**How it works:**
+
+1. Use the `rootBrick` shortcode in your base template to mark where dependencies should be injected
+2. Use the `brick` shortcode to register and render brick components that declare their dependencies
+3. The system automatically collects all dependencies and injects them when the page is built
+
+**Usage:**
+
+1. Enable `bricksRegistry` in your Eleventy config:
+
+```javascript
+import { bricksRegistry } from "@anydigital/11ty-bricks";
+
+export default function(eleventyConfig) {
+  bricksRegistry(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { bricksRegistry: true });
+}
+```
+
+2. Add the `rootBrick` shortcode in your base template (typically in the `<head>` section):
+
+```njk
+<head>
+  <meta charset="UTF-8">
+  <title>My Site</title>
+  {% rootBrick %}
+  <!-- Other head content -->
+</head>
+```
+
+3. Create brick components that declare their dependencies:
+
+```javascript
+// myBrick.js
+export default {
+  dependencies: [
+    'https://cdn.example.com/library.css',
+    'https://cdn.example.com/library.js'
+  ],
+  style: `
+    .my-component { color: blue; }
+  `,
+  script: `
+    console.log('Component initialized');
+  `,
+  render: function() {
+    return '<div class="my-component">Hello World</div>';
+  }
+};
+```
+
+4. Use the `brick` shortcode in your templates:
+
+```njk
+{% set myBrick = require('./myBrick.js') %}
+{% brick myBrick %}
+```
+
+**Brick Component Structure:**
+
+A brick component is a JavaScript object with the following optional properties:
+
+- `dependencies`: Array of URLs to external CSS or JavaScript files (e.g., `['https://cdn.example.com/style.css', 'https://cdn.example.com/script.js']`)
+- `style`: String containing inline CSS
+- `script`: String containing inline JavaScript
+- `render`: Function that returns the HTML markup for the component
+
+**Output:**
+
+The system will automatically inject all dependencies in the order they were registered:
+
+```html
+<head>
+  <meta charset="UTF-8">
+  <title>My Site</title>
+  <link rel="stylesheet" href="https://cdn.example.com/library.css">
+  <style>.my-component { color: blue; }</style>
+  <script src="https://cdn.example.com/library.js"></script>
+  <script>console.log('Component initialized');</script>
+  <!-- Other head content -->
+</head>
+```
+
+**Features:**
+
+- Automatic dependency collection per page
+- Categorizes dependencies (CSS vs JS, external vs inline)
+- Deduplicates dependencies (using Sets internally)
+- Works with both external URLs and inline code
+- Clears registry before each build to prevent stale data
 
 ### autoRaw
 

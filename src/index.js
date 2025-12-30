@@ -9,15 +9,14 @@ import { autoRaw } from "./autoRaw.js";
  * 
  * @param {Object} eleventyConfig - The Eleventy configuration object
  * @param {Object} options - Plugin options
+ * @param {boolean} options.bricksRegistry - Enable bricksRegistry (default: false)
  * @param {boolean} options.autoRaw - Enable autoRaw preprocessor (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
-  const { autoRaw: enableAutoRaw = false } = options;
-
-  bricksRegistry(eleventyConfig);
-
-  // Register helpers based on options
-  if (enableAutoRaw) {
+  if (options.bricksRegistry) {
+    bricksRegistry(eleventyConfig);
+  }
+  if (options.autoRaw) {
     autoRaw(eleventyConfig);
   }
 }
