@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { transformAutoRaw } from "./autoRaw.js";
+import { transformAutoRaw } from "./markdown.js";
 
 describe("transformAutoRaw", () => {
   it("should wrap opening double curly braces with raw tags", () => {

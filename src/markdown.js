@@ -13,15 +13,15 @@ export function transformAutoRaw(content) {
 }
 
 /**
- * autoRaw - Forbid Nunjucks processing in Markdown files
+ * mdAutoRawTags - Forbid Nunjucks processing in Markdown files
  * 
  * This preprocessor wraps Nunjucks syntax ({{, }}, {%, %}) with {% raw %} tags
  * to prevent them from being processed by the template engine in Markdown files.
  * 
  * @param {Object} eleventyConfig - The Eleventy configuration object
  */
-export function autoRaw(eleventyConfig) {
-  eleventyConfig.addPreprocessor("autoRaw", "md", (data, content) => {
+export function mdAutoRawTags(eleventyConfig) {
+  eleventyConfig.addPreprocessor("mdAutoRawTags", "md", (data, content) => {
     return transformAutoRaw(content);
   });
 }

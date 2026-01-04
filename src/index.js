@@ -1,5 +1,5 @@
 import { bricks } from "./bricks.js";
-import { autoRaw } from "./autoRaw.js";
+import { mdAutoRawTags } from "./markdown.js";
 import { fragments } from "./fragments.js";
 import { setAttrFilter } from "./setAttrFilter.js";
 import { byAttrFilter } from "./byAttrFilter.js";
@@ -13,7 +13,7 @@ import { byAttrFilter } from "./byAttrFilter.js";
  * @param {Object} eleventyConfig - The Eleventy configuration object
  * @param {Object} options - Plugin options
  * @param {boolean} options.bricks - Enable bricks system with dependencies injection (default: false)
- * @param {boolean} options.autoRawPreprocessor - Enable autoRaw preprocessor (default: false)
+ * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.fragments - Enable fragment shortcode (default: false)
  * @param {boolean} options.setAttrFilter - Enable setAttr filter (default: false)
  * @param {boolean} options.byAttrFilter - Enable byAttr filter (default: false)
@@ -22,8 +22,8 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
   if (options.bricks) {
     bricks(eleventyConfig);
   }
-  if (options.autoRawPreprocessor) {
-    autoRaw(eleventyConfig);
+  if (options.mdAutoRawTags) {
+    mdAutoRawTags(eleventyConfig);
   }
   if (options.fragments) {
     fragments(eleventyConfig);
@@ -38,7 +38,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 
 // Export individual helpers for granular usage
 export { bricks };
-export { autoRaw };
+export { mdAutoRawTags };
 export { fragments };
 export { setAttrFilter };
 export { byAttrFilter };

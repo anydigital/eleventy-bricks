@@ -14,9 +14,9 @@ module.exports.bricks = async function(eleventyConfig) {
   const { bricks } = await import('./index.js');
   return bricks(eleventyConfig);
 };
-module.exports.autoRaw = async function(eleventyConfig) {
-  const { autoRaw } = await import('./index.js');
-  return autoRaw(eleventyConfig);
+module.exports.mdAutoRawTags = async function(eleventyConfig) {
+  const { mdAutoRawTags } = await import('./index.js');
+  return mdAutoRawTags(eleventyConfig);
 };
 module.exports.fragment = async function(eleventyConfig) {
   const { fragments } = await import('./index.js');
