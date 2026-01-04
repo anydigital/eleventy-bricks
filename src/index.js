@@ -1,5 +1,5 @@
 import { bricks } from "./bricks.js";
-import { mdAutoRawTags, mdAutoNl2br } from "./markdown.js";
+import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./markdown.js";
 import { fragments } from "./fragments.js";
 import { setAttrFilter } from "./setAttrFilter.js";
 import { byAttrFilter } from "./byAttrFilter.js";
@@ -26,3 +26,6 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 
 // Export individual helpers for granular usage
 export { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter };
+
+// Export transform functions for advanced usage
+export { transformAutoRaw, transformNl2br };

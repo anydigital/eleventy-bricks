@@ -22,7 +22,7 @@ import eleventyBricks from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
-    autoRawPreprocessor: true  // Enable autoRaw preprocessor (default: false)
+    mdAutoRawTags: true  // Enable mdAutoRawTags preprocessor (default: false)
   });
   
   // Your other configuration...
@@ -35,7 +35,7 @@ const eleventyBricks = require("@anydigital/11ty-bricks");
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
-    autoRawPreprocessor: true  // Enable autoRaw preprocessor (default: false)
+    mdAutoRawTags: true  // Enable mdAutoRawTags preprocessor (default: false)
   });
   
   // Your other configuration...
@@ -48,11 +48,11 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { bricks, autoRaw } from "@anydigital/11ty-bricks";
+import { bricks, mdAutoRawTags } from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
-  autoRaw(eleventyConfig);
+  mdAutoRawTags(eleventyConfig);
   
   // Your other configuration...
 }
@@ -60,11 +60,11 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { bricks, autoRaw } = require("@anydigital/11ty-bricks");
+const { bricks, mdAutoRawTags } = require("@anydigital/11ty-bricks");
 
 module.exports = function(eleventyConfig) {
   bricks(eleventyConfig);
-  autoRaw(eleventyConfig);
+  mdAutoRawTags(eleventyConfig);
   
   // Your other configuration...
 };
@@ -77,7 +77,8 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `bricks` | boolean | `false` | Enable the bricks system for dependency management |
-| `autoRawPreprocessor` | boolean | `false` | Enable the autoRaw preprocessor for Markdown files |
+| `mdAutoRawTags` | boolean | `false` | Enable the mdAutoRawTags preprocessor for Markdown files |
+| `mdAutoNl2br` | boolean | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
 | `fragments` | boolean | `false` | Enable the fragment shortcode for including content from fragments |
 | `setAttrFilter` | boolean | `false` | Enable the setAttr filter for overriding object attributes |
 | `byAttrFilter` | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
@@ -86,7 +87,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 ```javascript
 eleventyConfig.addPlugin(eleventyBricks, {
   bricks: true,
-  autoRawPreprocessor: true,
+  mdAutoRawTags: true,
   byAttrFilter: true
 });
 ```
@@ -198,22 +199,75 @@ The system will automatically inject all dependencies in the order they were reg
 - Works with both external URLs and inline code
 - Clears registry before each build to prevent stale data
 
-### autoRaw
+### mdAutoRawTags
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
 **Why use this?**
 
-When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This helper automatically escapes these special characters so they display as-is instead of being processed by the template engine.
+When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
+
+**Usage:**
+
+1. Enable `mdAutoRawTags` in your Eleventy config:
+
+```javascript
+import { mdAutoRawTags } from "@anydigital/11ty-bricks";
+
+export default function(eleventyConfig) {
+  mdAutoRawTags(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoRawTags: true });
+}
+```
 
 **Example:**
 
-Before `autoRaw`, writing this in Markdown:
+Before `mdAutoRawTags`, writing this in Markdown:
 ```markdown
 Use {{ variable }} to output variables.
 ```
 
-Would try to process `{{ variable }}` as a template variable. With `autoRaw`, it displays exactly as written.
+Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
+
+### mdAutoNl2br
+
+Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
+
+**Why use this?**
+
+Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
+
+**Usage:**
+
+1. Enable `mdAutoNl2br` in your Eleventy config:
+
+```javascript
+import { mdAutoNl2br } from "@anydigital/11ty-bricks";
+
+export default function(eleventyConfig) {
+  mdAutoNl2br(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoNl2br: true });
+}
+```
+
+**Example:**
+
+In your Markdown file:
+```markdown
+| Column 1 | Column 2 |
+|----------|----------|
+| Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
+```
+
+Will render as:
+```html
+<td>Line 1<br>Line 2<br>Line 3</td>
+<td>Another cell<br>With multiple lines</td>
+```
+
+**Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
 
 ### fragment
 
@@ -446,7 +500,8 @@ Template usage:
 
 The plugin also exports the following for advanced usage:
 
-- `transformAutoRaw(content)`: The transform function used by `autoRaw` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
+- `transformAutoRaw(content)`: The transform function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
+- `transformNl2br(content)`: The transform function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\n` sequences to `<br>` tags.
 
 ## CLI Helper Commands
 
