@@ -26,3 +26,33 @@ export function mdAutoRawTags(eleventyConfig) {
   });
 }
 
+/**
+ * Transform \n sequences to <br> tags
+ * 
+ * This function converts literal \n sequences (double backslash + n) to HTML <br> tags.
+ * It handles both double \n\n and single \n sequences, processing double ones first.
+ * 
+ * @param {string} content - The content to transform
+ * @returns {string} The transformed content with \n converted to <br>
+ */
+export function transformNl2br(content) {
+  // Replace double \n\n first, then single \n to avoid double conversion
+  return content.replace(/\\n\\n/g, '<br>').replace(/\\n/g, '<br>');
+}
+
+/**
+ * mdAutoNl2br - Auto convert \n to <br> in markdown (especially tables)
+ * 
+ * This function amends the markdown library to automatically convert \n
+ * to <br> tags in text content, which is particularly useful for line breaks
+ * inside markdown tables where standard newlines don't work.
+ * 
+ * @param {Object} eleventyConfig - The Eleventy configuration object
+ */
+export function mdAutoNl2br(eleventyConfig) {
+  eleventyConfig.amendLibrary("md", mdLib => {
+    mdLib.renderer.rules.text = (tokens, idx) => {
+      return transformNl2br(tokens[idx].content);
+    };
+  });
+}
