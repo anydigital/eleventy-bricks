@@ -19,26 +19,9 @@ import { byAttrFilter } from "./byAttrFilter.js";
  * @param {boolean} options.byAttrFilter - Enable byAttr filter (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
-  if (options.bricks) {
-    bricks(eleventyConfig);
-  }
-  if (options.mdAutoRawTags) {
-    mdAutoRawTags(eleventyConfig);
-  }
-  if (options.fragments) {
-    fragments(eleventyConfig);
-  }
-  if (options.setAttrFilter) {
-    setAttrFilter(eleventyConfig);
-  }
-  if (options.byAttrFilter) {
-    byAttrFilter(eleventyConfig);
-  }
+  const plugins = { bricks, mdAutoRawTags, fragments, setAttrFilter, byAttrFilter };
+  Object.entries(options).forEach(([key, enabled]) => enabled && plugins[key]?.(eleventyConfig));
 }
 
 // Export individual helpers for granular usage
-export { bricks };
-export { mdAutoRawTags };
-export { fragments };
-export { setAttrFilter };
-export { byAttrFilter };
+export { bricks, mdAutoRawTags, fragments, setAttrFilter, byAttrFilter };
