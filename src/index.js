@@ -2,7 +2,7 @@ import { bricksRegistry } from "./bricksRegistry.js";
 import { autoRaw } from "./autoRaw.js";
 import { fragment } from "./fragment.js";
 import { setAttrFilter } from "./setAttrFilter.js";
-import { byAttr } from "./byAttr.js";
+import { byAttrFilter } from "./byAttrFilter.js";
 
 /**
  * 11ty Bricks Plugin
@@ -32,7 +32,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
     setAttrFilter(eleventyConfig);
   }
   if (options.byAttrFilter) {
-    byAttr(eleventyConfig);
+    byAttrFilter(eleventyConfig);
   }
 }
 
@@ -41,4 +41,4 @@ export { bricksRegistry };
 export { autoRaw };
 export { fragment };
 export { setAttrFilter };
-export { byAttr };
+export { byAttrFilter };

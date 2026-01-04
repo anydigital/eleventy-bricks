@@ -7,7 +7,7 @@
  * 
  * @param {Object} eleventyConfig - The Eleventy configuration object
  */
-export function byAttr(eleventyConfig) {
+export function byAttrFilter(eleventyConfig) {
   eleventyConfig.addFilter("byAttr", function(collection, attrName, targetValue) {
     if (!collection || !Array.isArray(collection)) {
       return [];

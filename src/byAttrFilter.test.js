@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { byAttr } from './byAttr.js';
+import { byAttrFilter } from './byAttrFilter.js';
 
 describe('byAttr filter', () => {
   let filterFn;
@@ -15,7 +15,7 @@ describe('byAttr filter', () => {
   };
 
   // Register the filter
-  byAttr(mockEleventyConfig);
+  byAttrFilter(mockEleventyConfig);
 
   it('should filter items by exact attribute match', () => {
     const collection = [

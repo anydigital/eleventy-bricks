@@ -27,6 +27,6 @@ module.exports.setAttr = async function(eleventyConfig) {
   return setAttrFilter(eleventyConfig);
 };
 module.exports.byAttr = async function(eleventyConfig) {
-  const { byAttr } = await import('./index.js');
-  return byAttr(eleventyConfig);
+  const { byAttrFilter } = await import('./index.js');
+  return byAttrFilter(eleventyConfig);
 };
