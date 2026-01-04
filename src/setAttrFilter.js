@@ -6,7 +6,7 @@
  * 
  * @param {Object} eleventyConfig - The Eleventy configuration object
  */
-export function setAttr(eleventyConfig) {
+export function setAttrFilter(eleventyConfig) {
   eleventyConfig.addFilter("setAttr", function(obj, key, value) {
     return {
       ...obj,

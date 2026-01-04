@@ -23,8 +23,8 @@ module.exports.fragment = async function(eleventyConfig) {
   return fragment(eleventyConfig);
 };
 module.exports.setAttr = async function(eleventyConfig) {
-  const { setAttr } = await import('./index.js');
-  return setAttr(eleventyConfig);
+  const { setAttrFilter } = await import('./index.js');
+  return setAttrFilter(eleventyConfig);
 };
 module.exports.byAttr = async function(eleventyConfig) {
   const { byAttr } = await import('./index.js');
