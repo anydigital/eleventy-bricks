@@ -48,11 +48,15 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { bricks, mdAutoRawTags, siteData } from "@anydigital/11ty-bricks";
+import { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
+  mdAutoNl2br(eleventyConfig);
+  fragments(eleventyConfig);
+  setAttrFilter(eleventyConfig);
+  byAttrFilter(eleventyConfig);
   siteData(eleventyConfig);
   
   // Your other configuration...
@@ -61,11 +65,15 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { bricks, mdAutoRawTags, siteData } = require("@anydigital/11ty-bricks");
+const { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } = require("@anydigital/11ty-bricks");
 
 module.exports = function(eleventyConfig) {
   bricks(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
+  mdAutoNl2br(eleventyConfig);
+  fragments(eleventyConfig);
+  setAttrFilter(eleventyConfig);
+  byAttrFilter(eleventyConfig);
   siteData(eleventyConfig);
   
   // Your other configuration...
@@ -360,10 +368,10 @@ When working with Eleventy data, you sometimes need to modify an object's proper
 1. Enable `setAttr` in your Eleventy config:
 
 ```javascript
-import { setAttr } from "@anydigital/11ty-bricks";
+import { setAttrFilter } from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
-  setAttr(eleventyConfig);
+  setAttrFilter(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { setAttrFilter: true });
 }
@@ -428,10 +436,10 @@ When working with Eleventy collections, you often need to filter items based on 
 1. Enable `byAttr` in your Eleventy config:
 
 ```javascript
-import { byAttr } from "@anydigital/11ty-bricks";
+import { byAttrFilter } from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
-  byAttr(eleventyConfig);
+  byAttrFilter(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { byAttrFilter: true });
 }
