@@ -19,7 +19,7 @@ import { siteData } from "./siteData.js";
  * @param {boolean} options.fragments - Enable fragment shortcode (default: false)
  * @param {boolean} options.setAttrFilter - Enable setAttr filter (default: false)
  * @param {boolean} options.byAttrFilter - Enable byAttr filter (default: false)
- * @param {boolean} options.siteData - Enable site.year global data (default: false)
+ * @param {boolean} options.siteData - Enable site.year and site.isProd global data (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
   const plugins = { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData };

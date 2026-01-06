@@ -589,6 +589,64 @@ The plugin also exports the following for advanced usage:
 - `transformAutoRaw(content)`: The transform function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
 - `transformNl2br(content)`: The transform function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\n` sequences to `<br>` tags.
 
+## Starter Configuration Files
+
+The package includes pre-configured starter files in `node_modules/@anydigital/11ty-bricks/src/starter/` that you can symlink to your project for quick setup:
+
+### Available Starter Files
+
+#### eleventy.config.js
+
+A fully-configured Eleventy config file with:
+- All 11ty-bricks plugins enabled
+- Eleventy Navigation plugin
+- Markdown-it with anchors
+- YAML data support
+- CLI input directory support
+- Symlink support for development
+
+**Symlink to your project:**
+```bash
+ln -s node_modules/@anydigital/11ty-bricks/src/starter/eleventy.config.js eleventy.config.js
+```
+
+#### tailwind.config.js
+
+A pre-configured Tailwind CSS config optimized for Eleventy projects with proper content paths.
+
+**Symlink to your project:**
+```bash
+ln -s node_modules/@anydigital/11ty-bricks/src/starter/tailwind.config.js tailwind.config.js
+```
+
+#### admin/index.html
+
+A ready-to-use Sveltia CMS admin interface for content management.
+
+**Symlink to your project:**
+```bash
+mkdir -p admin
+ln -s ../node_modules/@anydigital/11ty-bricks/src/starter/admin/index.html admin/index.html
+```
+
+### Benefits of Symlinking
+
+- **Always up-to-date**: Configuration automatically updates when you upgrade the package
+- **Less maintenance**: No need to manually sync configuration changes
+- **Quick setup**: Get started immediately with best-practice configurations
+- **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
+
+### Alternative: Copy Files
+
+If you prefer to customize the configurations extensively, you can copy the files instead:
+
+```bash
+cp node_modules/@anydigital/11ty-bricks/src/starter/eleventy.config.js .
+cp node_modules/@anydigital/11ty-bricks/src/starter/tailwind.config.js .
+mkdir -p admin
+cp node_modules/@anydigital/11ty-bricks/src/starter/admin/index.html admin/
+```
+
 ## CLI Helper Commands
 
 After installing this package, the `download-files` command becomes available:
