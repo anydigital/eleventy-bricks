@@ -1,3 +1,5 @@
+/* CLI */
+import minimist from "minimist";
 /* Plugins */
 import { RenderPlugin } from "@11ty/eleventy";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
@@ -8,9 +10,15 @@ import markdownItAnchor from "markdown-it-anchor";
 /* Data */
 import yaml from "js-yaml";
 
-
+/**
+ * Eleventy Configuration
+ * @param {Object} eleventyConfig - The Eleventy configuration object
+ * @returns {Object} The Eleventy configuration object
+ */
 export default function(eleventyConfig) {
-  const inputDir = eleventyConfig.dir?.input || "src";console.log(eleventyConfig.dir);
+  /* CLI support */
+  const argv = minimist(process.argv.slice(2));
+  const inputDir = argv.input || "src";
 
   /* Plugins */
   eleventyConfig.addPlugin(RenderPlugin);
@@ -39,8 +47,8 @@ export default function(eleventyConfig) {
 
   /* Build */
   eleventyConfig.addPassthroughCopy({ 
-    "_public": ".", 
-    [`${inputDir}/_public`]: "." 
+    "_public": ".",
+    ...(inputDir !== "src" && { [`${inputDir}/_public`]: "." })
   }, { expand: true }); // This follows/resolves symbolic links
 
   /* Dev tools */
