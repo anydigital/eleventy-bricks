@@ -46,6 +46,6 @@
     "node": ">=18.0.0"
   },
   "_downloadFiles": {
-    "https://raw.githubusercontent.com/danurbanowicz/eleventy-sveltia-cms-starter/refs/heads/master/admin/index.html": "src/sveltia-admin/index.html"
+    "https://raw.githubusercontent.com/danurbanowicz/eleventy-sveltia-cms-starter/refs/heads/master/admin/index.html": "src/starter/admin/index.html"
   }
 }
