@@ -3,6 +3,7 @@ import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./
 import { fragments } from "./fragments.js";
 import { setAttrFilter } from "./setAttrFilter.js";
 import { byAttrFilter } from "./byAttrFilter.js";
+import { siteData } from "./siteData.js";
 
 /**
  * 11ty Bricks Plugin
@@ -18,14 +19,15 @@ import { byAttrFilter } from "./byAttrFilter.js";
  * @param {boolean} options.fragments - Enable fragment shortcode (default: false)
  * @param {boolean} options.setAttrFilter - Enable setAttr filter (default: false)
  * @param {boolean} options.byAttrFilter - Enable byAttr filter (default: false)
+ * @param {boolean} options.siteData - Enable site.year global data (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
-  const plugins = { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter };
+  const plugins = { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData };
   Object.entries(options).forEach(([key, enabled]) => enabled && plugins[key]?.(eleventyConfig));
 }
 
 // Export individual helpers for granular usage
-export { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter };
+export { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData };
 
 // Export transform functions for advanced usage
 export { transformAutoRaw, transformNl2br };
