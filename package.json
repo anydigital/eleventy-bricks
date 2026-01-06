@@ -17,8 +17,8 @@
     "src"
   ],
   "scripts": {
-    "test": "node --test src/**/*.test.js",
-    "test2": "npx download-files && npx download-files --output ~subtest"
+    "build": "npx download-files",
+    "test": "node --test src/**/*.test.js"
   },
   "keywords": [
     "11ty",
@@ -46,7 +46,6 @@
     "node": ">=18.0.0"
   },
   "_downloadFiles": {
-    "https://raw.githubusercontent.com/anydigital/11ty-bricks/refs/heads/main/README.md": "~README.md",
-    "https://raw.githubusercontent.com/anydigital/11ty-bricks/refs/heads/main/LICENSE": "~test/LICENSE"
+    "https://raw.githubusercontent.com/danurbanowicz/eleventy-sveltia-cms-starter/refs/heads/master/admin/index.html": "src/sveltia-admin/index.html"
   }
 }
