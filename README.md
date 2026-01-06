@@ -48,11 +48,12 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { bricks, mdAutoRawTags } from "@anydigital/11ty-bricks";
+import { bricks, mdAutoRawTags, siteData } from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
+  siteData(eleventyConfig);
   
   // Your other configuration...
 }
@@ -60,11 +61,12 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { bricks, mdAutoRawTags } = require("@anydigital/11ty-bricks");
+const { bricks, mdAutoRawTags, siteData } = require("@anydigital/11ty-bricks");
 
 module.exports = function(eleventyConfig) {
   bricks(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
+  siteData(eleventyConfig);
   
   // Your other configuration...
 };
@@ -82,13 +84,15 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 | `fragments` | boolean | `false` | Enable the fragment shortcode for including content from fragments |
 | `setAttrFilter` | boolean | `false` | Enable the setAttr filter for overriding object attributes |
 | `byAttrFilter` | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
+| `siteData` | boolean | `false` | Enable site.year and site.isProd global data |
 
 **Example:**
 ```javascript
 eleventyConfig.addPlugin(eleventyBricks, {
   bricks: true,
   mdAutoRawTags: true,
-  byAttrFilter: true
+  byAttrFilter: true,
+  siteData: true
 });
 ```
 
@@ -282,13 +286,13 @@ Fragments allow you to organize reusable content snippets in a dedicated directo
 
 **Usage:**
 
-1. Enable `fragment` in your Eleventy config:
+1. Enable `fragments` in your Eleventy config:
 
 ```javascript
-import { fragment } from "@anydigital/11ty-bricks";
+import { fragments } from "@anydigital/11ty-bricks";
 
 export default function(eleventyConfig) {
-  fragment(eleventyConfig);
+  fragments(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { fragments: true });
 }
@@ -494,6 +498,80 @@ Template usage:
 
 {# Chain filters #}
 {% set recentBlogPosts = collections.all | byAttr('category', 'blog') | reverse | limit(5) %}
+```
+
+### siteData
+
+Adds global site data to your Eleventy project, providing commonly needed values that can be accessed in all templates.
+
+**Why use this?**
+
+Many websites need access to the current year (for copyright notices) and environment information (to conditionally enable features based on production vs development). This helper provides these as global `site` data without manually setting them up.
+
+**Usage:**
+
+1. Enable `siteData` in your Eleventy config:
+
+```javascript
+import { siteData } from "@anydigital/11ty-bricks";
+
+export default function(eleventyConfig) {
+  siteData(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { siteData: true });
+}
+```
+
+2. Use the global data in your templates:
+
+**Current Year:**
+```njk
+<footer>
+  <p>&copy; {{ site.year }} Your Company Name. All rights reserved.</p>
+</footer>
+```
+
+**Environment Check:**
+```njk
+{% if site.isProd %}
+  <!-- Production-only features -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
+{% else %}
+  <!-- Development-only features -->
+  <div class="dev-toolbar">Development Mode</div>
+{% endif %}
+```
+
+**Available Data:**
+
+- `site.year`: The current year as a number (e.g., `2026`)
+- `site.isProd`: Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`)
+
+**Features:**
+
+- Automatically updates the year value
+- Detects production vs development mode based on `ELEVENTY_RUN_MODE` environment variable
+- Available globally in all templates without manual setup
+- No configuration required
+
+**Examples:**
+
+```njk
+{# Copyright notice #}
+<p>Copyright &copy; {{ site.year }} My Site</p>
+
+{# Conditional loading of analytics #}
+{% if site.isProd %}
+  <script src="/analytics.js"></script>
+{% endif %}
+
+{# Different behavior in dev vs prod #}
+{% if site.isProd %}
+  <link rel="stylesheet" href="/css/styles.min.css">
+{% else %}
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/live-reload.js"></script>
+{% endif %}
 ```
 
 ### Additional Exports
