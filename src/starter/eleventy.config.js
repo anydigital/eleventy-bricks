@@ -47,7 +47,7 @@ export default function(eleventyConfig) {
 
   /* Build */
   eleventyConfig.addPassthroughCopy({ 
-    "_public": ".",
+    "src/_public": ".",
     ...(inputDir !== "src" && { [`${inputDir}/_public`]: "." })
   }, { expand: true }); // This follows/resolves symbolic links
 
