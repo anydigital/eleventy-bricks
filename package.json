@@ -1,5 +1,5 @@
 {
-  "name": "@anydigital/11ty-bricks",
+  "name": "@anydigital/eleventy-bricks",
   "version": "1.0.0-alpha.12",
   "description": "A collection of helpful utilities and filters for Eleventy (11ty)",
   "type": "module",
@@ -33,12 +33,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anydigital/11ty-bricks.git"
+    "url": "git+https://github.com/anydigital/eleventy-bricks.git"
   },
   "bugs": {
-    "url": "https://github.com/anydigital/11ty-bricks/issues"
+    "url": "https://github.com/anydigital/eleventy-bricks/issues"
   },
-  "homepage": "https://github.com/anydigital/11ty-bricks#readme",
+  "homepage": "https://github.com/anydigital/eleventy-bricks#readme",
   "peerDependencies": {
     "@11ty/eleventy": "^2.0.0 || ^3.0.0"
   },

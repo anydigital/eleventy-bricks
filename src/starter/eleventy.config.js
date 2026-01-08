@@ -3,7 +3,7 @@ import minimist from "minimist";
 /* Plugins */
 import { RenderPlugin } from "@11ty/eleventy";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
-import eleventyBricksPlugin from "@anydigital/11ty-bricks";
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 /* Libraries */
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
