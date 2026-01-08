@@ -518,7 +518,7 @@ The plugin also exports the following for advanced usage:
 
 ## Starter Configuration Files
 
-The package includes pre-configured starter files in `node_modules/@anydigital/eleventy-bricks/src/starter/` that you can symlink to your project for quick setup:
+The package includes pre-configured starter files in `node_modules/@anydigital/eleventy-bricks/src/` that you can symlink to your project for quick setup:
 
 ### Available Starter Files
 
@@ -539,7 +539,7 @@ npm install @11ty/eleventy-navigation markdown-it markdown-it-anchor js-yaml min
 
 **Symlink to your project:**
 ```bash
-ln -s node_modules/@anydigital/eleventy-bricks/src/starter/eleventy.config.js eleventy.config.js
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js eleventy.config.js
 ```
 
 #### admin/index.html
@@ -549,7 +549,7 @@ A ready-to-use Sveltia CMS admin interface for content management.
 **Symlink to your project:**
 ```bash
 mkdir -p admin
-ln -s ../node_modules/@anydigital/eleventy-bricks/src/starter/admin/index.html admin/index.html
+ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
 ```
 
 ### Benefits of Symlinking
@@ -564,9 +564,9 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/starter/admin/index.html a
 If you prefer to customize the configurations extensively, you can copy the files instead:
 
 ```bash
-cp node_modules/@anydigital/eleventy-bricks/src/starter/eleventy.config.js .
+cp node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js .
 mkdir -p admin
-cp node_modules/@anydigital/eleventy-bricks/src/starter/admin/index.html admin/
+cp node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/
 ```
 
 ## CLI Helper Commands
