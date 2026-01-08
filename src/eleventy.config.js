@@ -25,7 +25,6 @@ export default function(eleventyConfig) {
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addPlugin(eleventyBricksPlugin, {
     bricks: true,
-    fragments: true,
     mdAutoNl2br: true,
     mdAutoRawTags: true,
     setAttrFilter: true,

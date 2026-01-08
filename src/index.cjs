@@ -10,7 +10,7 @@ module.exports = async function eleventyBricksPlugin(eleventyConfig, options) {
 };
 
 // Export individual helpers for granular usage
-['bricks', 'mdAutoRawTags', 'mdAutoNl2br', 'fragments', 'setAttrFilter', 'byAttrFilter', 'siteData'].forEach(name => {
+['bricks', 'mdAutoRawTags', 'mdAutoNl2br', 'setAttrFilter', 'byAttrFilter', 'siteData'].forEach(name => {
   module.exports[name] = async (eleventyConfig) => {
     const module = await import('./index.js');
     return module[name](eleventyConfig);

@@ -50,13 +50,12 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } from "@anydigital/eleventy-bricks";
+import { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, siteData } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
   mdAutoNl2br(eleventyConfig);
-  fragments(eleventyConfig);
   setAttrFilter(eleventyConfig);
   byAttrFilter(eleventyConfig);
   siteData(eleventyConfig);
@@ -67,13 +66,12 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } = require("@anydigital/eleventy-bricks");
+const { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, siteData } = require("@anydigital/eleventy-bricks");
 
 module.exports = async function(eleventyConfig) {
   await bricks(eleventyConfig);
   await mdAutoRawTags(eleventyConfig);
   await mdAutoNl2br(eleventyConfig);
-  await fragments(eleventyConfig);
   await setAttrFilter(eleventyConfig);
   await byAttrFilter(eleventyConfig);
   await siteData(eleventyConfig);
@@ -93,7 +91,6 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 | `bricks` | boolean | `false` | Enable the bricks system for dependency management |
 | `mdAutoRawTags` | boolean | `false` | Enable the mdAutoRawTags preprocessor for Markdown files |
 | `mdAutoNl2br` | boolean | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
-| `fragments` | boolean | `false` | Enable the fragment shortcode for including content from fragments |
 | `setAttrFilter` | boolean | `false` | Enable the setAttr filter for overriding object attributes |
 | `byAttrFilter` | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
 | `siteData` | boolean | `false` | Enable site.year and site.isProd global data |
@@ -284,80 +281,6 @@ Will render as:
 ```
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
-
-### fragment
-
-A shortcode that includes content from fragment files stored in the `_fragments` directory. The content will be processed by the template engine.
-
-**Why use this?**
-
-Fragments allow you to organize reusable content snippets in a dedicated directory and include them in your templates. This is useful for:
-- Reusable content blocks
-- Shared template sections
-- Component-like content organization
-
-**Usage:**
-
-1. Enable `fragments` in your Eleventy config:
-
-```javascript
-import { fragments } from "@anydigital/eleventy-bricks";
-
-export default function(eleventyConfig) {
-  fragments(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { fragments: true });
-}
-```
-
-2. Create fragment files in the `_fragments` directory (relative to your input directory):
-
-```
-your-project/
-  _fragments/
-    header.njk
-    footer.njk
-    callout.md
-```
-
-3. Use the `fragment` shortcode in your templates:
-
-```njk
-{% fragment "header.njk" %}
-
-<main>
-  <!-- Your content -->
-</main>
-
-{% fragment "footer.njk" %}
-```
-
-**Parameters:**
-
-- `path`: The path to the fragment file relative to the `_fragments` directory
-
-**Features:**
-
-- Reads files from `_fragments` directory in your input directory
-- Content is processed by the template engine
-- Supports any template language that Eleventy supports
-- Shows helpful error comment if fragment is not found
-
-**Example:**
-
-Create `_fragments/callout.njk`:
-```njk
-<div class="callout callout-{{ type | default('info') }}">
-  {{ content }}
-</div>
-```
-
-Use it in your template:
-```njk
-{% set type = "warning" %}
-{% set content = "This is important!" %}
-{% fragment "callout.njk" %}
-```
 
 ### setAttr
 
