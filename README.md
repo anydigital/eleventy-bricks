@@ -1,11 +1,11 @@
-# 11ty-bricks
+# eleventy-bricks
 
 A collection of helpful utilities and filters for Eleventy (11ty).
 
 ## Installation
 
 ```bash
-npm install @anydigital/11ty-bricks
+npm install @anydigital/eleventy-bricks
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ Import and use the entire plugin. You can configure which helpers to enable usin
 
 **ES Modules:**
 ```javascript
-import eleventyBricks from "@anydigital/11ty-bricks";
+import eleventyBricks from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
@@ -31,7 +31,7 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const eleventyBricks = require("@anydigital/11ty-bricks");
+const eleventyBricks = require("@anydigital/eleventy-bricks");
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
@@ -41,6 +41,8 @@ module.exports = function(eleventyConfig) {
   // Your other configuration...
 };
 ```
+
+> **Note:** The CommonJS wrapper uses dynamic imports internally and returns async functions. Eleventy's `addPlugin()` method handles this automatically.
 
 ### Option 2: Import Individual Helpers (Recommended)
 
@@ -48,7 +50,7 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } from "@anydigital/11ty-bricks";
+import { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
@@ -65,20 +67,22 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } = require("@anydigital/11ty-bricks");
+const { bricks, mdAutoRawTags, mdAutoNl2br, fragments, setAttrFilter, byAttrFilter, siteData } = require("@anydigital/eleventy-bricks");
 
-module.exports = function(eleventyConfig) {
-  bricks(eleventyConfig);
-  mdAutoRawTags(eleventyConfig);
-  mdAutoNl2br(eleventyConfig);
-  fragments(eleventyConfig);
-  setAttrFilter(eleventyConfig);
-  byAttrFilter(eleventyConfig);
-  siteData(eleventyConfig);
+module.exports = async function(eleventyConfig) {
+  await bricks(eleventyConfig);
+  await mdAutoRawTags(eleventyConfig);
+  await mdAutoNl2br(eleventyConfig);
+  await fragments(eleventyConfig);
+  await setAttrFilter(eleventyConfig);
+  await byAttrFilter(eleventyConfig);
+  await siteData(eleventyConfig);
   
   // Your other configuration...
 };
 ```
+
+> **Note:** When using CommonJS with individual helpers, the config function must be `async` and each helper must be `await`ed, as the CommonJS wrapper uses dynamic imports internally.
 
 ## Configuration Options
 
@@ -128,7 +132,7 @@ When building reusable components (bricks) in Eleventy, you often need to includ
 1. Enable `bricks` in your Eleventy config:
 
 ```javascript
-import { bricks } from "@anydigital/11ty-bricks";
+import { bricks } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
@@ -224,7 +228,7 @@ When writing documentation or tutorials about templating in Markdown files, you 
 1. Enable `mdAutoRawTags` in your Eleventy config:
 
 ```javascript
-import { mdAutoRawTags } from "@anydigital/11ty-bricks";
+import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   mdAutoRawTags(eleventyConfig);
@@ -255,7 +259,7 @@ Markdown tables don't support multi-line content in cells. By using `\n` in your
 1. Enable `mdAutoNl2br` in your Eleventy config:
 
 ```javascript
-import { mdAutoNl2br } from "@anydigital/11ty-bricks";
+import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   mdAutoNl2br(eleventyConfig);
@@ -297,7 +301,7 @@ Fragments allow you to organize reusable content snippets in a dedicated directo
 1. Enable `fragments` in your Eleventy config:
 
 ```javascript
-import { fragments } from "@anydigital/11ty-bricks";
+import { fragments } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   fragments(eleventyConfig);
@@ -368,7 +372,7 @@ When working with Eleventy data, you sometimes need to modify an object's proper
 1. Enable `setAttr` in your Eleventy config:
 
 ```javascript
-import { setAttrFilter } from "@anydigital/11ty-bricks";
+import { setAttrFilter } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   setAttrFilter(eleventyConfig);
@@ -436,7 +440,7 @@ When working with Eleventy collections, you often need to filter items based on 
 1. Enable `byAttr` in your Eleventy config:
 
 ```javascript
-import { byAttrFilter } from "@anydigital/11ty-bricks";
+import { byAttrFilter } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   byAttrFilter(eleventyConfig);
@@ -521,7 +525,7 @@ Many websites need access to the current year (for copyright notices) and enviro
 1. Enable `siteData` in your Eleventy config:
 
 ```javascript
-import { siteData } from "@anydigital/11ty-bricks";
+import { siteData } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   siteData(eleventyConfig);
@@ -591,32 +595,28 @@ The plugin also exports the following for advanced usage:
 
 ## Starter Configuration Files
 
-The package includes pre-configured starter files in `node_modules/@anydigital/11ty-bricks/src/starter/` that you can symlink to your project for quick setup:
+The package includes pre-configured starter files in `node_modules/@anydigital/eleventy-bricks/src/starter/` that you can symlink to your project for quick setup:
 
 ### Available Starter Files
 
 #### eleventy.config.js
 
 A fully-configured Eleventy config file with:
-- All 11ty-bricks plugins enabled
+- All eleventy-bricks plugins enabled
 - Eleventy Navigation plugin
 - Markdown-it with anchors
 - YAML data support
 - CLI input directory support
 - Symlink support for development
 
-**Symlink to your project:**
+**Required dependencies:**
 ```bash
-ln -s node_modules/@anydigital/11ty-bricks/src/starter/eleventy.config.js eleventy.config.js
+npm install @11ty/eleventy-navigation markdown-it markdown-it-anchor js-yaml minimist
 ```
 
-#### tailwind.config.js
-
-A pre-configured Tailwind CSS config optimized for Eleventy projects with proper content paths.
-
 **Symlink to your project:**
 ```bash
-ln -s node_modules/@anydigital/11ty-bricks/src/starter/tailwind.config.js tailwind.config.js
+ln -s node_modules/@anydigital/eleventy-bricks/src/starter/eleventy.config.js eleventy.config.js
 ```
 
 #### admin/index.html
@@ -626,7 +626,7 @@ A ready-to-use Sveltia CMS admin interface for content management.
 **Symlink to your project:**
 ```bash
 mkdir -p admin
-ln -s ../node_modules/@anydigital/11ty-bricks/src/starter/admin/index.html admin/index.html
+ln -s ../node_modules/@anydigital/eleventy-bricks/src/starter/admin/index.html admin/index.html
 ```
 
 ### Benefits of Symlinking
@@ -641,10 +641,9 @@ ln -s ../node_modules/@anydigital/11ty-bricks/src/starter/admin/index.html admin
 If you prefer to customize the configurations extensively, you can copy the files instead:
 
 ```bash
-cp node_modules/@anydigital/11ty-bricks/src/starter/eleventy.config.js .
-cp node_modules/@anydigital/11ty-bricks/src/starter/tailwind.config.js .
+cp node_modules/@anydigital/eleventy-bricks/src/starter/eleventy.config.js .
 mkdir -p admin
-cp node_modules/@anydigital/11ty-bricks/src/starter/admin/index.html admin/
+cp node_modules/@anydigital/eleventy-bricks/src/starter/admin/index.html admin/
 ```
 
 ## CLI Helper Commands
@@ -702,7 +701,7 @@ npx download-files --output public
 ## Requirements
 
 - Node.js >= 18.0.0
-- Eleventy >= 2.0.0
+- Eleventy >= 2.0.0 (supports both 2.x and 3.x)
 
 ## License
 
