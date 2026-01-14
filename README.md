@@ -569,6 +569,69 @@ mkdir -p admin
 cp node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/
 ```
 
+## Development Workflow Setup
+
+### Using the `do` Folder Pattern
+
+This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
+
+**Setup:**
+
+1. Create a `do` folder in your project root:
+
+```bash
+mkdir do
+```
+
+2. Symlink the package.json from the eleventy-bricks package:
+
+```bash
+ln -s node_modules/@anydigital/eleventy-bricks/src/do/package.json do/package.json
+```
+
+3. Configure your root `package.json` to use npm workspaces:
+
+```json
+{
+  "name": "my-project",
+  "workspaces": ["do"],
+  "scripts": {
+    "build": "npm -w do run build",
+    "start": "npm -w do run start"
+  }
+}
+```
+
+**Usage:**
+
+Run your Eleventy project:
+
+```bash
+npm start
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+**Available Scripts in `do` folder:**
+
+- `build` - Build the site with Eleventy and minify CSS with Tailwind
+- `start` - Start Eleventy dev server with live reload and Tailwind watch mode
+- `stage` - Clean build and serve locally for preview
+- `11ty` - Run Eleventy commands directly
+- `11ty:clean` - Remove the `_site` output directory
+- `tw` - Run Tailwind CSS commands
+
+**Benefits:**
+
+- **Clean separation**: Keep build scripts separate from project configuration
+- **Reusable workflows**: Update scripts by upgrading the package
+- **Workspace isolation**: Scripts run in their own workspace context
+- **Easy maintenance**: No need to manually maintain build scripts
+
 ## CLI Helper Commands
 
 After installing this package, the `download-files` command becomes available:
