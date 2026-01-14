@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/anydigital/eleventy-bricks#readme",
   "peerDependencies": {
-    "@11ty/eleventy": "^2.0.0 || ^3.0.0"
+    "@11ty/eleventy": "^3.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
