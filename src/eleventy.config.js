@@ -42,7 +42,7 @@ export default function(eleventyConfig) {
   }));
 
   /* Data */
-  eleventyConfig.addDataExtension("yml", (contents) => yaml.safeLoad(contents));
+  eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
 
   /* Build */
   eleventyConfig.addPassthroughCopy({ 
