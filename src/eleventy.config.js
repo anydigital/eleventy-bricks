@@ -29,6 +29,7 @@ export default function(eleventyConfig) {
     mdAutoRawTags: true,
     setAttrFilter: true,
     byAttrFilter: true,
+    mergeFilter: true,
     siteData: true
   });
 

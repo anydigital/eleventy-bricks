@@ -50,7 +50,7 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, siteData } from "@anydigital/eleventy-bricks";
+import { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, siteData } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
@@ -58,6 +58,7 @@ export default function(eleventyConfig) {
   mdAutoNl2br(eleventyConfig);
   setAttrFilter(eleventyConfig);
   byAttrFilter(eleventyConfig);
+  mergeFilter(eleventyConfig);
   siteData(eleventyConfig);
   
   // Your other configuration...
@@ -66,7 +67,7 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, siteData } = require("@anydigital/eleventy-bricks");
+const { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, siteData } = require("@anydigital/eleventy-bricks");
 
 module.exports = async function(eleventyConfig) {
   await bricks(eleventyConfig);
@@ -74,6 +75,7 @@ module.exports = async function(eleventyConfig) {
   await mdAutoNl2br(eleventyConfig);
   await setAttrFilter(eleventyConfig);
   await byAttrFilter(eleventyConfig);
+  await mergeFilter(eleventyConfig);
   await siteData(eleventyConfig);
   
   // Your other configuration...
@@ -93,6 +95,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 | `mdAutoNl2br` | boolean | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
 | `setAttrFilter` | boolean | `false` | Enable the setAttr filter for overriding object attributes |
 | `byAttrFilter` | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
+| `mergeFilter` | boolean | `false` | Enable the merge filter for merging arrays or objects |
 | `siteData` | boolean | `false` | Enable site.year and site.isProd global data |
 
 **Example:**
@@ -433,6 +436,92 @@ Template usage:
 
 {# Chain filters #}
 {% set recentBlogPosts = collections.all | byAttr('category', 'blog') | reverse | limit(5) %}
+```
+
+### merge
+
+A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
+
+**Why use this?**
+
+When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
+
+**Usage:**
+
+1. Enable `merge` in your Eleventy config:
+
+```javascript
+import { mergeFilter } from "@anydigital/eleventy-bricks";
+
+export default function(eleventyConfig) {
+  mergeFilter(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { mergeFilter: true });
+}
+```
+
+2. Use the filter in your templates:
+
+**Merge arrays:**
+```njk
+{# Combine two arrays #}
+{% set allItems = featured | merge(regular) %}
+
+{# Merge multiple arrays #}
+{% set combined = array1 | merge(array2, array3, array4) %}
+
+{% for item in allItems %}
+  <p>{{ item }}</p>
+{% endfor %}
+```
+
+**Merge objects:**
+```njk
+{# Merge configuration objects #}
+{% set defaultConfig = { theme: 'light', lang: 'en' } %}
+{% set userConfig = { theme: 'dark' } %}
+{% set finalConfig = defaultConfig | merge(userConfig) %}
+
+{# Result: { theme: 'dark', lang: 'en' } #}
+```
+
+**Parameters:**
+
+- `first`: The first array or object (the base to merge into)
+- `...rest`: One or more arrays or objects to merge in
+
+**Features:**
+
+- Works with both arrays and objects
+- Supports merging multiple items at once
+- Non-mutating: Creates new arrays/objects, leaving originals unchanged
+- For objects: Later values override earlier ones (shallow merge)
+- For arrays: Concatenates all arrays together
+- Handles null/undefined gracefully
+
+**Examples:**
+
+```njk
+{# Combine featured and regular posts #}
+{% set featuredPosts = collections.all | byAttr('featured', true) %}
+{% set regularPosts = collections.all | byAttr('featured', false) %}
+{% set allPosts = featuredPosts | merge(regularPosts) %}
+
+{# Merge page metadata with defaults #}
+{% set defaultMeta = { 
+  author: 'Site Admin',
+  category: 'general',
+  comments: false 
+} %}
+{% set pageMeta = defaultMeta | merge(page.data) %}
+
+{# Combine arrays of tags #}
+{% set commonTags = ['javascript', 'html', 'css'] %}
+{% set specialTags = page.data.tags or [] %}
+{% set allTags = commonTags | merge(specialTags) %}
+
+{# Merge multiple configuration sources #}
+{% set config = defaults | merge(siteConfig, pageConfig, userPrefs) %}
 ```
 
 ### siteData
