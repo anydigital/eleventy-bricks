@@ -50,7 +50,7 @@ Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
 ```javascript
-import { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, siteData } from "@anydigital/eleventy-bricks";
+import { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, removeTagFilter, siteData } from "@anydigital/eleventy-bricks";
 
 export default function(eleventyConfig) {
   bricks(eleventyConfig);
@@ -59,6 +59,7 @@ export default function(eleventyConfig) {
   setAttrFilter(eleventyConfig);
   byAttrFilter(eleventyConfig);
   mergeFilter(eleventyConfig);
+  removeTagFilter(eleventyConfig);
   siteData(eleventyConfig);
   
   // Your other configuration...
@@ -67,7 +68,7 @@ export default function(eleventyConfig) {
 
 **CommonJS:**
 ```javascript
-const { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, siteData } = require("@anydigital/eleventy-bricks");
+const { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, removeTagFilter, siteData } = require("@anydigital/eleventy-bricks");
 
 module.exports = async function(eleventyConfig) {
   await bricks(eleventyConfig);
@@ -76,6 +77,7 @@ module.exports = async function(eleventyConfig) {
   await setAttrFilter(eleventyConfig);
   await byAttrFilter(eleventyConfig);
   await mergeFilter(eleventyConfig);
+  await removeTagFilter(eleventyConfig);
   await siteData(eleventyConfig);
   
   // Your other configuration...
@@ -96,6 +98,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 | `setAttrFilter` | boolean | `false` | Enable the setAttr filter for overriding object attributes |
 | `byAttrFilter` | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
 | `mergeFilter` | boolean | `false` | Enable the merge filter for merging arrays or objects |
+| `removeTagFilter` | boolean | `false` | Enable the removeTag filter for removing HTML elements from content |
 | `siteData` | boolean | `false` | Enable site.year and site.isProd global data |
 
 **Example:**
@@ -523,6 +526,79 @@ export default function(eleventyConfig) {
 {# Merge multiple configuration sources #}
 {% set config = defaults | merge(siteConfig, pageConfig, userPrefs) %}
 ```
+
+### removeTag
+
+A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
+
+**Why use this?**
+
+When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `removeTag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
+
+**Usage:**
+
+1. Enable `removeTag` in your Eleventy config:
+
+```javascript
+import { removeTagFilter } from "@anydigital/eleventy-bricks";
+
+export default function(eleventyConfig) {
+  removeTagFilter(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { removeTagFilter: true });
+}
+```
+
+2. Use the filter in your templates:
+
+```njk
+{# Remove all script tags from content #}
+{% set cleanContent = htmlContent | removeTag('script') %}
+
+{{ cleanContent | safe }}
+```
+
+**Parameters:**
+
+- `html`: The HTML content to process (string)
+- `tagName`: The tag name to remove (string)
+
+**Features:**
+
+- Removes both opening and closing tags along with their content
+- Handles self-closing tags (e.g., `<br />`, `<img />`)
+- Handles tags with attributes
+- Case-insensitive matching
+- Non-destructive: Returns new string, doesn't modify original
+
+**Examples:**
+
+```njk
+{# Remove scripts from user-generated content #}
+{% set userContent = '<p>Hello</p><script>alert("XSS")</script><p>World</p>' %}
+{% set safeContent = userContent | removeTag('script') %}
+{# Result: '<p>Hello</p><p>World</p>' #}
+
+{# Strip specific formatting tags #}
+{% set formatted = '<div><strong>Bold</strong> and <em>italic</em> text</div>' %}
+{% set noStrong = formatted | removeTag('strong') %}
+{# Result: '<div>Bold and <em>italic</em> text</div>' #}
+
+{# Chain multiple removeTag filters for multiple tags #}
+{% set richContent = page.content %}
+{% set stripped = richContent 
+  | removeTag('script') 
+  | removeTag('style') 
+  | removeTag('iframe') 
+%}
+
+{# Remove images for text-only preview #}
+{% set textOnly = htmlContent | removeTag('img') %}
+```
+
+**Security Note:**
+
+While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
 
 ### siteData
 

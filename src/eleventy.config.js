@@ -30,6 +30,7 @@ export default function(eleventyConfig) {
     setAttrFilter: true,
     byAttrFilter: true,
     mergeFilter: true,
+    removeTagFilter: true,
     siteData: true
   });
 

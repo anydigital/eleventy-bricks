@@ -3,6 +3,7 @@ import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./
 import { setAttrFilter } from "./setAttrFilter.js";
 import { byAttrFilter } from "./byAttrFilter.js";
 import { mergeFilter } from "./mergeFilter.js";
+import { removeTagFilter, removeTag } from "./removeTagFilter.js";
 import { siteData } from "./siteData.js";
 
 /**
@@ -19,15 +20,16 @@ import { siteData } from "./siteData.js";
  * @param {boolean} options.setAttrFilter - Enable setAttr filter (default: false)
  * @param {boolean} options.byAttrFilter - Enable byAttr filter (default: false)
  * @param {boolean} options.mergeFilter - Enable merge filter (default: false)
+ * @param {boolean} options.removeTagFilter - Enable removeTag filter (default: false)
  * @param {boolean} options.siteData - Enable site.year and site.isProd global data (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
-  const plugins = { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, siteData };
+  const plugins = { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, removeTagFilter, siteData };
   Object.entries(options).forEach(([key, enabled]) => enabled && plugins[key]?.(eleventyConfig));
 }
 
 // Export individual helpers for granular usage
-export { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, siteData };
+export { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, removeTagFilter, siteData };
 
-// Export transform functions for advanced usage
-export { transformAutoRaw, transformNl2br };
+// Export transform/utility functions for advanced usage
+export { transformAutoRaw, transformNl2br, removeTag };

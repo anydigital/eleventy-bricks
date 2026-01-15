@@ -10,17 +10,17 @@ module.exports = async function eleventyBricksPlugin(eleventyConfig, options) {
 };
 
 // Export individual helpers for granular usage
-['bricks', 'mdAutoRawTags', 'mdAutoNl2br', 'setAttrFilter', 'byAttrFilter', 'siteData'].forEach(name => {
+['bricks', 'mdAutoRawTags', 'mdAutoNl2br', 'setAttrFilter', 'byAttrFilter', 'mergeFilter', 'removeTagFilter', 'siteData'].forEach(name => {
   module.exports[name] = async (eleventyConfig) => {
     const module = await import('./index.js');
     return module[name](eleventyConfig);
   };
 });
 
-// Export transform functions for advanced usage
-['transformAutoRaw', 'transformNl2br'].forEach(name => {
-  module.exports[name] = async (content) => {
+// Export transform/utility functions for advanced usage
+['transformAutoRaw', 'transformNl2br', 'removeTag'].forEach(name => {
+  module.exports[name] = async (...args) => {
     const module = await import('./index.js');
-    return module[name](content);
+    return module[name](...args);
   };
 });
