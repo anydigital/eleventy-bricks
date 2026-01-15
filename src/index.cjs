@@ -18,7 +18,7 @@ module.exports = async function eleventyBricksPlugin(eleventyConfig, options) {
 });
 
 // Export transform/utility functions for advanced usage
-['transformAutoRaw', 'transformNl2br', 'removeTag'].forEach(name => {
+['transformAutoRaw', 'transformNl2br', 'merge', 'removeTag'].forEach(name => {
   module.exports[name] = async (...args) => {
     const module = await import('./index.js');
     return module[name](...args);

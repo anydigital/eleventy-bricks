@@ -2,7 +2,7 @@ import { bricks } from "./bricks.js";
 import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./markdown.js";
 import { setAttrFilter } from "./setAttrFilter.js";
 import { byAttrFilter } from "./byAttrFilter.js";
-import { mergeFilter } from "./mergeFilter.js";
+import { mergeFilter, merge } from "./mergeFilter.js";
 import { removeTagFilter, removeTag } from "./removeTagFilter.js";
 import { siteData } from "./siteData.js";
 
@@ -32,4 +32,4 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 export { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, removeTagFilter, siteData };
 
 // Export transform/utility functions for advanced usage
-export { transformAutoRaw, transformNl2br, removeTag };
+export { transformAutoRaw, transformNl2br, merge, removeTag };
