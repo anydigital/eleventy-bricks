@@ -2,17 +2,19 @@
   "name": "@anydigital/eleventy-bricks-do",
   "private": true,
   "scripts": {
-    "build": "npm run 11ty           && npm run tw -- --minify",
-    "start": "npm run 11ty -- --serve & npm run tw -- --watch",
+    "build": "npm run tw -- --minify && npm run 11ty --",
+
+    "start": "npm run tw -- --watch   & npm run 11ty -- --serve",
 
     "prerestart": "npm run 11ty:clean",
-    "stage": "     npm run 11ty:clean; npm run build && serve ../_site",
+
+    "stage": "npm run 11ty:clean; serve ../_site & npm run build --",
     
     "11ty": "cd ../ && NODE_OPTIONS='--preserve-symlinks' eleventy",
     "11ty:clean": "rm -r ../_site",
-    "11ty:debug": "DEBUG=* npm run 11ty",
+    "11ty:debug": "DEBUG=* npm run 11ty --",
 
     "tw": "tailwindcss -i ../src/_template/styles.css -o ../_site/styles.css",
-    "tw:debug": "DEBUG=* npm run tw"
+    "tw:debug": "DEBUG=* npm run tw --"
   }
 }
