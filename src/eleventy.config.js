@@ -31,6 +31,7 @@ export default function(eleventyConfig) {
     byAttrFilter: true,
     mergeFilter: true,
     removeTagFilter: true,
+    ifFilter: true,
     siteData: true
   });
 
