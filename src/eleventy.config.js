@@ -59,8 +59,7 @@ export default function(eleventyConfig) {
 
   /* Config */
   return {
-    templateFormats: ["md", "njk"],
-    htmlTemplateEngine: "njk",
+    templateFormats: ["md", "liquid"],
     dir: {
       input: inputDir,
       includes: "_template"
