@@ -2,13 +2,13 @@
   "name": "@anydigital/eleventy-bricks-do",
   "private": true,
   "scripts": {
-    "build": "npm run tw -- --minify && npm run 11ty --",
+    "build": "npm run 11ty -- $ELTY_OPTIONS        && npm run tw -- --minify",
 
-    "start": "npm run tw -- --watch   & npm run 11ty -- --serve",
+    "start": "npm run 11ty -- $ELTY_OPTIONS --serve & npm run tw -- --watch",
 
     "prerestart": "npm run 11ty:clean",
 
-    "stage": "npm run 11ty:clean; serve ../_site & npm run build --",
+    "stage": "npm run 11ty:clean; npm run build && serve ../_site",
     
     "11ty": "cd ../ && NODE_OPTIONS='--preserve-symlinks' eleventy",
     "11ty:clean": "rm -r ../_site",
