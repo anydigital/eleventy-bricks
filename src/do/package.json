@@ -3,18 +3,13 @@
   "private": true,
   "scripts": {
     "build": "npm run 11ty -- $ELTY_OPTIONS        && npm run tw -- --minify",
-
     "start": "npm run 11ty -- $ELTY_OPTIONS --serve & npm run tw -- --watch",
-
     "prerestart": "npm run 11ty:clean",
-
     "stage": "npm run 11ty:clean; npm run build && serve ../_site",
-    
     "11ty": "cd ../ && NODE_OPTIONS='--preserve-symlinks' eleventy",
     "11ty:clean": "rm -r ../_site",
     "11ty:debug": "DEBUG=* npm run 11ty --",
-
-    "tw": "tailwindcss -i ../src/_template/styles.css -o ../_site/styles.css",
+    "tw": "tailwindcss -i ../src/_theme/styles.css -o ../_site/styles.css",
     "tw:debug": "DEBUG=* npm run tw --"
   }
 }

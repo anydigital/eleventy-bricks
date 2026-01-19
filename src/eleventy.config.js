@@ -15,7 +15,7 @@ import yaml from "js-yaml";
  * @param {Object} eleventyConfig - The Eleventy configuration object
  * @returns {Object} The Eleventy configuration object
  */
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   /* CLI support */
   const argv = minimist(process.argv.slice(2));
   const inputDir = argv.input || "src";
@@ -32,26 +32,32 @@ export default function(eleventyConfig) {
     mergeFilter: true,
     removeTagFilter: true,
     ifFilter: true,
-    siteData: true
+    siteData: true,
   });
 
   /* Libraries */
-  eleventyConfig.setLibrary("md", markdownIt({
-    html: true,
-    breaks: true,
-    linkify: true
-  }).use(markdownItAnchor, {
-    permalink: markdownItAnchor.permalink.headerLink()
-  }));
+  eleventyConfig.setLibrary(
+    "md",
+    markdownIt({
+      html: true,
+      breaks: true,
+      linkify: true,
+    }).use(markdownItAnchor, {
+      permalink: markdownItAnchor.permalink.headerLink(),
+    })
+  );
 
   /* Data */
   eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
 
   /* Build */
-  eleventyConfig.addPassthroughCopy({ 
-    "src/_public": ".",
-    ...(inputDir !== "src" && { [`${inputDir}/_public`]: "." })
-  }, { expand: true }); // This follows/resolves symbolic links
+  eleventyConfig.addPassthroughCopy(
+    {
+      "src/_public": ".",
+      ...(inputDir !== "src" && { [`${inputDir}/_public`]: "." }),
+    },
+    { expand: true }
+  ); // This follows/resolves symbolic links
 
   /* Dev tools */
   // Follow symlinks in Chokidar used by 11ty to watch files
@@ -59,10 +65,9 @@ export default function(eleventyConfig) {
 
   /* Config */
   return {
-    templateFormats: ["md", "liquid"],
     dir: {
       input: inputDir,
-      includes: "_template"
-    }
+      includes: "_theme",
+    },
   };
-};
+}
