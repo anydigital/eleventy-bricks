@@ -55,8 +55,8 @@ export default function (eleventyConfig) {
       "src/_public": ".",
       ...(inputDir !== "src" && { [`${inputDir}/_public`]: "." }),
     },
-    { expand: true }
-  ); // This follows/resolves symbolic links
+    { expand: true } // This follows/resolves symbolic links
+  );
 
   /* Dev tools */
   // Follow symlinks in Chokidar used by 11ty to watch files

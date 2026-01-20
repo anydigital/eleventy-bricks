@@ -18,6 +18,12 @@ test('iff returns falseValue when condition is falsy', () => {
   assert.strictEqual(iff('yes', undefined, 'no'), 'no');
 });
 
+test('iff returns falseValue when condition is undefined', () => {
+  assert.strictEqual(iff('yes', undefined, 'no'), 'no');
+  assert.strictEqual(iff('yes', undefined), '');
+  assert.strictEqual(iff(100, undefined, 200), 200);
+});
+
 test('iff returns empty string as default falseValue', () => {
   assert.strictEqual(iff('yes', false), '');
   assert.strictEqual(iff('yes', 0), '');
