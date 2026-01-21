@@ -17,27 +17,29 @@ You can use this library in two ways:
 Import and use the entire plugin. You can configure which helpers to enable using the options parameter:
 
 **ES Modules:**
+
 ```javascript
 import eleventyBricks from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
-    mdAutoRawTags: true  // Enable mdAutoRawTags preprocessor (default: false)
+    mdAutoRawTags: true, // Enable mdAutoRawTags preprocessor (default: false)
   });
-  
+
   // Your other configuration...
 }
 ```
 
 **CommonJS:**
+
 ```javascript
 const eleventyBricks = require("@anydigital/eleventy-bricks");
 
-module.exports = function(eleventyConfig) {
+module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
-    mdAutoRawTags: true  // Enable mdAutoRawTags preprocessor (default: false)
+    mdAutoRawTags: true, // Enable mdAutoRawTags preprocessor (default: false)
   });
-  
+
   // Your other configuration...
 };
 ```
@@ -49,10 +51,20 @@ module.exports = function(eleventyConfig) {
 Import only the specific helpers you need without using the plugin:
 
 **ES Modules:**
-```javascript
-import { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, removeTagFilter, siteData } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+```javascript
+import {
+  bricks,
+  mdAutoRawTags,
+  mdAutoNl2br,
+  setAttrFilter,
+  byAttrFilter,
+  mergeFilter,
+  removeTagFilter,
+  siteData,
+} from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
   bricks(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
   mdAutoNl2br(eleventyConfig);
@@ -61,16 +73,26 @@ export default function(eleventyConfig) {
   mergeFilter(eleventyConfig);
   removeTagFilter(eleventyConfig);
   siteData(eleventyConfig);
-  
+
   // Your other configuration...
 }
 ```
 
 **CommonJS:**
-```javascript
-const { bricks, mdAutoRawTags, mdAutoNl2br, setAttrFilter, byAttrFilter, mergeFilter, removeTagFilter, siteData } = require("@anydigital/eleventy-bricks");
 
-module.exports = async function(eleventyConfig) {
+```javascript
+const {
+  bricks,
+  mdAutoRawTags,
+  mdAutoNl2br,
+  setAttrFilter,
+  byAttrFilter,
+  mergeFilter,
+  removeTagFilter,
+  siteData,
+} = require("@anydigital/eleventy-bricks");
+
+module.exports = async function (eleventyConfig) {
   await bricks(eleventyConfig);
   await mdAutoRawTags(eleventyConfig);
   await mdAutoNl2br(eleventyConfig);
@@ -79,7 +101,7 @@ module.exports = async function(eleventyConfig) {
   await mergeFilter(eleventyConfig);
   await removeTagFilter(eleventyConfig);
   await siteData(eleventyConfig);
-  
+
   // Your other configuration...
 };
 ```
@@ -90,24 +112,25 @@ module.exports = async function(eleventyConfig) {
 
 When using the plugin (Option 1), you can configure which helpers to enable:
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `bricks` | boolean | `false` | Enable the bricks system for dependency management |
-| `mdAutoRawTags` | boolean | `false` | Enable the mdAutoRawTags preprocessor for Markdown files |
-| `mdAutoNl2br` | boolean | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
-| `setAttrFilter` | boolean | `false` | Enable the setAttr filter for overriding object attributes |
-| `byAttrFilter` | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
-| `mergeFilter` | boolean | `false` | Enable the merge filter for merging arrays or objects |
-| `removeTagFilter` | boolean | `false` | Enable the removeTag filter for removing HTML elements from content |
-| `siteData` | boolean | `false` | Enable site.year and site.isProd global data |
+| Option            | Type    | Default | Description                                                            |
+| ----------------- | ------- | ------- | ---------------------------------------------------------------------- |
+| `bricks`          | boolean | `false` | Enable the bricks system for dependency management                     |
+| `mdAutoRawTags`   | boolean | `false` | Enable the mdAutoRawTags preprocessor for Markdown files               |
+| `mdAutoNl2br`     | boolean | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags       |
+| `setAttrFilter`   | boolean | `false` | Enable the setAttr filter for overriding object attributes             |
+| `byAttrFilter`    | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
+| `mergeFilter`     | boolean | `false` | Enable the merge filter for merging arrays or objects                  |
+| `removeTagFilter` | boolean | `false` | Enable the removeTag filter for removing HTML elements from content    |
+| `siteData`        | boolean | `false` | Enable site.year and site.prod global data                             |
 
 **Example:**
+
 ```javascript
 eleventyConfig.addPlugin(eleventyBricks, {
   bricks: true,
   mdAutoRawTags: true,
   byAttrFilter: true,
-  siteData: true
+  siteData: true,
 });
 ```
 
@@ -120,6 +143,7 @@ A dependency management system for Eleventy that automatically collects and inje
 **Why use this?**
 
 When building reusable components (bricks) in Eleventy, you often need to include CSS and JavaScript dependencies. Instead of manually adding these to every page, `bricks` automatically:
+
 - Collects dependencies from all bricks used on a page
 - Categorizes them (external CSS, external JS, inline styles, inline scripts)
 - Injects them in the correct location in your HTML output
@@ -137,7 +161,7 @@ When building reusable components (bricks) in Eleventy, you often need to includ
 ```javascript
 import { bricks } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   bricks(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { bricks: true });
@@ -163,8 +187,8 @@ export default function(eleventyConfig) {
 // myBrick.js
 export default {
   dependencies: [
-    'https://cdn.example.com/library.css',
-    'https://cdn.example.com/library.js'
+    "https://cdn.example.com/library.css",
+    "https://cdn.example.com/library.js",
   ],
   style: `
     .my-component { color: blue; }
@@ -172,9 +196,9 @@ export default {
   script: `
     console.log('Component initialized');
   `,
-  render: function() {
+  render: function () {
     return '<div class="my-component">Hello World</div>';
-  }
+  },
 };
 ```
 
@@ -200,12 +224,18 @@ The system will automatically inject all dependencies in the order they were reg
 
 ```html
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>My Site</title>
-  <link rel="stylesheet" href="https://cdn.example.com/library.css">
-  <style>.my-component { color: blue; }</style>
+  <link rel="stylesheet" href="https://cdn.example.com/library.css" />
+  <style>
+    .my-component {
+      color: blue;
+    }
+  </style>
   <script src="https://cdn.example.com/library.js"></script>
-  <script>console.log('Component initialized');</script>
+  <script>
+    console.log("Component initialized");
+  </script>
   <!-- Other head content -->
 </head>
 ```
@@ -233,7 +263,7 @@ When writing documentation or tutorials about templating in Markdown files, you 
 ```javascript
 import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   mdAutoRawTags(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { mdAutoRawTags: true });
@@ -243,6 +273,7 @@ export default function(eleventyConfig) {
 **Example:**
 
 Before `mdAutoRawTags`, writing this in Markdown:
+
 ```markdown
 Use {{ variable }} to output variables.
 ```
@@ -264,7 +295,7 @@ Markdown tables don't support multi-line content in cells. By using `\n` in your
 ```javascript
 import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   mdAutoNl2br(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { mdAutoNl2br: true });
@@ -274,16 +305,18 @@ export default function(eleventyConfig) {
 **Example:**
 
 In your Markdown file:
+
 ```markdown
-| Column 1 | Column 2 |
-|----------|----------|
+| Column 1               | Column 2                          |
+| ---------------------- | --------------------------------- |
 | Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
 ```
 
 Will render as:
+
 ```html
-<td>Line 1<br>Line 2<br>Line 3</td>
-<td>Another cell<br>With multiple lines</td>
+<td>Line 1<br />Line 2<br />Line 3</td>
+<td>Another cell<br />With multiple lines</td>
 ```
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
@@ -303,7 +336,7 @@ When working with Eleventy data, you sometimes need to modify an object's proper
 ```javascript
 import { setAttrFilter } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   setAttrFilter(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { setAttrFilter: true });
@@ -344,9 +377,9 @@ A new object with the specified attribute set to the given value. The original o
 {% set updatedPost = post | setAttr('featured', true) %}
 
 {# Chain multiple setAttr filters #}
-{% set modifiedPost = post 
-  | setAttr('category', 'blog') 
-  | setAttr('priority', 1) 
+{% set modifiedPost = post
+  | setAttr('category', 'blog')
+  | setAttr('priority', 1)
 %}
 
 {# Use in loops #}
@@ -371,7 +404,7 @@ When working with Eleventy collections, you often need to filter items based on 
 ```javascript
 import { byAttrFilter } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   byAttrFilter(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { byAttrFilter: true });
@@ -381,6 +414,7 @@ export default function(eleventyConfig) {
 2. Use the filter in your templates:
 
 **Filter by exact attribute match:**
+
 ```njk
 {# Get all posts with category 'blog' #}
 {% set blogPosts = collections.all | byAttr('category', 'blog') %}
@@ -391,6 +425,7 @@ export default function(eleventyConfig) {
 ```
 
 **Filter by array attribute (tags):**
+
 ```njk
 {# Get all posts that include 'javascript' tag #}
 {% set jsPosts = collections.all | byAttr('tags', 'javascript') %}
@@ -417,6 +452,7 @@ export default function(eleventyConfig) {
 **Examples:**
 
 Front matter:
+
 ```yaml
 ---
 title: My Post
@@ -427,6 +463,7 @@ priority: 1
 ```
 
 Template usage:
+
 ```njk
 {# Filter by category #}
 {% set blogPosts = collections.all | byAttr('category', 'blog') %}
@@ -456,7 +493,7 @@ When working with data in templates, you often need to combine multiple arrays o
 ```javascript
 import { mergeFilter } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   mergeFilter(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { mergeFilter: true });
@@ -466,6 +503,7 @@ export default function(eleventyConfig) {
 2. Use the filter in your templates:
 
 **Merge arrays:**
+
 ```njk
 {# Combine two arrays #}
 {% set allItems = featured | merge(regular) %}
@@ -479,6 +517,7 @@ export default function(eleventyConfig) {
 ```
 
 **Merge objects:**
+
 ```njk
 {# Merge configuration objects #}
 {% set defaultConfig = { theme: 'light', lang: 'en' } %}
@@ -511,10 +550,10 @@ export default function(eleventyConfig) {
 {% set allPosts = featuredPosts | merge(regularPosts) %}
 
 {# Merge page metadata with defaults #}
-{% set defaultMeta = { 
+{% set defaultMeta = {
   author: 'Site Admin',
   category: 'general',
-  comments: false 
+  comments: false
 } %}
 {% set pageMeta = defaultMeta | merge(page.data) %}
 
@@ -542,7 +581,7 @@ When working with content from external sources or user-generated content, you m
 ```javascript
 import { removeTagFilter } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   removeTagFilter(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { removeTagFilter: true });
@@ -586,10 +625,10 @@ export default function(eleventyConfig) {
 
 {# Chain multiple removeTag filters for multiple tags #}
 {% set richContent = page.content %}
-{% set stripped = richContent 
-  | removeTag('script') 
-  | removeTag('style') 
-  | removeTag('iframe') 
+{% set stripped = richContent
+  | removeTag('script')
+  | removeTag('style')
+  | removeTag('iframe')
 %}
 
 {# Remove images for text-only preview #}
@@ -615,7 +654,7 @@ Many websites need access to the current year (for copyright notices) and enviro
 ```javascript
 import { siteData } from "@anydigital/eleventy-bricks";
 
-export default function(eleventyConfig) {
+export default function (eleventyConfig) {
   siteData(eleventyConfig);
   // Or use as plugin:
   // eleventyConfig.addPlugin(eleventyBricks, { siteData: true });
@@ -625,6 +664,7 @@ export default function(eleventyConfig) {
 2. Use the global data in your templates:
 
 **Current Year:**
+
 ```njk
 <footer>
   <p>&copy; {{ site.year }} Your Company Name. All rights reserved.</p>
@@ -632,8 +672,9 @@ export default function(eleventyConfig) {
 ```
 
 **Environment Check:**
+
 ```njk
-{% if site.isProd %}
+{% if site.prod %}
   <!-- Production-only features -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
 {% else %}
@@ -645,7 +686,7 @@ export default function(eleventyConfig) {
 **Available Data:**
 
 - `site.year`: The current year as a number (e.g., `2026`)
-- `site.isProd`: Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`)
+- `site.prod`: Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`)
 
 **Features:**
 
@@ -661,12 +702,12 @@ export default function(eleventyConfig) {
 <p>Copyright &copy; {{ site.year }} My Site</p>
 
 {# Conditional loading of analytics #}
-{% if site.isProd %}
+{% if site.prod %}
   <script src="/analytics.js"></script>
 {% endif %}
 
 {# Different behavior in dev vs prod #}
-{% if site.isProd %}
+{% if site.prod %}
   <link rel="stylesheet" href="/css/styles.min.css">
 {% else %}
   <link rel="stylesheet" href="/css/styles.css">
@@ -690,6 +731,7 @@ The package includes pre-configured starter files in `node_modules/@anydigital/e
 #### eleventy.config.js
 
 A fully-configured Eleventy config file with:
+
 - All eleventy-bricks plugins enabled
 - Eleventy Navigation plugin
 - Markdown-it with anchors
@@ -698,11 +740,13 @@ A fully-configured Eleventy config file with:
 - Symlink support for development
 
 **Required dependencies:**
+
 ```bash
 npm install @11ty/eleventy-navigation markdown-it markdown-it-anchor js-yaml minimist
 ```
 
 **Symlink to your project:**
+
 ```bash
 ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js eleventy.config.js
 ```
@@ -712,6 +756,7 @@ ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js eleventy.c
 A ready-to-use Sveltia CMS admin interface for content management.
 
 **Symlink to your project:**
+
 ```bash
 mkdir -p admin
 ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html

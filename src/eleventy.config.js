@@ -24,7 +24,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(RenderPlugin);
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addPlugin(eleventyBricksPlugin, {
-    bricks: true,
+    bricks: false,
     mdAutoNl2br: true,
     mdAutoRawTags: true,
     setAttrFilter: true,
@@ -32,6 +32,7 @@ export default function (eleventyConfig) {
     mergeFilter: true,
     removeTagFilter: true,
     ifFilter: true,
+    attr_concat_filter: true,
     siteData: true,
   });
 

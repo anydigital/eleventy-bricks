@@ -10,6 +10,15 @@
  * @returns {*} Either trueValue or falseValue based on condition
  */
 export function iff(trueValue, condition, falseValue = "") {
+  // Treat empty objects {} as falsy
+  if (
+    condition &&
+    typeof condition === "object" &&
+    !Array.isArray(condition) &&
+    Object.keys(condition).length === 0
+  ) {
+    return falseValue;
+  }
   return !!condition ? trueValue : falseValue;
 }
 
