@@ -27,6 +27,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricksPlugin, {
     mdAutoNl2br: true,
     mdAutoRawTags: true,
+    mdAutoLinkFavicons: true,
     siteData: true,
     filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
   });

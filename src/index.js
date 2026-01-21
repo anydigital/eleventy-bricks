@@ -1,8 +1,13 @@
 import {
   mdAutoRawTags,
   mdAutoNl2br,
+  mdAutoLinkFavicons,
   transformAutoRaw,
   transformNl2br,
+  isPlainUrlText,
+  cleanLinkText,
+  buildFaviconLink,
+  transformLink,
 } from "./markdown.js";
 import { setAttrFilter } from "./filters/attr.js";
 import { whereInFilter } from "./filters/where_in.js";
@@ -22,6 +27,7 @@ import { siteData } from "./siteData.js";
  * @param {Object} options - Plugin options
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
+ * @param {boolean} options.mdAutoLinkFavicons - Enable mdAutoLinkFavicons to add favicons to plain text links (default: false)
  * @param {Array<string>} options.filters - Array of filter names to enable: 'attr', 'where_in', 'merge', 'remove_tag', 'if', 'attr_concat' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
  */
@@ -29,6 +35,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
   const plugins = {
     mdAutoRawTags,
     mdAutoNl2br,
+    mdAutoLinkFavicons,
     siteData,
   };
 
@@ -62,6 +69,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 export {
   mdAutoRawTags,
   mdAutoNl2br,
+  mdAutoLinkFavicons,
   setAttrFilter,
   whereInFilter,
   mergeFilter,
@@ -72,4 +80,15 @@ export {
 };
 
 // Export transform/utility functions for advanced usage
-export { transformAutoRaw, transformNl2br, merge, removeTag, iff, attrConcat };
+export {
+  transformAutoRaw,
+  transformNl2br,
+  isPlainUrlText,
+  cleanLinkText,
+  buildFaviconLink,
+  transformLink,
+  merge,
+  removeTag,
+  iff,
+  attrConcat,
+};

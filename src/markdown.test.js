@@ -1,33 +1,36 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { transformAutoRaw, transformNl2br } from "./markdown.js";
+import {
+  transformAutoRaw,
+  transformNl2br,
+  isPlainUrlText,
+  cleanLinkText,
+  buildFaviconLink,
+  transformLink,
+} from "./markdown.js";
 
 describe("transformAutoRaw", () => {
   it("should wrap opening double curly braces with raw tags", () => {
     const input = "Use {{ variable }} to output.";
-    const expected =
-      "Use {% raw %}{{{% endraw %} variable {% raw %}}}{% endraw %} to output.";
+    const expected = "Use {% raw %}{{{% endraw %} variable {% raw %}}}{% endraw %} to output.";
     assert.equal(transformAutoRaw(input), expected);
   });
 
   it("should wrap closing double curly braces with raw tags", () => {
     const input = "{{ name }}";
-    const expected =
-      "{% raw %}{{{% endraw %} name {% raw %}}}{% endraw %}";
+    const expected = "{% raw %}{{{% endraw %} name {% raw %}}}{% endraw %}";
     assert.equal(transformAutoRaw(input), expected);
   });
 
   it("should wrap opening template tags with raw tags", () => {
     const input = "{% if condition %}";
-    const expected =
-      "{% raw %}{%{% endraw %} if condition {% raw %}%}{% endraw %}";
+    const expected = "{% raw %}{%{% endraw %} if condition {% raw %}%}{% endraw %}";
     assert.equal(transformAutoRaw(input), expected);
   });
 
   it("should wrap closing template tags with raw tags", () => {
     const input = "{% endif %}";
-    const expected =
-      "{% raw %}{%{% endraw %} endif {% raw %}%}{% endraw %}";
+    const expected = "{% raw %}{%{% endraw %} endif {% raw %}%}{% endraw %}";
     assert.equal(transformAutoRaw(input), expected);
   });
 
@@ -65,15 +68,13 @@ Some text
 
   it("should handle content with only Nunjucks syntax", () => {
     const input = "{{}}";
-    const expected =
-      "{% raw %}{{{% endraw %}{% raw %}}}{% endraw %}";
+    const expected = "{% raw %}{{{% endraw %}{% raw %}}}{% endraw %}";
     assert.equal(transformAutoRaw(input), expected);
   });
 
   it("should handle consecutive Nunjucks patterns", () => {
     const input = "{{{{}}}}";
-    const expected =
-      "{% raw %}{{{% endraw %}{% raw %}{{{% endraw %}{% raw %}}}{% endraw %}{% raw %}}}{% endraw %}";
+    const expected = "{% raw %}{{{% endraw %}{% raw %}{{{% endraw %}{% raw %}}}{% endraw %}{% raw %}}}{% endraw %}";
     assert.equal(transformAutoRaw(input), expected);
   });
 
@@ -150,3 +151,223 @@ describe("transformNl2br", () => {
   });
 });
 
+describe("isPlainUrlText", () => {
+  it("should return true when linkText contains domain", () => {
+    assert.equal(isPlainUrlText("example.com", "example.com"), true);
+    assert.equal(isPlainUrlText("https://example.com/path", "example.com"), true);
+    assert.equal(isPlainUrlText("Visit example.com for more", "example.com"), true);
+  });
+
+  it("should return true when linkText starts with http://", () => {
+    assert.equal(isPlainUrlText("http://example.com", "example.com"), true);
+    assert.equal(isPlainUrlText("http://other.com/path", "other.com"), true);
+  });
+
+  it("should return true when linkText starts with https://", () => {
+    assert.equal(isPlainUrlText("https://example.com", "example.com"), true);
+    assert.equal(isPlainUrlText("https://other.com/path", "other.com"), true);
+  });
+
+  it("should return false for custom link text without domain", () => {
+    assert.equal(isPlainUrlText("Click here", "example.com"), false);
+    assert.equal(isPlainUrlText("Read more", "example.com"), false);
+    assert.equal(isPlainUrlText("Documentation", "example.com"), false);
+  });
+
+  it("should handle whitespace in linkText", () => {
+    assert.equal(isPlainUrlText("  example.com  ", "example.com"), true);
+    assert.equal(isPlainUrlText("  https://example.com  ", "example.com"), true);
+  });
+
+  it("should return false for empty linkText", () => {
+    assert.equal(isPlainUrlText("", "example.com"), false);
+  });
+});
+
+describe("cleanLinkText", () => {
+  it("should remove protocol, domain, and leading slash", () => {
+    assert.equal(cleanLinkText("https://example.com/docs", "example.com"), "docs");
+    assert.equal(cleanLinkText("http://example.com/docs", "example.com"), "docs");
+    assert.equal(cleanLinkText("https://example.com/docs/guide", "example.com"), "docs/guide");
+  });
+
+  it("should handle links without protocol", () => {
+    assert.equal(cleanLinkText("example.com/docs", "example.com"), "docs");
+    assert.equal(cleanLinkText("example.com/path/to/page", "example.com"), "path/to/page");
+  });
+
+  it("should remove leading slash after domain removal", () => {
+    assert.equal(cleanLinkText("https://example.com/docs", "example.com"), "docs");
+    assert.equal(cleanLinkText("example.com/docs", "example.com"), "docs");
+  });
+
+  it("should return empty string for root domain", () => {
+    assert.equal(cleanLinkText("example.com/", "example.com"), "");
+    assert.equal(cleanLinkText("example.com", "example.com"), "");
+    assert.equal(cleanLinkText("https://example.com", "example.com"), "");
+  });
+
+  it("should handle whitespace", () => {
+    assert.equal(cleanLinkText("  https://example.com/docs  ", "example.com"), "docs");
+    assert.equal(cleanLinkText("\nhttps://example.com/docs\n", "example.com"), "docs");
+  });
+
+  it("should preserve path after domain", () => {
+    assert.equal(cleanLinkText("https://example.com/api/v1/docs", "example.com"), "api/v1/docs");
+  });
+
+  it("should handle query parameters", () => {
+    const result = cleanLinkText("https://example.com/search?q=test", "example.com");
+    assert.equal(result, "search?q=test");
+  });
+
+  it("should handle hash fragments", () => {
+    const result = cleanLinkText("https://example.com/page#section", "example.com");
+    assert.equal(result, "page#section");
+  });
+});
+
+describe("buildFaviconLink", () => {
+  it("should create correct HTML with favicon", () => {
+    const result = buildFaviconLink('href="https://example.com/docs"', "example.com", "docs");
+    assert.equal(
+      result,
+      '<a href="https://example.com/docs"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i>docs</a>'
+    );
+  });
+
+  it("should handle complex attributes", () => {
+    const result = buildFaviconLink('href="https://example.com" class="link" target="_blank"', "example.com", "docs");
+    assert.equal(
+      result,
+      '<a href="https://example.com" class="link" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i>docs</a>'
+    );
+  });
+
+  it("should use sz=32 parameter for favicon size", () => {
+    const result = buildFaviconLink('href="https://example.com"', "example.com", "text");
+    assert.match(result, /sz=32/);
+  });
+
+  it("should wrap img in <i> tag", () => {
+    const result = buildFaviconLink('href="https://example.com"', "example.com", "text");
+    assert.match(result, /<i><img[^>]*><\/i>/);
+  });
+
+  it("should handle different domains", () => {
+    const result = buildFaviconLink('href="https://github.com/repo"', "github.com", "repo");
+    assert.equal(
+      result,
+      '<a href="https://github.com/repo"><i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32"></i>repo</a>'
+    );
+  });
+
+  it("should preserve link text as provided", () => {
+    const result = buildFaviconLink('href="https://example.com"', "example.com", "custom text");
+    assert.match(result, />custom text<\/a>$/);
+  });
+});
+
+describe("transformLink", () => {
+  it("should transform plain URL links with sufficient length", () => {
+    const result = transformLink(
+      '<a href="https://example.com/docs">https://example.com/docs</a>',
+      'href="https://example.com/docs"',
+      "https://example.com/docs",
+      "https://example.com/docs"
+    );
+    assert.match(result, /<i><img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=32"><\/i>docs/);
+  });
+
+  it("should not transform if cleaned text is too short (2 chars or less)", () => {
+    const match = '<a href="https://example.com/ab">https://example.com/ab</a>';
+    const result = transformLink(
+      match,
+      'href="https://example.com/ab"',
+      "https://example.com/ab",
+      "https://example.com/ab"
+    );
+    assert.equal(result, match);
+  });
+
+  it("should not transform custom link text without URL", () => {
+    const match = '<a href="https://example.com/docs">Click here</a>';
+    const result = transformLink(match, 'href="https://example.com/docs"', "https://example.com/docs", "Click here");
+    assert.equal(result, match);
+  });
+
+  it("should not transform root domain links", () => {
+    const match = '<a href="https://example.com">example.com</a>';
+    const result = transformLink(match, 'href="https://example.com"', "https://example.com", "example.com");
+    assert.equal(result, match);
+  });
+
+  it("should not transform links ending with slash only", () => {
+    const match = '<a href="https://example.com/">https://example.com/</a>';
+    const result = transformLink(match, 'href="https://example.com/"', "https://example.com/", "https://example.com/");
+    assert.equal(result, match);
+  });
+
+  it("should handle invalid URLs gracefully", () => {
+    const match = '<a href="not-a-url">not-a-url</a>';
+    const result = transformLink(match, 'href="not-a-url"', "not-a-url", "not-a-url");
+    assert.equal(result, match);
+  });
+
+  it("should work with http:// protocol", () => {
+    const result = transformLink(
+      '<a href="http://example.com/docs">http://example.com/docs</a>',
+      'href="http://example.com/docs"',
+      "http://example.com/docs",
+      "http://example.com/docs"
+    );
+    assert.match(result, /<i><img[^>]*><\/i>docs/);
+  });
+
+  it("should work with https:// protocol", () => {
+    const result = transformLink(
+      '<a href="https://example.com/docs">https://example.com/docs</a>',
+      'href="https://example.com/docs"',
+      "https://example.com/docs",
+      "https://example.com/docs"
+    );
+    assert.match(result, /<i><img[^>]*><\/i>docs/);
+  });
+
+  it("should handle longer paths correctly", () => {
+    const result = transformLink(
+      '<a href="https://example.com/path/to/document">https://example.com/path/to/document</a>',
+      'href="https://example.com/path/to/document"',
+      "https://example.com/path/to/document",
+      "https://example.com/path/to/document"
+    );
+    assert.match(result, /<i><img[^>]*><\/i>path\/to\/document/);
+  });
+
+  it("should not transform when linkText doesn't look like URL", () => {
+    const match = '<a href="https://example.com/page">Read the documentation</a>';
+    const result = transformLink(
+      match,
+      'href="https://example.com/page"',
+      "https://example.com/page",
+      "Read the documentation"
+    );
+    assert.equal(result, match);
+  });
+
+  it("should transform when linkText contains domain even without protocol", () => {
+    const result = transformLink(
+      '<a href="https://example.com/docs">example.com/docs</a>',
+      'href="https://example.com/docs"',
+      "https://example.com/docs",
+      "example.com/docs"
+    );
+    assert.match(result, /<i><img[^>]*><\/i>docs/);
+  });
+
+  it("should handle malformed URLs by returning original match", () => {
+    const match = '<a href="ht!tp://bad-url">ht!tp://bad-url</a>';
+    const result = transformLink(match, 'href="ht!tp://bad-url"', "ht!tp://bad-url", "ht!tp://bad-url");
+    assert.equal(result, match);
+  });
+});
