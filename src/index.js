@@ -4,7 +4,7 @@ import {
   transformAutoRaw,
   transformNl2br,
 } from "./markdown.js";
-import { setAttrFilter } from "./filters/set_attr.js";
+import { setAttrFilter } from "./filters/attr.js";
 import { whereInFilter } from "./filters/where_in.js";
 import { mergeFilter, merge } from "./filters/merge.js";
 import { removeTagFilter, removeTag } from "./filters/remove_tag.js";
@@ -22,7 +22,7 @@ import { siteData } from "./siteData.js";
  * @param {Object} options - Plugin options
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
- * @param {Array<string>} options.filters - Array of filter names to enable: 'set_attr', 'where_in', 'merge', 'remove_tag', 'if', 'attr_concat' (default: [])
+ * @param {Array<string>} options.filters - Array of filter names to enable: 'attr', 'where_in', 'merge', 'remove_tag', 'if', 'attr_concat' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
@@ -33,7 +33,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
   };
 
   const filters = {
-    set_attr: setAttrFilter,
+    attr: setAttrFilter,
     where_in: whereInFilter,
     merge: mergeFilter,
     remove_tag: removeTagFilter,

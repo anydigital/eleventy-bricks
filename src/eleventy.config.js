@@ -28,7 +28,7 @@ export default function (eleventyConfig) {
     mdAutoRawTags: true,
     siteData: true,
     filters: [
-      "set_attr",
+      "attr",
       "where_in",
       "merge",
       "remove_tag",
