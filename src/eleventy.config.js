@@ -7,6 +7,7 @@ import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 /* Libraries */
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
+import markdownItAttrs from "markdown-it-attrs";
 /* Data */
 import yaml from "js-yaml";
 
@@ -27,25 +28,17 @@ export default function (eleventyConfig) {
     mdAutoNl2br: true,
     mdAutoRawTags: true,
     siteData: true,
-    filters: [
-      "attr",
-      "where_in",
-      "merge",
-      "remove_tag",
-      "if",
-      "attr_concat",
-    ],
+    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
   });
 
   /* Libraries */
   eleventyConfig.setLibrary(
     "md",
-    markdownIt({
-      html: true,
-      linkify: true,
-    }).use(markdownItAnchor, {
-      permalink: markdownItAnchor.permalink.headerLink(),
-    })
+    markdownIt({ html: true, linkify: true })
+      .use(markdownItAnchor, {
+        permalink: markdownItAnchor.permalink.headerLink(),
+      })
+      .use(markdownItAttrs)
   );
 
   /* Data */
