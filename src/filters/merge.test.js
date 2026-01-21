@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
-import { merge } from './mergeFilter.js';
+import { merge } from './merge.js';
 
 test('merge - merges two arrays', () => {
   const result = merge([1, 2], [3, 4]);

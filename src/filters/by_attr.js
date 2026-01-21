@@ -1,5 +1,5 @@
 /**
- * byAttr filter - Filter collection items by attribute value
+ * by_attr filter - Filter collection items by attribute value
  * 
  * This filter takes a collection, an attribute name, and a target value,
  * and returns items where the attribute matches the target value.
@@ -8,7 +8,7 @@
  * @param {Object} eleventyConfig - The Eleventy configuration object
  */
 export function byAttrFilter(eleventyConfig) {
-  eleventyConfig.addFilter("byAttr", function(collection, attrName, targetValue) {
+  eleventyConfig.addFilter("by_attr", function(collection, attrName, targetValue) {
     if (!collection || !Array.isArray(collection)) {
       return [];
     }

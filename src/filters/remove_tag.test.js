@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { removeTag } from './removeTagFilter.js';
+import { removeTag } from './remove_tag.js';
 
 describe('removeTag', () => {
   it('should remove a single tag with content', () => {

@@ -1,14 +1,14 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { byAttrFilter } from './byAttrFilter.js';
+import { byAttrFilter } from './by_attr.js';
 
-describe('byAttr filter', () => {
+describe('by_attr filter', () => {
   let filterFn;
 
   // Mock eleventyConfig to capture the filter function
   const mockEleventyConfig = {
     addFilter(name, fn) {
-      if (name === 'byAttr') {
+      if (name === 'by_attr') {
         filterFn = fn;
       }
     }

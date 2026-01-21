@@ -26,12 +26,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricksPlugin, {
     mdAutoNl2br: true,
     mdAutoRawTags: true,
-    setAttrFilter: true,
-    byAttrFilter: true,
-    mergeFilter: true,
-    removeTagFilter: true,
-    ifFilter: true,
-    attr_concat_filter: true,
+    set_attr: true,
+    by_attr: true,
+    merge: true,
+    remove_tag: true,
+    if: true,
+    attr_concat: true,
     siteData: true,
   });
 

@@ -30,13 +30,13 @@ export function removeTag(html, tagName) {
 }
 
 /**
- * removeTag filter - Remove specified HTML element from provided HTML
+ * remove_tag filter - Remove specified HTML element from provided HTML
  * 
  * Usage in templates:
- *   {{ htmlContent | removeTag('script') }}
+ *   {{ htmlContent | remove_tag('script') }}
  * 
  * @param {Object} eleventyConfig - The Eleventy configuration object
  */
 export function removeTagFilter(eleventyConfig) {
-  eleventyConfig.addFilter("removeTag", removeTag);
+  eleventyConfig.addFilter("remove_tag", removeTag);
 }
