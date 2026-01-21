@@ -1,4 +1,3 @@
-import { bricks } from "./bricks.js";
 import {
   mdAutoRawTags,
   mdAutoNl2br,
@@ -21,7 +20,6 @@ import { siteData } from "./siteData.js";
  *
  * @param {Object} eleventyConfig - The Eleventy configuration object
  * @param {Object} options - Plugin options
- * @param {boolean} options.bricks - Enable bricks system with dependencies injection (default: false)
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
  * @param {boolean} options.setAttrFilter - Enable setAttr filter (default: false)
@@ -34,7 +32,6 @@ import { siteData } from "./siteData.js";
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
   const plugins = {
-    bricks,
     mdAutoRawTags,
     mdAutoNl2br,
     setAttrFilter,
@@ -52,7 +49,6 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 
 // Export individual helpers for granular usage
 export {
-  bricks,
   mdAutoRawTags,
   mdAutoNl2br,
   setAttrFilter,
