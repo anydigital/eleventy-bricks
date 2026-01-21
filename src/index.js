@@ -22,29 +22,40 @@ import { siteData } from "./siteData.js";
  * @param {Object} options - Plugin options
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
- * @param {boolean} options.set_attr - Enable set_attr filter (default: false)
- * @param {boolean} options.by_attr - Enable by_attr filter (default: false)
- * @param {boolean} options.merge - Enable merge filter (default: false)
- * @param {boolean} options.remove_tag - Enable remove_tag filter (default: false)
- * @param {boolean} options.if - Enable if filter (default: false)
- * @param {boolean} options.attr_concat - Enable attr_concat filter (default: false)
+ * @param {Array<string>} options.filters - Array of filter names to enable: 'set_attr', 'by_attr', 'merge', 'remove_tag', 'if', 'attr_concat' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
   const plugins = {
     mdAutoRawTags,
     mdAutoNl2br,
+    siteData,
+  };
+
+  const filters = {
     set_attr: setAttrFilter,
     by_attr: byAttrFilter,
     merge: mergeFilter,
     remove_tag: removeTagFilter,
     if: ifFilter,
     attr_concat: attrConcatFilter,
-    siteData,
   };
-  Object.entries(options).forEach(
-    ([key, enabled]) => enabled && plugins[key]?.(eleventyConfig)
-  );
+
+  // Handle individual plugin options
+  Object.entries(options).forEach(([key, enabled]) => {
+    if (key !== "filters" && enabled && plugins[key]) {
+      plugins[key](eleventyConfig);
+    }
+  });
+
+  // Handle filters array
+  if (Array.isArray(options.filters)) {
+    options.filters.forEach((filterName) => {
+      if (filters[filterName]) {
+        filters[filterName](eleventyConfig);
+      }
+    });
+  }
 }
 
 // Export individual helpers for granular usage
