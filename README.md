@@ -23,7 +23,10 @@ import eleventyBricks from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
-    mdAutoRawTags: true, // Enable mdAutoRawTags preprocessor (default: false)
+    mdAutoRawTags: true,
+    mdAutoNl2br: true,
+    siteData: true,
+    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
   });
 
   // Your other configuration...
@@ -37,7 +40,10 @@ const eleventyBricks = require("@anydigital/eleventy-bricks");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
-    mdAutoRawTags: true, // Enable mdAutoRawTags preprocessor (default: false)
+    mdAutoRawTags: true,
+    mdAutoNl2br: true,
+    siteData: true,
+    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
   });
 
   // Your other configuration...
@@ -54,24 +60,26 @@ Import only the specific helpers you need without using the plugin:
 
 ```javascript
 import {
-  bricks,
   mdAutoRawTags,
   mdAutoNl2br,
   setAttrFilter,
-  byAttrFilter,
+  whereInFilter,
   mergeFilter,
   removeTagFilter,
+  ifFilter,
+  attrConcatFilter,
   siteData,
 } from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
-  bricks(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
   mdAutoNl2br(eleventyConfig);
   setAttrFilter(eleventyConfig);
-  byAttrFilter(eleventyConfig);
+  whereInFilter(eleventyConfig);
   mergeFilter(eleventyConfig);
   removeTagFilter(eleventyConfig);
+  ifFilter(eleventyConfig);
+  attrConcatFilter(eleventyConfig);
   siteData(eleventyConfig);
 
   // Your other configuration...
@@ -82,24 +90,26 @@ export default function (eleventyConfig) {
 
 ```javascript
 const {
-  bricks,
   mdAutoRawTags,
   mdAutoNl2br,
   setAttrFilter,
-  byAttrFilter,
+  whereInFilter,
   mergeFilter,
   removeTagFilter,
+  ifFilter,
+  attrConcatFilter,
   siteData,
 } = require("@anydigital/eleventy-bricks");
 
 module.exports = async function (eleventyConfig) {
-  await bricks(eleventyConfig);
   await mdAutoRawTags(eleventyConfig);
   await mdAutoNl2br(eleventyConfig);
   await setAttrFilter(eleventyConfig);
-  await byAttrFilter(eleventyConfig);
+  await whereInFilter(eleventyConfig);
   await mergeFilter(eleventyConfig);
   await removeTagFilter(eleventyConfig);
+  await ifFilter(eleventyConfig);
+  await attrConcatFilter(eleventyConfig);
   await siteData(eleventyConfig);
 
   // Your other configuration...
@@ -112,141 +122,34 @@ module.exports = async function (eleventyConfig) {
 
 When using the plugin (Option 1), you can configure which helpers to enable:
 
-| Option            | Type    | Default | Description                                                            |
-| ----------------- | ------- | ------- | ---------------------------------------------------------------------- |
-| `bricks`          | boolean | `false` | Enable the bricks system for dependency management                     |
-| `mdAutoRawTags`   | boolean | `false` | Enable the mdAutoRawTags preprocessor for Markdown files               |
-| `mdAutoNl2br`     | boolean | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags       |
-| `setAttrFilter`   | boolean | `false` | Enable the setAttr filter for overriding object attributes             |
-| `byAttrFilter`    | boolean | `false` | Enable the byAttr filter for filtering collections by attribute values |
-| `mergeFilter`     | boolean | `false` | Enable the merge filter for merging arrays or objects                  |
-| `removeTagFilter` | boolean | `false` | Enable the removeTag filter for removing HTML elements from content    |
-| `siteData`        | boolean | `false` | Enable site.year and site.prod global data                             |
+| Option          | Type            | Default | Description                                                      |
+| --------------- | --------------- | ------- | ---------------------------------------------------------------- |
+| `mdAutoRawTags` | boolean         | `false` | Enable the mdAutoRawTags preprocessor for Markdown files         |
+| `mdAutoNl2br`   | boolean         | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
+| `siteData`      | boolean         | `false` | Enable site.year and site.prod global data                       |
+| `filters`       | array of string | `[]`    | Array of filter names to enable (see Available Filters section)  |
+
+**Available filter names for the `filters` array:**
+
+- `'attr'` - Override object attributes
+- `'where_in'` - Filter collections by attribute values
+- `'merge'` - Merge arrays or objects
+- `'remove_tag'` - Remove HTML elements from content
+- `'if'` - Inline conditional/ternary operator
+- `'attr_concat'` - Concatenate values to an attribute array
 
 **Example:**
 
 ```javascript
 eleventyConfig.addPlugin(eleventyBricks, {
-  bricks: true,
   mdAutoRawTags: true,
-  byAttrFilter: true,
+  mdAutoNl2br: true,
   siteData: true,
+  filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
 });
 ```
 
 ## Available 11ty Helpers
-
-### bricks
-
-A dependency management system for Eleventy that automatically collects and injects CSS and JavaScript dependencies (both external and inline) per page. This allows brick components to declare their dependencies, and the system will inject them in the correct location in your HTML.
-
-**Why use this?**
-
-When building reusable components (bricks) in Eleventy, you often need to include CSS and JavaScript dependencies. Instead of manually adding these to every page, `bricks` automatically:
-
-- Collects dependencies from all bricks used on a page
-- Categorizes them (external CSS, external JS, inline styles, inline scripts)
-- Injects them in the correct location in your HTML output
-
-**How it works:**
-
-1. Use the `bricksDependencies` shortcode in your base template to mark where dependencies should be injected
-2. Use the `brick` shortcode to register and render brick components that declare their dependencies
-3. The system automatically collects all dependencies and injects them when the page is built
-
-**Usage:**
-
-1. Enable `bricks` in your Eleventy config:
-
-```javascript
-import { bricks } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  bricks(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { bricks: true });
-}
-```
-
-2. Add the `bricksDependencies` shortcode in your base template (typically in the `<head>` section):
-
-```njk
-<head>
-  <meta charset="UTF-8">
-  <title>My Site</title>
-  {% bricksDependencies [
-    ... (global dependencies can be set here) ...
-  ] %}
-  <!-- Other head content -->
-</head>
-```
-
-3. Create brick components that declare their dependencies:
-
-```javascript
-// myBrick.js
-export default {
-  dependencies: [
-    "https://cdn.example.com/library.css",
-    "https://cdn.example.com/library.js",
-  ],
-  style: `
-    .my-component { color: blue; }
-  `,
-  script: `
-    console.log('Component initialized');
-  `,
-  render: function () {
-    return '<div class="my-component">Hello World</div>';
-  },
-};
-```
-
-4. Use the `brick` shortcode in your templates:
-
-```njk
-{% set myBrick = require('./myBrick.js') %}
-{% brick myBrick %}
-```
-
-**Brick Component Structure:**
-
-A brick component is a JavaScript object with the following optional properties:
-
-- `dependencies`: Array of URLs to external CSS or JavaScript files (e.g., `['https://cdn.example.com/style.css', 'https://cdn.example.com/script.js']`)
-- `style`: String containing inline CSS
-- `script`: String containing inline JavaScript
-- `render`: Function that returns the HTML markup for the component
-
-**Output:**
-
-The system will automatically inject all dependencies in the order they were registered:
-
-```html
-<head>
-  <meta charset="UTF-8" />
-  <title>My Site</title>
-  <link rel="stylesheet" href="https://cdn.example.com/library.css" />
-  <style>
-    .my-component {
-      color: blue;
-    }
-  </style>
-  <script src="https://cdn.example.com/library.js"></script>
-  <script>
-    console.log("Component initialized");
-  </script>
-  <!-- Other head content -->
-</head>
-```
-
-**Features:**
-
-- Automatic dependency collection per page
-- Categorizes dependencies (CSS vs JS, external vs inline)
-- Deduplicates dependencies (using Sets internally)
-- Works with both external URLs and inline code
-- Clears registry before each build to prevent stale data
 
 ### mdAutoRawTags
 
@@ -321,17 +224,17 @@ Will render as:
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
 
-### setAttr
+### attr
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original.
 
 **Why use this?**
 
-When working with Eleventy data, you sometimes need to modify an object's properties for a specific use case. The `setAttr` filter provides a clean way to create a modified copy of an object without affecting the original.
+When working with Eleventy data, you sometimes need to modify an object's properties for a specific use case. The `attr` filter provides a clean way to create a modified copy of an object without affecting the original.
 
 **Usage:**
 
-1. Enable `setAttr` in your Eleventy config:
+1. Enable the `attr` filter in your Eleventy config:
 
 ```javascript
 import { setAttrFilter } from "@anydigital/eleventy-bricks";
@@ -339,7 +242,7 @@ import { setAttrFilter } from "@anydigital/eleventy-bricks";
 export default function (eleventyConfig) {
   setAttrFilter(eleventyConfig);
   // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { setAttrFilter: true });
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr'] });
 }
 ```
 
@@ -347,7 +250,7 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Create a modified version of a page object #}
-{% set modifiedPage = page | setAttr('title', 'New Title') %}
+{% set modifiedPage = page | attr('title', 'New Title') %}
 
 <h1>{{ modifiedPage.title }}</h1>
 <p>Original title: {{ page.title }}</p>
@@ -374,40 +277,40 @@ A new object with the specified attribute set to the given value. The original o
 
 ```njk
 {# Override a single attribute #}
-{% set updatedPost = post | setAttr('featured', true) %}
+{% set updatedPost = post | attr('featured', true) %}
 
-{# Chain multiple setAttr filters #}
+{# Chain multiple attr filters #}
 {% set modifiedPost = post
-  | setAttr('category', 'blog')
-  | setAttr('priority', 1)
+  | attr('category', 'blog')
+  | attr('priority', 1)
 %}
 
 {# Use in loops #}
 {% for item in collection %}
-  {% set enhancedItem = item | setAttr('processed', true) %}
+  {% set enhancedItem = item | attr('processed', true) %}
   {# ... use enhancedItem ... #}
 {% endfor %}
 ```
 
-### byAttr
+### where_in
 
-A filter that filters collection items by attribute value. It checks if an item's attribute matches a target value. If the attribute is an array, it checks if the array includes the target value.
+A filter that filters collection items by attribute value. It checks if an item's attribute matches a target value. If the attribute is an array, it checks if the array includes the target value. Supports nested attribute names using dot notation.
 
 **Why use this?**
 
-When working with Eleventy collections, you often need to filter items based on front matter data. The `byAttr` filter provides a flexible way to filter by any attribute, with special handling for array attributes (like tags).
+When working with Eleventy collections, you often need to filter items based on front matter data. The `where_in` filter provides a flexible way to filter by any attribute, with special handling for array attributes (like tags) and support for nested properties using dot notation.
 
 **Usage:**
 
-1. Enable `byAttr` in your Eleventy config:
+1. Enable the `where_in` filter in your Eleventy config:
 
 ```javascript
-import { byAttrFilter } from "@anydigital/eleventy-bricks";
+import { whereInFilter } from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
-  byAttrFilter(eleventyConfig);
+  whereInFilter(eleventyConfig);
   // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { byAttrFilter: true });
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['where_in'] });
 }
 ```
 
@@ -417,7 +320,7 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Get all posts with category 'blog' #}
-{% set blogPosts = collections.all | byAttr('category', 'blog') %}
+{% set blogPosts = collections.all | where_in('data.category', 'blog') %}
 
 {% for post in blogPosts %}
   <h2>{{ post.data.title }}</h2>
@@ -428,7 +331,7 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Get all posts that include 'javascript' tag #}
-{% set jsPosts = collections.all | byAttr('tags', 'javascript') %}
+{% set jsPosts = collections.all | where_in('data.tags', 'javascript') %}
 
 {% for post in jsPosts %}
   <h2>{{ post.data.title }}</h2>
@@ -438,13 +341,13 @@ export default function (eleventyConfig) {
 **Parameters:**
 
 - `collection`: The collection to filter (array of items)
-- `attrName`: The attribute name to check (string)
+- `attrName`: The attribute name to check (string, supports dot notation for nested properties)
 - `targetValue`: The value to match against (any type)
 
 **Features:**
 
 - Works with any attribute in front matter
-- Handles both `item.data.attrName` and `item.attrName` patterns
+- Supports dot notation for nested properties (e.g., `'data.tags'`, `'data.author.name'`)
 - Special handling for array attributes (uses `includes()` check)
 - Returns empty array if collection is invalid
 - Filters out items without the specified attribute
@@ -465,17 +368,17 @@ priority: 1
 Template usage:
 
 ```njk
-{# Filter by category #}
-{% set blogPosts = collections.all | byAttr('category', 'blog') %}
+{# Filter by category (using dot notation for nested properties) #}
+{% set blogPosts = collections.all | where_in('data.category', 'blog') %}
 
 {# Filter by tag (array) #}
-{% set jsTutorials = collections.all | byAttr('tags', 'javascript') %}
+{% set jsTutorials = collections.all | where_in('data.tags', 'javascript') %}
 
 {# Filter by numeric value #}
-{% set highPriority = collections.all | byAttr('priority', 1) %}
+{% set highPriority = collections.all | where_in('data.priority', 1) %}
 
 {# Chain filters #}
-{% set recentBlogPosts = collections.all | byAttr('category', 'blog') | reverse | limit(5) %}
+{% set recentBlogPosts = collections.all | where_in('data.category', 'blog') | reverse | limit(5) %}
 ```
 
 ### merge
@@ -488,7 +391,7 @@ When working with data in templates, you often need to combine multiple arrays o
 
 **Usage:**
 
-1. Enable `merge` in your Eleventy config:
+1. Enable the `merge` filter in your Eleventy config:
 
 ```javascript
 import { mergeFilter } from "@anydigital/eleventy-bricks";
@@ -496,7 +399,7 @@ import { mergeFilter } from "@anydigital/eleventy-bricks";
 export default function (eleventyConfig) {
   mergeFilter(eleventyConfig);
   // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { mergeFilter: true });
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['merge'] });
 }
 ```
 
@@ -545,8 +448,8 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Combine featured and regular posts #}
-{% set featuredPosts = collections.all | byAttr('featured', true) %}
-{% set regularPosts = collections.all | byAttr('featured', false) %}
+{% set featuredPosts = collections.all | where_in('data.featured', true) %}
+{% set regularPosts = collections.all | where_in('data.featured', false) %}
 {% set allPosts = featuredPosts | merge(regularPosts) %}
 
 {# Merge page metadata with defaults #}
@@ -566,17 +469,17 @@ export default function (eleventyConfig) {
 {% set config = defaults | merge(siteConfig, pageConfig, userPrefs) %}
 ```
 
-### removeTag
+### remove_tag
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
 
 **Why use this?**
 
-When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `removeTag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
+When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `remove_tag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
 
 **Usage:**
 
-1. Enable `removeTag` in your Eleventy config:
+1. Enable the `remove_tag` filter in your Eleventy config:
 
 ```javascript
 import { removeTagFilter } from "@anydigital/eleventy-bricks";
@@ -584,7 +487,7 @@ import { removeTagFilter } from "@anydigital/eleventy-bricks";
 export default function (eleventyConfig) {
   removeTagFilter(eleventyConfig);
   // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { removeTagFilter: true });
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['remove_tag'] });
 }
 ```
 
@@ -592,7 +495,7 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Remove all script tags from content #}
-{% set cleanContent = htmlContent | removeTag('script') %}
+{% set cleanContent = htmlContent | remove_tag('script') %}
 
 {{ cleanContent | safe }}
 ```
@@ -615,29 +518,186 @@ export default function (eleventyConfig) {
 ```njk
 {# Remove scripts from user-generated content #}
 {% set userContent = '<p>Hello</p><script>alert("XSS")</script><p>World</p>' %}
-{% set safeContent = userContent | removeTag('script') %}
+{% set safeContent = userContent | remove_tag('script') %}
 {# Result: '<p>Hello</p><p>World</p>' #}
 
 {# Strip specific formatting tags #}
 {% set formatted = '<div><strong>Bold</strong> and <em>italic</em> text</div>' %}
-{% set noStrong = formatted | removeTag('strong') %}
+{% set noStrong = formatted | remove_tag('strong') %}
 {# Result: '<div>Bold and <em>italic</em> text</div>' #}
 
-{# Chain multiple removeTag filters for multiple tags #}
+{# Chain multiple remove_tag filters for multiple tags #}
 {% set richContent = page.content %}
 {% set stripped = richContent
-  | removeTag('script')
-  | removeTag('style')
-  | removeTag('iframe')
+  | remove_tag('script')
+  | remove_tag('style')
+  | remove_tag('iframe')
 %}
 
 {# Remove images for text-only preview #}
-{% set textOnly = htmlContent | removeTag('img') %}
+{% set textOnly = htmlContent | remove_tag('img') %}
 ```
 
 **Security Note:**
 
 While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
+
+### if
+
+An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax.
+
+**Why use this?**
+
+When you need simple conditional values in templates without verbose if/else blocks, the `if` filter provides a clean inline solution. It's especially useful for class names, attributes, or displaying alternate text based on conditions.
+
+**Usage:**
+
+1. Enable the `if` filter in your Eleventy config:
+
+```javascript
+import { ifFilter } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  ifFilter(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['if'] });
+}
+```
+
+2. Use the filter in your templates:
+
+```njk
+{# Basic usage #}
+<div class="{{ 'active' | if: isActive, 'inactive' }}">Status</div>
+
+{# Without falsy value (defaults to empty string) #}
+<span class="{{ 'highlight' | if: shouldHighlight }}">Text</span>
+
+{# With variable values #}
+{% set status = 'Published' | if: post.published, 'Draft' %}
+```
+
+**Parameters:**
+
+- `trueValue`: The value to return if condition is truthy
+- `condition`: The condition to evaluate
+- `falseValue`: The value to return if condition is falsy (optional, defaults to empty string)
+
+**Features:**
+
+- Returns `trueValue` if condition is truthy, otherwise returns `falseValue`
+- Treats empty objects `{}` as falsy
+- Default `falseValue` is an empty string if not provided
+- Works with any data type for values
+
+**Examples:**
+
+```njk
+{# Toggle CSS classes #}
+<button class="{{ 'btn-primary' | if: isPrimary, 'btn-secondary' }}">
+  Click me
+</button>
+
+{# Display different text #}
+<p>{{ 'Online' | if: user.isOnline, 'Offline' }}</p>
+
+{# Use with boolean values #}
+{% set isEnabled = true %}
+<div>{{ 'Enabled' | if: isEnabled, 'Disabled' }}</div>
+
+{# Conditional attribute values #}
+<input type="checkbox" {{ 'checked' | if: isChecked }}>
+
+{# With numeric values #}
+<span class="{{ 'has-items' | if: items.length }}">
+  {{ items.length }} items
+</span>
+
+{# Chain with other filters #}
+{% set cssClass = 'featured' | if: post.featured | upper %}
+```
+
+### attr_concat
+
+A filter that concatenates values to an attribute array, returning a new object with the combined array. Useful for adding items to arrays like tags, classes, or other list-based attributes.
+
+**Why use this?**
+
+When working with objects that have array attributes (like tags), you often need to add additional values without mutating the original object. The `attr_concat` filter provides a clean way to combine existing array values with new ones, automatically handling duplicates.
+
+**Usage:**
+
+1. Enable the `attr_concat` filter in your Eleventy config:
+
+```javascript
+import { attrConcatFilter } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  attrConcatFilter(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr_concat'] });
+}
+```
+
+2. Use the filter in your templates:
+
+```njk
+{# Add tags to a post object #}
+{% set enhancedPost = post | attr_concat('tags', ['featured', 'popular']) %}
+
+{# Add a single value #}
+{% set updatedPost = post | attr_concat('tags', 'important') %}
+
+{# Add values from a JSON string #}
+{% set modifiedPost = post | attr_concat('tags', '["new", "trending"]') %}
+```
+
+**Parameters:**
+
+- `obj`: The object to modify
+- `attr`: The attribute name (must be an array or will be treated as one)
+- `values`: Values to concatenate (can be an array, JSON string array, or single value)
+
+**Returns:**
+
+A new object with the specified attribute containing the combined unique array. The original object is not modified.
+
+**Features:**
+
+- Non-mutating: Creates a new object, leaving the original unchanged
+- Automatically removes duplicates using Set
+- Handles multiple input types: arrays, JSON string arrays, or single values
+- Creates the attribute as an empty array if it doesn't exist
+- Logs an error if the existing attribute is not an array
+
+**Examples:**
+
+```njk
+{# Add multiple tags #}
+{% set post = { title: 'My Post', tags: ['javascript'] } %}
+{% set enhancedPost = post | attr_concat('tags', ['tutorial', 'beginner']) %}
+{# Result: { title: 'My Post', tags: ['javascript', 'tutorial', 'beginner'] } #}
+
+{# Add single value #}
+{% set updatedPost = post | attr_concat('tags', 'featured') %}
+{# Result: { title: 'My Post', tags: ['javascript', 'tutorial', 'beginner', 'featured'] } #}
+
+{# No duplicates #}
+{% set deduped = post | attr_concat('tags', ['javascript', 'advanced']) %}
+{# Result: Only 'advanced' is added, 'javascript' already exists #}
+
+{# Chain multiple attr_concat filters #}
+{% set finalPost = post
+  | attr_concat('tags', 'popular')
+  | attr_concat('categories', ['tech', 'programming'])
+%}
+
+{# Use in loops to enhance collection items #}
+{% for item in collections.posts %}
+  {% set enhancedItem = item | attr_concat('data.tags', 'blog') %}
+  {# ... use enhancedItem ... #}
+{% endfor %}
+```
 
 ### siteData
 
@@ -717,10 +777,14 @@ export default function (eleventyConfig) {
 
 ### Additional Exports
 
-The plugin also exports the following for advanced usage:
+The plugin also exports the following utility functions for advanced usage:
 
 - `transformAutoRaw(content)`: The transform function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
 - `transformNl2br(content)`: The transform function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\n` sequences to `<br>` tags.
+- `merge(first, ...rest)`: The core merge function used by the `merge` filter. Can be used programmatically to merge arrays or objects.
+- `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
+- `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
+- `attrConcat(obj, attr, values)`: The core function used by the `attr_concat` filter. Can be used programmatically to concatenate values to an attribute array.
 
 ## Starter Configuration Files
 
