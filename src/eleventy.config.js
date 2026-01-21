@@ -29,7 +29,7 @@ export default function (eleventyConfig) {
     siteData: true,
     filters: [
       "set_attr",
-      "by_attr",
+      "where_in",
       "merge",
       "remove_tag",
       "if",

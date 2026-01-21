@@ -1,21 +1,21 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { byAttrFilter } from './by_attr.js';
+import { whereInFilter } from './where_in.js';
 
-describe('by_attr filter', () => {
+describe('where_in filter', () => {
   let filterFn;
 
   // Mock eleventyConfig to capture the filter function
   const mockEleventyConfig = {
     addFilter(name, fn) {
-      if (name === 'by_attr') {
+      if (name === 'where_in') {
         filterFn = fn;
       }
     }
   };
 
   // Register the filter
-  byAttrFilter(mockEleventyConfig);
+  whereInFilter(mockEleventyConfig);
 
   it('should filter items by exact attribute match', () => {
     const collection = [
