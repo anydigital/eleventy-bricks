@@ -13,9 +13,6 @@
   "bin": {
     "download-files": "src/cli/download-files.js"
   },
-  "files": [
-    "src"
-  ],
   "scripts": {
     "build": "npx download-files",
     "test": "node --test src/**/*.test.js"
@@ -46,6 +43,7 @@
     "node": ">=18.0.0"
   },
   "_downloadFiles": {
+    "https://raw.githubusercontent.com/anydigital/bricks/refs/heads/main/.prettierrc.json": ".prettierrc.json",
     "https://raw.githubusercontent.com/danurbanowicz/eleventy-sveltia-cms-starter/refs/heads/master/admin/index.html": "src/admin/index.html"
   }
 }
