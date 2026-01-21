@@ -798,7 +798,7 @@ A fully-configured Eleventy config file with:
 
 - All eleventy-bricks plugins enabled
 - Eleventy Navigation plugin
-- Markdown-it with anchors
+- Markdown-it with anchors and attributes
 - YAML data support
 - CLI input directory support
 - Symlink support for development
@@ -806,7 +806,7 @@ A fully-configured Eleventy config file with:
 **Required dependencies:**
 
 ```bash
-npm install @11ty/eleventy-navigation markdown-it markdown-it-anchor js-yaml minimist
+npm install @11ty/eleventy-navigation markdown-it markdown-it-anchor markdown-it-attrs js-yaml minimist
 ```
 
 **Symlink to your project:**
@@ -961,7 +961,7 @@ npx download-files --output public
 ## Requirements
 
 - Node.js >= 18.0.0
-- Eleventy >= 2.0.0 (supports both 2.x and 3.x)
+- Eleventy >= 3.0.0
 
 ## License
 
