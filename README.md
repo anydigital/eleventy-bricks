@@ -25,6 +25,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
     mdAutoRawTags: true,
     mdAutoNl2br: true,
+    mdAutoLinkFavicons: true,
     siteData: true,
     filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
   });
@@ -42,6 +43,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyBricks, {
     mdAutoRawTags: true,
     mdAutoNl2br: true,
+    mdAutoLinkFavicons: true,
     siteData: true,
     filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
   });
@@ -62,6 +64,7 @@ Import only the specific helpers you need without using the plugin:
 import {
   mdAutoRawTags,
   mdAutoNl2br,
+  mdAutoLinkFavicons,
   setAttrFilter,
   whereInFilter,
   mergeFilter,
@@ -74,6 +77,7 @@ import {
 export default function (eleventyConfig) {
   mdAutoRawTags(eleventyConfig);
   mdAutoNl2br(eleventyConfig);
+  mdAutoLinkFavicons(eleventyConfig);
   setAttrFilter(eleventyConfig);
   whereInFilter(eleventyConfig);
   mergeFilter(eleventyConfig);
@@ -92,6 +96,7 @@ export default function (eleventyConfig) {
 const {
   mdAutoRawTags,
   mdAutoNl2br,
+  mdAutoLinkFavicons,
   setAttrFilter,
   whereInFilter,
   mergeFilter,
@@ -104,6 +109,7 @@ const {
 module.exports = async function (eleventyConfig) {
   await mdAutoRawTags(eleventyConfig);
   await mdAutoNl2br(eleventyConfig);
+  await mdAutoLinkFavicons(eleventyConfig);
   await setAttrFilter(eleventyConfig);
   await whereInFilter(eleventyConfig);
   await mergeFilter(eleventyConfig);
@@ -122,12 +128,13 @@ module.exports = async function (eleventyConfig) {
 
 When using the plugin (Option 1), you can configure which helpers to enable:
 
-| Option          | Type            | Default | Description                                                      |
-| --------------- | --------------- | ------- | ---------------------------------------------------------------- |
-| `mdAutoRawTags` | boolean         | `false` | Enable the mdAutoRawTags preprocessor for Markdown files         |
-| `mdAutoNl2br`   | boolean         | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
-| `siteData`      | boolean         | `false` | Enable site.year and site.prod global data                       |
-| `filters`       | array of string | `[]`    | Array of filter names to enable (see Available Filters section)  |
+| Option               | Type            | Default | Description                                                      |
+| -------------------- | --------------- | ------- | ---------------------------------------------------------------- |
+| `mdAutoRawTags`      | boolean         | `false` | Enable the mdAutoRawTags preprocessor for Markdown files         |
+| `mdAutoNl2br`        | boolean         | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
+| `mdAutoLinkFavicons` | boolean         | `false` | Enable the mdAutoLinkFavicons transform to add favicons to links |
+| `siteData`           | boolean         | `false` | Enable site.year and site.prod global data                       |
+| `filters`            | array of string | `[]`    | Array of filter names to enable (see Available Filters section)  |
 
 **Available filter names for the `filters` array:**
 
@@ -144,6 +151,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 eleventyConfig.addPlugin(eleventyBricks, {
   mdAutoRawTags: true,
   mdAutoNl2br: true,
+  mdAutoLinkFavicons: true,
   siteData: true,
   filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
 });
@@ -223,6 +231,84 @@ Will render as:
 ```
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
+
+### mdAutoLinkFavicons
+
+Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
+
+**Why use this?**
+
+When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This transform automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
+
+**Usage:**
+
+1. Enable `mdAutoLinkFavicons` in your Eleventy config:
+
+```javascript
+import { mdAutoLinkFavicons } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  mdAutoLinkFavicons(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoLinkFavicons: true });
+}
+```
+
+**How it works:**
+
+The transform:
+
+1. Scans all HTML output files for `<a>` tags
+2. Checks if the link text appears to be a plain URL or domain
+3. Extracts the domain from the URL
+4. Removes the domain from the link text (keeping only the path)
+5. Adds a favicon image from Google's favicon service inline with the remaining text
+
+**Example:**
+
+Before transformation:
+
+```html
+<a href="https://github.com/anydigital/eleventy-bricks">https://github.com/anydigital/eleventy-bricks</a>
+```
+
+After transformation:
+
+```html
+<a href="https://github.com/anydigital/eleventy-bricks">
+  <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
+  anydigital/eleventy-bricks
+</a>
+```
+
+**Rules:**
+
+- Only applies to links where the text looks like a plain URL (contains the domain or starts with `http://`/`https://`)
+- Removes the protocol and domain from the display text
+- Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
+- Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
+- The favicon is wrapped in an `<i>` tag for easy styling
+
+**Styling:**
+
+You can style the favicon icons with CSS:
+
+```css
+/* Style the favicon wrapper */
+a i {
+  display: inline-block;
+  margin-right: 0.25em;
+}
+
+/* Style the favicon image */
+a i img {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+```
+
+**Note:** This transform only processes HTML output files (those ending in `.html`). It does not modify the original content files.
 
 ### attr
 
@@ -781,6 +867,10 @@ The plugin also exports the following utility functions for advanced usage:
 
 - `transformAutoRaw(content)`: The transform function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
 - `transformNl2br(content)`: The transform function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\n` sequences to `<br>` tags.
+- `isPlainUrlText(linkText, domain)`: Helper function that checks if link text looks like a plain URL or domain.
+- `cleanLinkText(linkText, domain)`: Helper function that cleans link text by removing protocol, domain, and leading slash.
+- `buildFaviconLink(attrs, domain, text)`: Helper function that builds HTML for a link with favicon.
+- `transformLink(match, attrs, url, linkText)`: The transform function used by `mdAutoLinkFavicons` that transforms a single link to include a favicon.
 - `merge(first, ...rest)`: The core merge function used by the `merge` filter. Can be used programmatically to merge arrays or objects.
 - `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
 - `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
