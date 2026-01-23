@@ -35,11 +35,15 @@ export default function (eleventyConfig) {
   /* Libraries */
   eleventyConfig.setLibrary(
     "md",
-    markdownIt({ html: true, linkify: true })
+    markdownIt({
+      html: true,
+      breaks: true,
+      linkify: true,
+    })
       .use(markdownItAnchor, {
         permalink: markdownItAnchor.permalink.headerLink(),
       })
-      .use(markdownItAttrs)
+      .use(markdownItAttrs),
   );
 
   /* Data */
@@ -51,7 +55,7 @@ export default function (eleventyConfig) {
       "src/_public": ".",
       ...(inputDir !== "src" && { [`${inputDir}/_public`]: "." }),
     },
-    { expand: true } // This follows/resolves symbolic links
+    { expand: true }, // This follows/resolves symbolic links
   );
 
   /* Dev tools */
