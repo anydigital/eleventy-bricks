@@ -92,7 +92,23 @@ export function cleanLinkText(linkText, domain) {
  * @returns {string} The HTML string
  */
 export function buildFaviconLink(attrs, domain, text) {
-  return `<a ${attrs} target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"></i>${text}</a>`;
+  let updatedAttrs = attrs;
+
+  // Check if attrs already contains a class attribute
+  if (/class\s*=\s*["']/.test(attrs)) {
+    // Append whitespace-nowrap to existing class
+    updatedAttrs = attrs.replace(/class\s*=\s*["']([^"']*)["']/i, 'class="$1 whitespace-nowrap"');
+  } else {
+    // Add new class attribute
+    updatedAttrs = attrs + ' class="whitespace-nowrap"';
+  }
+
+  // Check if attrs already contains a target attribute
+  if (!/target\s*=/.test(attrs)) {
+    updatedAttrs = updatedAttrs + ' target="_blank"';
+  }
+
+  return `<a ${updatedAttrs}><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"></i><span>${text}</span></a>`;
 }
 
 /**
