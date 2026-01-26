@@ -7,6 +7,7 @@ import {
   cleanLinkText,
   buildFaviconLink,
   transformLink,
+  replaceLinksInHtml,
 } from "./markdown.js";
 
 describe("transformAutoRaw", () => {
@@ -185,20 +186,20 @@ describe("isPlainUrlText", () => {
 });
 
 describe("cleanLinkText", () => {
-  it("should remove protocol, domain, and leading slash", () => {
-    assert.equal(cleanLinkText("https://example.com/docs", "example.com"), "docs");
-    assert.equal(cleanLinkText("http://example.com/docs", "example.com"), "docs");
-    assert.equal(cleanLinkText("https://example.com/docs/guide", "example.com"), "docs/guide");
+  it("should remove protocol and domain", () => {
+    assert.equal(cleanLinkText("https://example.com/docs", "example.com"), "/docs");
+    assert.equal(cleanLinkText("http://example.com/docs", "example.com"), "/docs");
+    assert.equal(cleanLinkText("https://example.com/docs/guide", "example.com"), "/docs/guide");
   });
 
   it("should handle links without protocol", () => {
-    assert.equal(cleanLinkText("example.com/docs", "example.com"), "docs");
-    assert.equal(cleanLinkText("example.com/path/to/page", "example.com"), "path/to/page");
+    assert.equal(cleanLinkText("example.com/docs", "example.com"), "/docs");
+    assert.equal(cleanLinkText("example.com/path/to/page", "example.com"), "/path/to/page");
   });
 
-  it("should remove leading slash after domain removal", () => {
-    assert.equal(cleanLinkText("https://example.com/docs", "example.com"), "docs");
-    assert.equal(cleanLinkText("example.com/docs", "example.com"), "docs");
+  it("should preserve leading slash after domain removal", () => {
+    assert.equal(cleanLinkText("https://example.com/docs", "example.com"), "/docs");
+    assert.equal(cleanLinkText("example.com/docs", "example.com"), "/docs");
   });
 
   it("should return empty string for root domain", () => {
@@ -208,39 +209,39 @@ describe("cleanLinkText", () => {
   });
 
   it("should handle whitespace", () => {
-    assert.equal(cleanLinkText("  https://example.com/docs  ", "example.com"), "docs");
-    assert.equal(cleanLinkText("\nhttps://example.com/docs\n", "example.com"), "docs");
+    assert.equal(cleanLinkText("  https://example.com/docs  ", "example.com"), "/docs");
+    assert.equal(cleanLinkText("\nhttps://example.com/docs\n", "example.com"), "/docs");
   });
 
   it("should preserve path after domain", () => {
-    assert.equal(cleanLinkText("https://example.com/api/v1/docs", "example.com"), "api/v1/docs");
+    assert.equal(cleanLinkText("https://example.com/api/v1/docs", "example.com"), "/api/v1/docs");
   });
 
   it("should handle query parameters", () => {
     const result = cleanLinkText("https://example.com/search?q=test", "example.com");
-    assert.equal(result, "search?q=test");
+    assert.equal(result, "/search?q=test");
   });
 
   it("should handle hash fragments", () => {
     const result = cleanLinkText("https://example.com/page#section", "example.com");
-    assert.equal(result, "page#section");
+    assert.equal(result, "/page#section");
   });
 });
 
 describe("buildFaviconLink", () => {
   it("should create correct HTML with favicon", () => {
-    const result = buildFaviconLink('href="https://example.com/docs"', "example.com", "docs");
+    const result = buildFaviconLink('href="https://example.com/docs"', "example.com", "/docs");
     assert.equal(
       result,
-      '<a href="https://example.com/docs"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i>docs</a>'
+      '<a href="https://example.com/docs" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i>/docs</a>',
     );
   });
 
   it("should handle complex attributes", () => {
-    const result = buildFaviconLink('href="https://example.com" class="link" target="_blank"', "example.com", "docs");
+    const result = buildFaviconLink('href="https://example.com" class="link"', "example.com", "text");
     assert.equal(
       result,
-      '<a href="https://example.com" class="link" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i>docs</a>'
+      '<a href="https://example.com" class="link" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i>text</a>',
     );
   });
 
@@ -255,10 +256,10 @@ describe("buildFaviconLink", () => {
   });
 
   it("should handle different domains", () => {
-    const result = buildFaviconLink('href="https://github.com/repo"', "github.com", "repo");
+    const result = buildFaviconLink('href="https://github.com/repo"', "github.com", "/repo");
     assert.equal(
       result,
-      '<a href="https://github.com/repo"><i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32"></i>repo</a>'
+      '<a href="https://github.com/repo" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32"></i>/repo</a>',
     );
   });
 
@@ -274,18 +275,21 @@ describe("transformLink", () => {
       '<a href="https://example.com/docs">https://example.com/docs</a>',
       'href="https://example.com/docs"',
       "https://example.com/docs",
-      "https://example.com/docs"
+      "https://example.com/docs",
     );
-    assert.match(result, /<i><img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=32"><\/i>docs/);
+    assert.match(
+      result,
+      /<i><img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=32"><\/i>\/docs/,
+    );
   });
 
   it("should not transform if cleaned text is too short (2 chars or less)", () => {
-    const match = '<a href="https://example.com/ab">https://example.com/ab</a>';
+    const match = '<a href="https://example.com/a">https://example.com/a</a>';
     const result = transformLink(
       match,
-      'href="https://example.com/ab"',
-      "https://example.com/ab",
-      "https://example.com/ab"
+      'href="https://example.com/a"',
+      "https://example.com/a",
+      "https://example.com/a",
     );
     assert.equal(result, match);
   });
@@ -319,9 +323,9 @@ describe("transformLink", () => {
       '<a href="http://example.com/docs">http://example.com/docs</a>',
       'href="http://example.com/docs"',
       "http://example.com/docs",
-      "http://example.com/docs"
+      "http://example.com/docs",
     );
-    assert.match(result, /<i><img[^>]*><\/i>docs/);
+    assert.match(result, /<i><img[^>]*><\/i>\/docs/);
   });
 
   it("should work with https:// protocol", () => {
@@ -329,9 +333,9 @@ describe("transformLink", () => {
       '<a href="https://example.com/docs">https://example.com/docs</a>',
       'href="https://example.com/docs"',
       "https://example.com/docs",
-      "https://example.com/docs"
+      "https://example.com/docs",
     );
-    assert.match(result, /<i><img[^>]*><\/i>docs/);
+    assert.match(result, /<i><img[^>]*><\/i>\/docs/);
   });
 
   it("should handle longer paths correctly", () => {
@@ -339,9 +343,9 @@ describe("transformLink", () => {
       '<a href="https://example.com/path/to/document">https://example.com/path/to/document</a>',
       'href="https://example.com/path/to/document"',
       "https://example.com/path/to/document",
-      "https://example.com/path/to/document"
+      "https://example.com/path/to/document",
     );
-    assert.match(result, /<i><img[^>]*><\/i>path\/to\/document/);
+    assert.match(result, /<i><img[^>]*><\/i>\/path\/to\/document/);
   });
 
   it("should not transform when linkText doesn't look like URL", () => {
@@ -350,7 +354,7 @@ describe("transformLink", () => {
       match,
       'href="https://example.com/page"',
       "https://example.com/page",
-      "Read the documentation"
+      "Read the documentation",
     );
     assert.equal(result, match);
   });
@@ -360,14 +364,226 @@ describe("transformLink", () => {
       '<a href="https://example.com/docs">example.com/docs</a>',
       'href="https://example.com/docs"',
       "https://example.com/docs",
-      "example.com/docs"
+      "example.com/docs",
     );
-    assert.match(result, /<i><img[^>]*><\/i>docs/);
+    assert.match(result, /<i><img[^>]*><\/i>\/docs/);
   });
 
   it("should handle malformed URLs by returning original match", () => {
     const match = '<a href="ht!tp://bad-url">ht!tp://bad-url</a>';
     const result = transformLink(match, 'href="ht!tp://bad-url"', "ht!tp://bad-url", "ht!tp://bad-url");
     assert.equal(result, match);
+  });
+});
+
+describe("replaceLinksInHtml", () => {
+  it("should replace a single anchor link with transformer function", () => {
+    const html = '<a href="https://example.com">Click here</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Click here](https://example.com)");
+  });
+
+  it("should replace multiple anchor links in HTML", () => {
+    const html = '<a href="https://example.com">Link 1</a> and <a href="https://other.com">Link 2</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link 1](https://example.com) and [Link 2](https://other.com)");
+  });
+
+  it("should handle links with single quotes in href", () => {
+    const html = "<a href='https://example.com'>Link</a>";
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link](https://example.com)");
+  });
+
+  it("should handle links with double quotes in href", () => {
+    const html = '<a href="https://example.com">Link</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link](https://example.com)");
+  });
+
+  it("should capture all attributes in first group", () => {
+    const html = '<a href="https://example.com" class="link" target="_blank">Link</a>';
+    let capturedAttrs = "";
+    const transformer = (match, attrs, url, linkText) => {
+      capturedAttrs = attrs;
+      return match;
+    };
+    replaceLinksInHtml(html, transformer);
+    assert.equal(capturedAttrs, 'href="https://example.com" class="link" target="_blank"');
+  });
+
+  it("should capture URL in second group", () => {
+    const html = '<a href="https://example.com/path">Link</a>';
+    let capturedUrl = "";
+    const transformer = (match, attrs, url, linkText) => {
+      capturedUrl = url;
+      return match;
+    };
+    replaceLinksInHtml(html, transformer);
+    assert.equal(capturedUrl, "https://example.com/path");
+  });
+
+  it("should capture link text in third group", () => {
+    const html = '<a href="https://example.com">Click here</a>';
+    let capturedText = "";
+    const transformer = (match, attrs, url, linkText) => {
+      capturedText = linkText;
+      return match;
+    };
+    replaceLinksInHtml(html, transformer);
+    assert.equal(capturedText, "Click here");
+  });
+
+  it("should preserve content that is not an anchor link", () => {
+    const html = '<p>Some text</p><a href="https://example.com">Link</a><div>More text</div>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "<p>Some text</p>[Link](https://example.com)<div>More text</div>");
+  });
+
+  it("should handle empty HTML content", () => {
+    const html = "";
+    const transformer = (match) => match;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "");
+  });
+
+  it("should handle HTML with no anchor links", () => {
+    const html = "<p>No links here</p><div>Just text</div>";
+    const transformer = (match) => "REPLACED";
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, html);
+  });
+
+  it("should handle links with query parameters", () => {
+    const html = '<a href="https://example.com/search?q=test&lang=en">Search</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Search](https://example.com/search?q=test&lang=en)");
+  });
+
+  it("should handle links with hash fragments", () => {
+    const html = '<a href="https://example.com/page#section">Section</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Section](https://example.com/page#section)");
+  });
+
+  it("should be case-insensitive for anchor tag", () => {
+    const html = '<A HREF="https://example.com">Link</A>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link](https://example.com)");
+  });
+
+  it("should handle links with additional attributes before href", () => {
+    const html = '<a class="link" href="https://example.com" id="mylink">Link</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link](https://example.com)");
+  });
+
+  it("should handle links with additional attributes after href", () => {
+    const html = '<a href="https://example.com" class="link" id="mylink">Link</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link](https://example.com)");
+  });
+
+  it("should handle relative URLs", () => {
+    const html = '<a href="/docs/guide">Guide</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Guide](/docs/guide)");
+  });
+
+  it("should handle root-relative URLs", () => {
+    const html = '<a href="/">Home</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Home](/)");
+  });
+
+  it("should not match anchor tags with nested HTML in link text", () => {
+    const html = '<a href="https://example.com"><span>Link</span></a>';
+    const transformer = (match) => "REPLACED";
+    const result = replaceLinksInHtml(html, transformer);
+    // Should not match because regex expects [^<]+ for link text (no nested tags)
+    assert.equal(result, html);
+  });
+
+  it("should handle transformer that returns original match unchanged", () => {
+    const html = '<a href="https://example.com">Link</a>';
+    const transformer = (match) => match;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, html);
+  });
+
+  it("should work with transformLink function for real-world usage", () => {
+    const html = '<a href="https://example.com/docs">https://example.com/docs</a>';
+    const result = replaceLinksInHtml(html, transformLink);
+    // transformLink should add favicon for plain URL links
+    assert.match(result, /<img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=32">/);
+    assert.match(result, /\/docs<\/a>/);
+  });
+
+  it("should not transform custom link text when using transformLink", () => {
+    const html = '<a href="https://example.com/docs">Click here</a>';
+    const result = replaceLinksInHtml(html, transformLink);
+    // transformLink should not add favicon for custom text
+    assert.equal(result, html);
+  });
+
+  it("should handle multiple links with mixed transformation results", () => {
+    const html =
+      '<a href="https://example.com/docs">https://example.com/docs</a> and <a href="https://other.com">Click</a>';
+    const result = replaceLinksInHtml(html, transformLink);
+    // First link should be transformed (plain URL), second should not (custom text)
+    assert.match(result, /img src=/);
+    assert.match(result, /Click<\/a>/);
+  });
+
+  it("should handle link text with special characters", () => {
+    const html = '<a href="https://example.com">Link & More!</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link & More!](https://example.com)");
+  });
+
+  it("should handle URLs with ports", () => {
+    const html = '<a href="https://example.com:8080/page">Link</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link](https://example.com:8080/page)");
+  });
+
+  it("should handle http protocol links", () => {
+    const html = '<a href="http://example.com">Link</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link](http://example.com)");
+  });
+
+  it("should handle links in multiline HTML", () => {
+    const html = `<div>
+  <a href="https://example.com">Link 1</a>
+  <p>Some text</p>
+  <a href="https://other.com">Link 2</a>
+</div>`;
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.match(result, /\[Link 1\]\(https:\/\/example\.com\)/);
+    assert.match(result, /\[Link 2\]\(https:\/\/other\.com\)/);
+  });
+
+  it("should handle adjacent anchor links", () => {
+    const html = '<a href="https://example.com">Link1</a><a href="https://other.com">Link2</a>';
+    const transformer = (match, attrs, url, linkText) => `[${linkText}](${url})`;
+    const result = replaceLinksInHtml(html, transformer);
+    assert.equal(result, "[Link1](https://example.com)[Link2](https://other.com)");
   });
 });

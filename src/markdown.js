@@ -80,7 +80,7 @@ export function cleanLinkText(linkText, domain) {
     .trim()
     .replace(/^https?:\/\//, "")
     .replace(domain, "")
-    .replace(/^\//, "");
+    .replace(/\/$/, "");
 }
 
 /**
@@ -92,7 +92,7 @@ export function cleanLinkText(linkText, domain) {
  * @returns {string} The HTML string
  */
 export function buildFaviconLink(attrs, domain, text) {
-  return `<a ${attrs}><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"></i>${text}</a>`;
+  return `<a ${attrs} target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"></i>${text}</a>`;
 }
 
 /**
@@ -128,6 +128,23 @@ export function transformLink(match, attrs, url, linkText) {
 }
 
 /**
+ * Replace all anchor links in HTML content with transformed versions
+ *
+ * This function searches for all anchor tags in HTML content and replaces them
+ * using the provided transform function. The regex captures:
+ * - Group 1: All attributes including href
+ * - Group 2: The URL from the href attribute
+ * - Group 3: The link text content
+ *
+ * @param {string} content - The HTML content to process
+ * @param {Function} transformer - Function to transform each link (receives match, attrs, url, linkText)
+ * @returns {string} The HTML content with transformed links
+ */
+export function replaceLinksInHtml(content, transformer) {
+  return content.replace(/<a\s+([^>]*href=["']([^"']+)["'][^>]*)>([^<]+)<\/a>/gi, transformer);
+}
+
+/**
  * mdAutoLinkFavicons - Add favicon images to plain text links
  *
  * This transform automatically adds favicon images from Google's favicon service
@@ -139,7 +156,7 @@ export function transformLink(match, attrs, url, linkText) {
 export function mdAutoLinkFavicons(eleventyConfig) {
   eleventyConfig.addTransform("mdAutoLinkFavicons", function (content) {
     if (this.page.outputPath && this.page.outputPath.endsWith(".html")) {
-      return content.replace(/<a\s+([^>]*href=["']([^"']+)["'][^>]*)>([^<]+)<\/a>/gi, transformLink);
+      return replaceLinksInHtml(content, transformLink);
     }
     return content;
   });
