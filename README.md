@@ -275,9 +275,9 @@ Before transformation:
 After transformation:
 
 ```html
-<a href="https://github.com/anydigital/eleventy-bricks" target="_blank">
+<a href="https://github.com/anydigital/eleventy-bricks" class="whitespace-nowrap" target="_blank">
   <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
-  /anydigital/eleventy-bricks
+  <span>/anydigital/eleventy-bricks</span>
 </a>
 ```
 
@@ -288,7 +288,9 @@ After transformation:
 - Removes the trailing slash from the display text
 - Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
 - Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
-- Adds `target="_blank"` to the transformed links
+- Adds `target="_blank"` to the transformed links (only if not already present)
+- Adds `whitespace-nowrap` class to the link
+- Wraps the link text in a `<span>` element
 - The favicon is wrapped in an `<i>` tag for easy styling
 
 **Styling:**
