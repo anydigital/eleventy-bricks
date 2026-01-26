@@ -275,9 +275,9 @@ Before transformation:
 After transformation:
 
 ```html
-<a href="https://github.com/anydigital/eleventy-bricks">
+<a href="https://github.com/anydigital/eleventy-bricks" target="_blank">
   <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
-  anydigital/eleventy-bricks
+  /anydigital/eleventy-bricks
 </a>
 ```
 
@@ -285,8 +285,10 @@ After transformation:
 
 - Only applies to links where the text looks like a plain URL (contains the domain or starts with `http://`/`https://`)
 - Removes the protocol and domain from the display text
+- Removes the trailing slash from the display text
 - Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
 - Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
+- Adds `target="_blank"` to the transformed links
 - The favicon is wrapped in an `<i>` tag for easy styling
 
 **Styling:**
