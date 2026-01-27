@@ -1,6 +1,6 @@
 {
   "name": "@anydigital/eleventy-bricks",
-  "version": "0.22.2",
+  "version": "0.23.0",
   "description": "A collection of helpful utilities and filters for Eleventy (11ty)",
   "type": "module",
   "main": "./src/index.js",
@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/anydigital/eleventy-bricks#readme",
   "peerDependencies": {
-    "@11ty/eleventy": "^3.0.0"
+    "@11ty/eleventy": "^3.0.0 || ^4.0.0-alpha.6"
   },
   "engines": {
     "node": ">=18.0.0"
