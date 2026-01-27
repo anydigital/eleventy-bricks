@@ -37,7 +37,7 @@ export default function (eleventyConfig) {
     "md",
     markdownIt({
       html: true,
-      breaks: true,
+      // breaks: true,
       linkify: true,
     })
       .use(markdownItAnchor, {
