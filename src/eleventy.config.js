@@ -47,6 +47,7 @@ export default function (eleventyConfig) {
   );
 
   /* Data */
+  eleventyConfig.addGlobalData("layout", "__layout");
   eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
 
   /* Build */
