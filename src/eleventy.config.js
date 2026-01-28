@@ -41,7 +41,7 @@ export default function (eleventyConfig) {
       linkify: true,
     })
       .use(markdownItAnchor, {
-        permalink: markdownItAnchor.permalink.headerLink(),
+        permalink: markdownItAnchor.permalink.ariaHidden(),
       })
       .use(markdownItAttrs),
   );
