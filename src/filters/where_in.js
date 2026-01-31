@@ -16,26 +16,22 @@ const { get } = lodash;
  * @returns {Array} Filtered collection
  */
 export function whereIn(collection, attrName, targetValue) {
-  if (!collection || !Array.isArray(collection)) {
-    return [];
+  // If no targetValue, return original collection
+  if (!targetValue) {
+    return collection;
   }
 
   return collection.filter((item) => {
     // Get the attribute value from the item (supports nested paths like "data.tags")
     const attrValue = get(item, attrName);
 
-    // If attribute doesn't exist, skip this item
-    if (attrValue === undefined || attrValue === null) {
-      return false;
-    }
-
     // If the attribute is an array, check if it includes the target value
     if (Array.isArray(attrValue)) {
       return attrValue.includes(targetValue);
     }
 
-    // Otherwise, do a direct comparison
-    return attrValue === targetValue;
+    // Otherwise skip this item
+    return false;
   });
 }
 
