@@ -15,16 +15,14 @@ export function attrConcat(obj, attr, values) {
 
   // Check if existing value is an array, convert if not
   if (!Array.isArray(existingArray)) {
-    console.error(
-      `attrConcat: Expected ${attr} to be an array, got ${typeof existingArray}`
-    );
+    console.error(`attrConcat: Expected ${attr} to be an array, got ${typeof existingArray}`);
   }
 
   // Process the values argument
   let valuesToAdd = [];
   if (Array.isArray(values)) {
     valuesToAdd = values;
-  } else if (typeof values === "string") {
+  } else if (typeof values === "string" && values.length >= 2 && values.at(0) == "[" && values.at(-1) == "]") {
     // Try to parse as JSON array
     try {
       const parsed = JSON.parse(values);

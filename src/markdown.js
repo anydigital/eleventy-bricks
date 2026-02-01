@@ -76,11 +76,12 @@ export function isPlainUrlText(linkText, domain) {
  * @returns {string} The cleaned text
  */
 export function cleanLinkText(linkText, domain) {
-  return linkText
+  const cleanedText = linkText
     .trim()
     .replace(/^https?:\/\//, "")
-    .replace(domain, "")
     .replace(/\/$/, "");
+  const withoutDomain = cleanedText.replace(domain, "");
+  return withoutDomain.length > 2 ? withoutDomain : cleanedText;
 }
 
 /**
@@ -128,15 +129,10 @@ export function transformLink(match, attrs, url, linkText) {
 
     // Only add favicon if link text looks like a plain URL/domain
     if (isPlainUrlText(linkText, domain)) {
-      // Remove domain from link text
       const cleanedText = cleanLinkText(linkText, domain);
-
-      // Only apply if there are at least 2 letters remaining after domain
-      if (cleanedText.length > 2) {
-        return buildFaviconLink(attrs, domain, cleanedText);
-      }
+      return buildFaviconLink(attrs, domain, cleanedText);
     }
-    return match;
+    return match; // @TODO: throw?
   } catch (e) {
     // If URL parsing fails, return original match
     return match;
