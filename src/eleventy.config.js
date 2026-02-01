@@ -29,7 +29,7 @@ export default function (eleventyConfig) {
     mdAutoRawTags: true,
     mdAutoLinkFavicons: true,
     siteData: true,
-    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat"],
+    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
   });
 
   /* Libraries */
