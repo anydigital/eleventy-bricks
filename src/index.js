@@ -15,8 +15,17 @@ import { mergeFilter, merge } from "./filters/merge.js";
 import { removeTagFilter, removeTag } from "./filters/remove_tag.js";
 import { ifFilter, iff } from "./filters/if.js";
 import { attrConcatFilter, attrConcat } from "./filters/attr_concat.js";
-import { fetchFilter } from "./filters/fetch.js";
 import { siteData } from "./siteData.js";
+
+// Conditionally import fetchFilter only if @11ty/eleventy-fetch is available
+let fetchFilter = null;
+try {
+  await import("@11ty/eleventy-fetch");
+  const fetchModule = await import("./filters/fetch.js");
+  fetchFilter = fetchModule.fetchFilter;
+} catch (error) {
+  // @11ty/eleventy-fetch not available, fetch filter will be disabled
+}
 
 /**
  * 11ty Bricks Plugin
@@ -47,7 +56,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
     remove_tag: removeTagFilter,
     if: ifFilter,
     attr_concat: attrConcatFilter,
-    fetch: fetchFilter,
+    ...(fetchFilter && { fetch: fetchFilter }),
   };
 
   // Handle individual plugin options
@@ -68,6 +77,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 }
 
 // Export individual helpers for granular usage
+// Note: fetchFilter will be null/undefined if @11ty/eleventy-fetch is not installed
 export {
   mdAutoRawTags,
   mdAutoNl2br,
