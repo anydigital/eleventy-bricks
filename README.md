@@ -85,7 +85,10 @@ export default function (eleventyConfig) {
   removeTagFilter(eleventyConfig);
   ifFilter(eleventyConfig);
   attrConcatFilter(eleventyConfig);
-  fetchFilter(eleventyConfig); // Only if @11ty/eleventy-fetch is installed
+  // fetchFilter is only available if @11ty/eleventy-fetch is installed
+  if (fetchFilter) {
+    fetchFilter(eleventyConfig);
+  }
   siteData(eleventyConfig);
 
   // Your other configuration...
@@ -119,7 +122,10 @@ module.exports = async function (eleventyConfig) {
   await removeTagFilter(eleventyConfig);
   await ifFilter(eleventyConfig);
   await attrConcatFilter(eleventyConfig);
-  await fetchFilter(eleventyConfig); // Only if @11ty/eleventy-fetch is installed
+  // fetchFilter is only available if @11ty/eleventy-fetch is installed
+  if (fetchFilter) {
+    await fetchFilter(eleventyConfig);
+  }
   await siteData(eleventyConfig);
 
   // Your other configuration...
@@ -1030,6 +1036,7 @@ A fully-configured Eleventy config file with:
 
 - All eleventy-bricks plugins enabled
 - Eleventy Navigation plugin
+- Table of Contents plugin (conditionally loaded if installed)
 - Markdown-it with anchors and attributes
 - YAML data support
 - CLI input directory support
@@ -1039,6 +1046,16 @@ A fully-configured Eleventy config file with:
 
 ```bash
 npm install @11ty/eleventy-navigation markdown-it markdown-it-anchor markdown-it-attrs js-yaml minimist
+```
+
+**Optional dependencies:**
+
+```bash
+# For the fetch filter
+npm install @11ty/eleventy-fetch
+
+# For table of contents generation
+npm install @uncenter/eleventy-plugin-toc
 ```
 
 **Symlink to your project:**
