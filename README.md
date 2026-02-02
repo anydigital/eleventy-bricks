@@ -1,4 +1,4 @@
-# eleventy-bricks
+# `@anydigital/eleventy-bricks`
 
 A collection of helpful utilities and filters for Eleventy (11ty).
 
@@ -168,7 +168,9 @@ eleventyConfig.addPlugin(eleventyBricks, {
 });
 ```
 
-## Available 11ty Helpers
+<!--TRICKS-->
+
+## `@anydigital/eleventy-bricks`
 
 ### mdAutoRawTags
 
