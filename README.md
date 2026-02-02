@@ -170,7 +170,7 @@ eleventyConfig.addPlugin(eleventyBricks, {
 
 <!--TRICKS-->
 
-## `@anydigital/eleventy-bricks`
+## Tricks from [Eleventy Bricks](https://github.com/anydigital/eleventy-bricks)
 
 ### mdAutoRawTags
 
