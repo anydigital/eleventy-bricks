@@ -168,11 +168,28 @@ eleventyConfig.addPlugin(eleventyBricks, {
 });
 ```
 
+### Additional Exports
+
+The plugin also exports the following utility functions for advanced usage:
+
+- `transformAutoRaw(content)`: The transform function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
+- `transformNl2br(content)`: The transform function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\n` sequences to `<br>` tags.
+- `isPlainUrlText(linkText, domain)`: Helper function that checks if link text looks like a plain URL or domain.
+- `cleanLinkText(linkText, domain)`: Helper function that cleans link text by removing protocol, domain, and leading slash.
+- `buildFaviconLink(attrs, domain, text)`: Helper function that builds HTML for a link with favicon.
+- `transformLink(match, attrs, url, linkText)`: The transform function used by `mdAutoLinkFavicons` that transforms a single link to include a favicon.
+- `merge(first, ...rest)`: The core merge function used by the `merge` filter. Can be used programmatically to merge arrays or objects.
+- `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
+- `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
+- `attrConcat(obj, attr, values)`: The core function used by the `attr_concat` filter. Can be used programmatically to concatenate values to an attribute array.
+
 <!--TRICKS-->
 
 ## Tricks from [Eleventy Bricks](https://github.com/anydigital/eleventy-bricks) {#eleventy-bricks}
 
-### mdAutoRawTags
+### Transforms
+
+#### mdAutoRawTags
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
@@ -204,7 +221,7 @@ Use {{ variable }} to output variables.
 
 Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
 
-### mdAutoNl2br
+#### mdAutoNl2br
 
 Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
 
@@ -245,7 +262,7 @@ Will render as:
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
 
-### mdAutoLinkFavicons
+#### mdAutoLinkFavicons
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
@@ -327,7 +344,9 @@ a i img {
 
 **Note:** This transform only processes HTML output files (those ending in `.html`). It does not modify the original content files.
 
-### attr
+### Filters
+
+#### attr
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original.
 
@@ -395,7 +414,7 @@ A new object with the specified attribute set to the given value. The original o
 {% endfor %}
 ```
 
-### where_in
+#### where_in
 
 A filter that filters collection items by attribute value. It checks if an item's attribute matches a target value. If the attribute is an array, it checks if the array includes the target value. Supports nested attribute names using dot notation.
 
@@ -484,7 +503,7 @@ Template usage:
 {% set recentBlogPosts = collections.all | where_in('data.category', 'blog') | reverse | limit(5) %}
 ```
 
-### merge
+#### merge
 
 A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
 
@@ -572,7 +591,7 @@ export default function (eleventyConfig) {
 {% set config = defaults | merge(siteConfig, pageConfig, userPrefs) %}
 ```
 
-### remove_tag
+#### remove_tag
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
 
@@ -645,7 +664,7 @@ export default function (eleventyConfig) {
 
 While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
 
-### if
+#### if
 
 An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax.
 
@@ -720,7 +739,7 @@ export default function (eleventyConfig) {
 {% set cssClass = 'featured' | if: post.featured | upper %}
 ```
 
-### attr_concat
+#### attr_concat
 
 A filter that concatenates values to an attribute array, returning a new object with the combined array. Useful for adding items to arrays like tags, classes, or other list-based attributes.
 
@@ -802,7 +821,7 @@ A new object with the specified attribute containing the combined unique array. 
 {% endfor %}
 ```
 
-### fetch
+#### fetch
 
 A filter that fetches content from remote URLs or local files. For remote URLs, it uses `@11ty/eleventy-fetch` to download and cache files. For local paths, it reads files relative to the input directory.
 
@@ -935,7 +954,7 @@ your-project/
 
 **Note:** The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
 
-### siteData
+### Global Data
 
 Adds global site data to your Eleventy project, providing commonly needed values that can be accessed in all templates.
 
@@ -1011,26 +1030,19 @@ export default function (eleventyConfig) {
 {% endif %}
 ```
 
-### Additional Exports
 
-The plugin also exports the following utility functions for advanced usage:
-
-- `transformAutoRaw(content)`: The transform function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
-- `transformNl2br(content)`: The transform function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\n` sequences to `<br>` tags.
-- `isPlainUrlText(linkText, domain)`: Helper function that checks if link text looks like a plain URL or domain.
-- `cleanLinkText(linkText, domain)`: Helper function that cleans link text by removing protocol, domain, and leading slash.
-- `buildFaviconLink(attrs, domain, text)`: Helper function that builds HTML for a link with favicon.
-- `transformLink(match, attrs, url, linkText)`: The transform function used by `mdAutoLinkFavicons` that transforms a single link to include a favicon.
-- `merge(first, ...rest)`: The core merge function used by the `merge` filter. Can be used programmatically to merge arrays or objects.
-- `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
-- `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
-- `attrConcat(obj, attr, values)`: The core function used by the `attr_concat` filter. Can be used programmatically to concatenate values to an attribute array.
-
-## Starter Configuration Files
+### Symlinked Configuration Files
 
 The package includes pre-configured starter files in `node_modules/@anydigital/eleventy-bricks/src/` that you can symlink to your project for quick setup:
 
-### Available Starter Files
+Benefits of Symlinking:
+
+- **Always up-to-date**: Configuration automatically updates when you upgrade the package
+- **Less maintenance**: No need to manually sync configuration changes
+- **Quick setup**: Get started immediately with best-practice configurations
+- **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
+
+If you prefer to customize the configurations extensively, you can copy the files instead.
 
 #### eleventy.config.js
 
@@ -1076,25 +1088,6 @@ A ready-to-use Sveltia CMS admin interface for content management.
 mkdir -p admin
 ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
 ```
-
-### Benefits of Symlinking
-
-- **Always up-to-date**: Configuration automatically updates when you upgrade the package
-- **Less maintenance**: No need to manually sync configuration changes
-- **Quick setup**: Get started immediately with best-practice configurations
-- **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
-
-### Alternative: Copy Files
-
-If you prefer to customize the configurations extensively, you can copy the files instead:
-
-```bash
-cp node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js .
-mkdir -p admin
-cp node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/
-```
-
-## Development Workflow Setup
 
 ### Using the `do` Folder Pattern
 
@@ -1156,68 +1149,3 @@ npm run build
 - **Reusable workflows**: Update scripts by upgrading the package
 - **Workspace isolation**: Scripts run in their own workspace context
 - **Easy maintenance**: No need to manually maintain build scripts
-
-## CLI Helper Commands
-
-After installing this package, the `download-files` command becomes available:
-
-### download-files
-
-A CLI command that downloads external files to your project based on URLs specified in your `package.json`.
-
-**Usage:**
-
-1. Add a `_downloadFiles` field to your project's `package.json` with URL-to-path mappings:
-
-```json
-{
-  "_downloadFiles": {
-    "https://example.com/library.js": "src/vendor/library.js",
-    "https://cdn.example.com/styles.css": "public/css/external.css"
-  }
-}
-```
-
-2. Run the download command:
-
-```bash
-npx download-files
-```
-
-**Options:**
-
-- `-o, --output <dir>`: Specify an output directory where all files will be downloaded (relative paths in `_downloadFiles` will be resolved relative to this directory)
-
-```bash
-# Download all files to a specific directory
-npx download-files --output public
-```
-
-**Features:**
-
-- Downloads multiple files from external URLs
-- Automatically creates directories if they don't exist
-- Overwrites existing files
-- Continues downloading remaining files even if some fail
-- Provides clear progress and error messages
-- Returns appropriate exit codes for CI/CD integration
-
-**Use Cases:**
-
-- Download third-party libraries and assets
-- Fetch external resources during build processes
-- Keep vendored files up to date
-- Automate dependency downloads that aren't available via npm
-
-## Requirements
-
-- Node.js >= 18.0.0
-- Eleventy >= 3.0.0
-
-## License
-
-MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
