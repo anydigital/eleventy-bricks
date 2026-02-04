@@ -187,163 +187,6 @@ The plugin also exports the following utility functions for advanced usage:
 
 ## Tricks from [Eleventy Bricks](https://github.com/anydigital/eleventy-bricks) {#eleventy-bricks}
 
-### Transforms
-
-#### mdAutoRawTags
-
-Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
-
-**Why use this?**
-
-When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
-
-**Usage:**
-
-1. Enable `mdAutoRawTags` in your Eleventy config:
-
-```javascript
-import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoRawTags(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoRawTags: true });
-}
-```
-
-**Example:**
-
-Before `mdAutoRawTags`, writing this in Markdown:
-
-```markdown
-Use {{ variable }} to output variables.
-```
-
-Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
-
-#### mdAutoNl2br
-
-Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
-
-**Why use this?**
-
-Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
-
-**Usage:**
-
-1. Enable `mdAutoNl2br` in your Eleventy config:
-
-```javascript
-import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoNl2br(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoNl2br: true });
-}
-```
-
-**Example:**
-
-In your Markdown file:
-
-```markdown
-| Column 1               | Column 2                          |
-| ---------------------- | --------------------------------- |
-| Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
-```
-
-Will render as:
-
-```html
-<td>Line 1<br />Line 2<br />Line 3</td>
-<td>Another cell<br />With multiple lines</td>
-```
-
-**Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
-
-#### mdAutoLinkFavicons
-
-Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
-
-**Why use this?**
-
-When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This transform automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
-
-**Usage:**
-
-1. Enable `mdAutoLinkFavicons` in your Eleventy config:
-
-```javascript
-import { mdAutoLinkFavicons } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoLinkFavicons(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoLinkFavicons: true });
-}
-```
-
-**How it works:**
-
-The transform:
-
-1. Scans all HTML output files for `<a>` tags
-2. Checks if the link text appears to be a plain URL or domain
-3. Extracts the domain from the URL
-4. Removes the domain from the link text (keeping only the path)
-5. Adds a favicon image from Google's favicon service inline with the remaining text
-
-**Example:**
-
-Before transformation:
-
-```html
-<a href="https://github.com/anydigital/eleventy-bricks">https://github.com/anydigital/eleventy-bricks</a>
-```
-
-After transformation:
-
-```html
-<a href="https://github.com/anydigital/eleventy-bricks" class="whitespace-nowrap" target="_blank">
-  <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
-  <span>/anydigital/eleventy-bricks</span>
-</a>
-```
-
-**Rules:**
-
-- Only applies to links where the text looks like a plain URL (contains the domain or starts with `http://`/`https://`)
-- Removes the protocol and domain from the display text
-- Removes the trailing slash from the display text
-- Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
-- Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
-- Adds `target="_blank"` to the transformed links (only if not already present)
-- Adds `whitespace-nowrap` class to the link
-- Wraps the link text in a `<span>` element
-- The favicon is wrapped in an `<i>` tag for easy styling
-
-**Styling:**
-
-You can style the favicon icons with CSS:
-
-```css
-/* Style the favicon wrapper */
-a i {
-  display: inline-block;
-  margin-right: 0.25em;
-}
-
-/* Style the favicon image */
-a i img {
-  width: 16px;
-  height: 16px;
-  vertical-align: middle;
-}
-```
-
-**Note:** This transform only processes HTML output files (those ending in `.html`). It does not modify the original content files.
-
 ### Filters
 
 #### attr
@@ -953,6 +796,163 @@ your-project/
 - Include shared content snippets without using Eleventy's include syntax
 
 **Note:** The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
+
+### Transforms
+
+#### mdAutoRawTags
+
+Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
+
+**Why use this?**
+
+When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
+
+**Usage:**
+
+1. Enable `mdAutoRawTags` in your Eleventy config:
+
+```javascript
+import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  mdAutoRawTags(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoRawTags: true });
+}
+```
+
+**Example:**
+
+Before `mdAutoRawTags`, writing this in Markdown:
+
+```markdown
+Use {{ variable }} to output variables.
+```
+
+Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
+
+#### mdAutoNl2br
+
+Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
+
+**Why use this?**
+
+Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
+
+**Usage:**
+
+1. Enable `mdAutoNl2br` in your Eleventy config:
+
+```javascript
+import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  mdAutoNl2br(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoNl2br: true });
+}
+```
+
+**Example:**
+
+In your Markdown file:
+
+```markdown
+| Column 1               | Column 2                          |
+| ---------------------- | --------------------------------- |
+| Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
+```
+
+Will render as:
+
+```html
+<td>Line 1<br />Line 2<br />Line 3</td>
+<td>Another cell<br />With multiple lines</td>
+```
+
+**Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
+
+#### mdAutoLinkFavicons
+
+Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
+
+**Why use this?**
+
+When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This transform automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
+
+**Usage:**
+
+1. Enable `mdAutoLinkFavicons` in your Eleventy config:
+
+```javascript
+import { mdAutoLinkFavicons } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  mdAutoLinkFavicons(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoLinkFavicons: true });
+}
+```
+
+**How it works:**
+
+The transform:
+
+1. Scans all HTML output files for `<a>` tags
+2. Checks if the link text appears to be a plain URL or domain
+3. Extracts the domain from the URL
+4. Removes the domain from the link text (keeping only the path)
+5. Adds a favicon image from Google's favicon service inline with the remaining text
+
+**Example:**
+
+Before transformation:
+
+```html
+<a href="https://github.com/anydigital/eleventy-bricks">https://github.com/anydigital/eleventy-bricks</a>
+```
+
+After transformation:
+
+```html
+<a href="https://github.com/anydigital/eleventy-bricks" class="whitespace-nowrap" target="_blank">
+  <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
+  <span>/anydigital/eleventy-bricks</span>
+</a>
+```
+
+**Rules:**
+
+- Only applies to links where the text looks like a plain URL (contains the domain or starts with `http://`/`https://`)
+- Removes the protocol and domain from the display text
+- Removes the trailing slash from the display text
+- Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
+- Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
+- Adds `target="_blank"` to the transformed links (only if not already present)
+- Adds `whitespace-nowrap` class to the link
+- Wraps the link text in a `<span>` element
+- The favicon is wrapped in an `<i>` tag for easy styling
+
+**Styling:**
+
+You can style the favicon icons with CSS:
+
+```css
+/* Style the favicon wrapper */
+a i {
+  display: inline-block;
+  margin-right: 0.25em;
+}
+
+/* Style the favicon image */
+a i img {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+```
+
+**Note:** This transform only processes HTML output files (those ending in `.html`). It does not modify the original content files.
 
 ### Global Data
 
