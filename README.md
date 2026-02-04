@@ -189,7 +189,32 @@ The plugin also exports the following utility functions for advanced usage:
 
 ### Filters
 
-#### attr
+|      Input | Nunjucks                                                                        | Liquid <hr>                                          |
+| ---------: | ------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| {.divider} | Logical                                                                         |
+|  `ANY \| ` | `default(VALUE)` <br>= `d(...)`                                                 | `default: VALUE`                                     |
+|   `ANY \|` | [`if(TEST, OP, VALUE)`](#if) <sub>currently only `if(TEST)`</sub>               | [`if: TEST, OP, VALUE`](#if)                         |
+| {.divider} | On objects                                                                      |
+|   `OBJ \|` | [`merge(OBJ2)`](#merge)                                                         | [`merge: OBJ2`](#merge)                              |
+| {.divider} | On object attributes                                                            |
+|   `OBJ \|` | `selectattr(BOOL_ATTR)`                                                         | `where: ATTR, VALUE`                                 |
+|   `OBJ \|` | `rejectattr(BOOL_ATTR)`                                                         | N/A                                                  |
+|   `OBJ \|` | [`attr_includes(ARRAY_ATTR, VALUE)`](#where_in) <sub>currently `where_in`</sub> | [`attr_includes: ARRAY_ATTR, VALUE`](#attr_includes) |
+|   `OBJ \|` | [`attr_set(ATTR, VALUE)`](#attr) <sub>currently `attr`</sub>                    | [`attr_set: ATTR, VALUE`](#attr)                     |
+|   `OBJ \|` | [`attr_concat(ARRAY_ATTR, ARRAY2)`](#attr_concat)                               | [`attr_concat: ARRAY_ATTR, ARRAY2`](#attr_concat)    |
+| {.divider} | Textual                                                                         |
+|  `HTML \|` | `striptags`                                                                     | `strip_html`                                         |
+|  `HTML \|` | [`remove_tag(TAG)`](#remove_tag)                                                | [`remove_tag: TAG`](#remove_tag)                     |
+|   `STR \|` | `remove: STR2`                                                                  | `remove: STR2`                                       |
+| {.divider} | Other                                                                           |
+|   `URL \|` | [`fetch`](#fetch)                                                               | [`fetch`](#fetch)                                    |
+
+Ref:
+
+- https://mozilla.github.io/nunjucks/templating.html#builtin-filters
+- https://shopify.github.io/liquid/
+
+#### `attr`
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original.
 
@@ -257,7 +282,7 @@ A new object with the specified attribute set to the given value. The original o
 {% endfor %}
 ```
 
-#### where_in
+#### `where_in`
 
 A filter that filters collection items by attribute value. It checks if an item's attribute matches a target value. If the attribute is an array, it checks if the array includes the target value. Supports nested attribute names using dot notation.
 
@@ -346,7 +371,7 @@ Template usage:
 {% set recentBlogPosts = collections.all | where_in('data.category', 'blog') | reverse | limit(5) %}
 ```
 
-#### merge
+#### `merge`
 
 A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
 
@@ -434,7 +459,7 @@ export default function (eleventyConfig) {
 {% set config = defaults | merge(siteConfig, pageConfig, userPrefs) %}
 ```
 
-#### remove_tag
+#### `remove_tag`
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
 
@@ -507,7 +532,7 @@ export default function (eleventyConfig) {
 
 While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
 
-#### if
+#### `if`
 
 An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax.
 
@@ -582,7 +607,7 @@ export default function (eleventyConfig) {
 {% set cssClass = 'featured' | if: post.featured | upper %}
 ```
 
-#### attr_concat
+#### `attr_concat`
 
 A filter that concatenates values to an attribute array, returning a new object with the combined array. Useful for adding items to arrays like tags, classes, or other list-based attributes.
 
@@ -664,7 +689,7 @@ A new object with the specified attribute containing the combined unique array. 
 {% endfor %}
 ```
 
-#### fetch
+#### `fetch`
 
 A filter that fetches content from remote URLs or local files. For remote URLs, it uses `@11ty/eleventy-fetch` to download and cache files. For local paths, it reads files relative to the input directory.
 
@@ -1029,7 +1054,6 @@ export default function (eleventyConfig) {
   <script src="/live-reload.js"></script>
 {% endif %}
 ```
-
 
 ### Symlinked Configuration Files
 
