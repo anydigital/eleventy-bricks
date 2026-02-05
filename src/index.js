@@ -1,4 +1,4 @@
-import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./markdown.js";
+import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./transforms/markdown.js";
 import {
   autoLinkFavicons,
   isPlainUrlText,
