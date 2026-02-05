@@ -7,7 +7,7 @@ import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 /* Conditional imports */
 let pluginTOC;
 try {
-  pluginTOC = (await import('@uncenter/eleventy-plugin-toc')).default;
+  pluginTOC = (await import("@uncenter/eleventy-plugin-toc")).default;
 } catch (e) {
   // @uncenter/eleventy-plugin-toc not installed
 }
@@ -36,7 +36,7 @@ export default function (eleventyConfig) {
     mdAutoRawTags: true,
     mdAutoLinkFavicons: true,
     siteData: true,
-    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
   });
   if (pluginTOC) {
     eleventyConfig.addPlugin(pluginTOC, {

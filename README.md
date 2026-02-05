@@ -27,7 +27,7 @@ export default function (eleventyConfig) {
     mdAutoNl2br: true,
     mdAutoLinkFavicons: true,
     siteData: true,
-    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
   });
 
   // Your other configuration...
@@ -45,7 +45,7 @@ module.exports = function (eleventyConfig) {
     mdAutoNl2br: true,
     mdAutoLinkFavicons: true,
     siteData: true,
-    filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
   });
 
   // Your other configuration...
@@ -65,7 +65,7 @@ import {
   mdAutoRawTags,
   mdAutoNl2br,
   mdAutoLinkFavicons,
-  setAttrFilter,
+  attrSetFilter,
   whereInFilter,
   mergeFilter,
   removeTagFilter,
@@ -79,7 +79,7 @@ export default function (eleventyConfig) {
   mdAutoRawTags(eleventyConfig);
   mdAutoNl2br(eleventyConfig);
   mdAutoLinkFavicons(eleventyConfig);
-  setAttrFilter(eleventyConfig);
+  attrSetFilter(eleventyConfig);
   whereInFilter(eleventyConfig);
   mergeFilter(eleventyConfig);
   removeTagFilter(eleventyConfig);
@@ -102,7 +102,7 @@ const {
   mdAutoRawTags,
   mdAutoNl2br,
   mdAutoLinkFavicons,
-  setAttrFilter,
+  attrSetFilter,
   whereInFilter,
   mergeFilter,
   removeTagFilter,
@@ -116,7 +116,7 @@ module.exports = async function (eleventyConfig) {
   await mdAutoRawTags(eleventyConfig);
   await mdAutoNl2br(eleventyConfig);
   await mdAutoLinkFavicons(eleventyConfig);
-  await setAttrFilter(eleventyConfig);
+  await attrSetFilter(eleventyConfig);
   await whereInFilter(eleventyConfig);
   await mergeFilter(eleventyConfig);
   await removeTagFilter(eleventyConfig);
@@ -148,7 +148,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 
 **Available filter names for the `filters` array:**
 
-- `'attr'` - Override object attributes
+- `'attr_set'` - Override object attributes
 - `'where_in'` - Filter collections by attribute values
 - `'merge'` - Merge arrays or objects
 - `'remove_tag'` - Remove HTML elements from content
@@ -164,7 +164,7 @@ eleventyConfig.addPlugin(eleventyBricks, {
   mdAutoNl2br: true,
   mdAutoLinkFavicons: true,
   siteData: true,
-  filters: ["attr", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+  filters: ["attr_set", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
 });
 ```
 
@@ -182,6 +182,7 @@ The plugin also exports the following utility functions for advanced usage:
 - `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
 - `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
 - `attrConcat(obj, attr, values)`: The core function used by the `attr_concat` filter. Can be used programmatically to concatenate values to an attribute array.
+- `attrSet(obj, key, value)`: The core function used by the `attr_set` filter. Can be used programmatically to override object attributes.
 
 <!--TRICKS-->
 
@@ -200,7 +201,7 @@ The plugin also exports the following utility functions for advanced usage:
 |   `OBJ \|` | `selectattr(BOOL_ATTR)`                                                         | `where: ATTR, VALUE`                                 |
 |   `OBJ \|` | `rejectattr(BOOL_ATTR)`                                                         | N/A                                                  |
 |   `OBJ \|` | [`attr_includes(ARRAY_ATTR, VALUE)`](#where_in) <sub>currently `where_in`</sub> | [`attr_includes: ARRAY_ATTR, VALUE`](#attr_includes) |
-|   `OBJ \|` | [`attr_set(ATTR, VALUE)`](#attr) <sub>currently `attr`</sub>                    | [`attr_set: ATTR, VALUE`](#attr)                     |
+|   `OBJ \|` | [`attr_set(ATTR, VALUE)`](#attr_set) <sub>was `attr`</sub>                      | [`attr_set: ATTR, VALUE`](#attr_set)                 |
 |   `OBJ \|` | [`attr_concat(ARRAY_ATTR, ARRAY2)`](#attr_concat)                               | [`attr_concat: ARRAY_ATTR, ARRAY2`](#attr_concat)    |
 | {.divider} | Textual                                                                         |
 |  `HTML \|` | `striptags`                                                                     | `strip_html`                                         |
@@ -214,25 +215,25 @@ Ref:
 - https://mozilla.github.io/nunjucks/templating.html#builtin-filters
 - https://shopify.github.io/liquid/
 
-#### `attr`
+#### `attr_set`
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original.
 
 **Why use this?**
 
-When working with Eleventy data, you sometimes need to modify an object's properties for a specific use case. The `attr` filter provides a clean way to create a modified copy of an object without affecting the original.
+When working with Eleventy data, you sometimes need to modify an object's properties for a specific use case. The `attr_set` filter provides a clean way to create a modified copy of an object without affecting the original.
 
 **Usage:**
 
-1. Enable the `attr` filter in your Eleventy config:
+1. Enable the `attr_set` filter in your Eleventy config:
 
 ```javascript
-import { setAttrFilter } from "@anydigital/eleventy-bricks";
+import { attrSetFilter } from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
-  setAttrFilter(eleventyConfig);
+  attrSetFilter(eleventyConfig);
   // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr'] });
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr_set'] });
 }
 ```
 
@@ -240,7 +241,7 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Create a modified version of a page object #}
-{% set modifiedPage = page | attr('title', 'New Title') %}
+{% set modifiedPage = page | attr_set('title', 'New Title') %}
 
 <h1>{{ modifiedPage.title }}</h1>
 <p>Original title: {{ page.title }}</p>
@@ -267,17 +268,17 @@ A new object with the specified attribute set to the given value. The original o
 
 ```njk
 {# Override a single attribute #}
-{% set updatedPost = post | attr('featured', true) %}
+{% set updatedPost = post | attr_set('featured', true) %}
 
-{# Chain multiple attr filters #}
+{# Chain multiple attr_set filters #}
 {% set modifiedPost = post
-  | attr('category', 'blog')
-  | attr('priority', 1)
+  | attr_set('category', 'blog')
+  | attr_set('priority', 1)
 %}
 
 {# Use in loops #}
 {% for item in collection %}
-  {% set enhancedItem = item | attr('processed', true) %}
+  {% set enhancedItem = item | attr_set('processed', true) %}
   {# ... use enhancedItem ... #}
 {% endfor %}
 ```
