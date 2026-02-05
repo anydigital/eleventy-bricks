@@ -13,22 +13,37 @@ module.exports = async function eleventyBricksPlugin(eleventyConfig, options) {
 [
   "mdAutoRawTags",
   "mdAutoNl2br",
+  "autoLinkFavicons",
   "attrSetFilter",
   "attrIncludesFilter",
   "mergeFilter",
   "removeTagFilter",
   "ifFilter",
   "attrConcatFilter",
+  "fetchFilter",
   "siteData",
 ].forEach((name) => {
-  module.exports[name] = async (eleventyConfig) => {
+  module.exports[name] = async (...args) => {
     const module = await import("./index.js");
-    return module[name](eleventyConfig);
+    return module[name](...args);
   };
 });
 
 // Export transform/utility functions for advanced usage
-["transformAutoRaw", "transformNl2br", "merge", "removeTag", "iff", "attrConcat", "attrSet"].forEach((name) => {
+[
+  "transformAutoRaw",
+  "transformNl2br",
+  "isPlainUrlText",
+  "cleanLinkText",
+  "buildFaviconLink",
+  "transformLink",
+  "replaceLinksInHtml",
+  "merge",
+  "removeTag",
+  "iff",
+  "attrConcat",
+  "attrSet",
+].forEach((name) => {
   module.exports[name] = async (...args) => {
     const module = await import("./index.js");
     return module[name](...args);

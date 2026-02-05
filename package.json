@@ -1,6 +1,6 @@
 {
   "name": "@anydigital/eleventy-bricks",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "description": "A collection of helpful utilities and filters for Eleventy (11ty)",
   "type": "module",
   "main": "./src/index.js",
@@ -11,7 +11,8 @@
     }
   },
   "scripts": {
-    "test": "node --test src/**/*.test.js"
+    "test": "node --test src/**/*.test.js",
+    "prepublishOnly": "npm run test"
   },
   "keywords": [
     "11ty",

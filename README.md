@@ -179,6 +179,7 @@ The plugin also exports the following utility functions for advanced usage:
 - `buildFaviconLink(attrs, domain, text)`: Helper function that builds HTML for a link with favicon.
 - `transformLink(match, attrs, url, linkText)`: The transform function used by `autoLinkFavicons` that transforms a single link to include a favicon.
 - `replaceLinksInHtml(content, transformer)`: Helper function that replaces all anchor links in HTML content with transformed versions.
+- `attrIncludes(collection, attrName, targetValue)`: The core logic for filtering collection items by checking if an attribute array includes a target value. Can be used programmatically to filter collections.
 - `merge(first, ...rest)`: The core merge function used by the `merge` filter. Can be used programmatically to merge arrays or objects.
 - `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
 - `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
@@ -286,11 +287,11 @@ A new object with the specified attribute set to the given value. The original o
 
 #### `attr_includes`
 
-A filter that filters collection items by attribute value. It checks if an item's attribute matches a target value. If the attribute is an array, it checks if the array includes the target value. Supports nested attribute names using dot notation.
+A filter that filters collection items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
 **Why use this?**
 
-When working with Eleventy collections, you often need to filter items based on front matter data. The `attr_includes` filter provides a flexible way to filter by any attribute, with special handling for array attributes (like tags) and support for nested properties using dot notation.
+When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
 
 **Usage:**
 
@@ -308,17 +309,6 @@ export default function (eleventyConfig) {
 
 2. Use the filter in your templates:
 
-**Filter by exact attribute match:**
-
-```njk
-{# Get all posts with category 'blog' #}
-{% set blogPosts = collections.all | attr_includes('data.category', 'blog') %}
-
-{% for post in blogPosts %}
-  <h2>{{ post.data.title }}</h2>
-{% endfor %}
-```
-
 **Filter by array attribute (tags):**
 
 ```njk
@@ -334,15 +324,14 @@ export default function (eleventyConfig) {
 
 - `collection`: The collection to filter (array of items)
 - `attrName`: The attribute name to check (string, supports dot notation for nested properties)
-- `targetValue`: The value to match against (any type)
+- `targetValue`: The value to check for in the array (any type)
 
 **Features:**
 
-- Works with any attribute in front matter
-- Supports dot notation for nested properties (e.g., `'data.tags'`, `'data.author.name'`)
-- Special handling for array attributes (uses `includes()` check)
+- Works with any array attribute in front matter
+- Supports dot notation for nested properties (e.g., `'data.tags'`, `'data.author.roles'`)
 - Returns empty array if collection is invalid
-- Filters out items without the specified attribute
+- Filters out items where the specified attribute is not an array or doesn't exist
 
 **Examples:**
 
@@ -360,17 +349,14 @@ priority: 1
 Template usage:
 
 ```njk
-{# Filter by category (using dot notation for nested properties) #}
-{% set blogPosts = collections.all | attr_includes('data.category', 'blog') %}
-
-{# Filter by tag (array) #}
+{# Filter by tag (array) using dot notation for nested properties #}
 {% set jsTutorials = collections.all | attr_includes('data.tags', 'javascript') %}
 
-{# Filter by numeric value #}
-{% set highPriority = collections.all | attr_includes('data.priority', 1) %}
+{# Filter by numeric value in array #}
+{% set highPriority = collections.all | attr_includes('data.priorities', 1) %}
 
 {# Chain filters #}
-{% set recentBlogPosts = collections.all | attr_includes('data.category', 'blog') | reverse | limit(5) %}
+{% set recentTutorials = collections.all | attr_includes('data.tags', 'tutorial') | reverse | limit(5) %}
 ```
 
 #### `merge`
