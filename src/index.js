@@ -1,14 +1,12 @@
+import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./markdown.js";
 import {
-  mdAutoRawTags,
-  mdAutoNl2br,
-  mdAutoLinkFavicons,
-  transformAutoRaw,
-  transformNl2br,
+  autoLinkFavicons,
   isPlainUrlText,
   cleanLinkText,
   buildFaviconLink,
   transformLink,
-} from "./markdown.js";
+  replaceLinksInHtml,
+} from "./transforms/autoLinkFavicons.js";
 import { attrSetFilter, attrSet } from "./filters/attr_set.js";
 import { attrIncludesFilter } from "./filters/attr_includes.js";
 import { mergeFilter, merge } from "./filters/merge.js";
@@ -37,7 +35,7 @@ try {
  * @param {Object} options - Plugin options
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
- * @param {boolean} options.mdAutoLinkFavicons - Enable mdAutoLinkFavicons to add favicons to plain text links (default: false)
+ * @param {boolean} options.autoLinkFavicons - Enable autoLinkFavicons to add favicons to plain text links (default: false)
  * @param {Array<string>} options.filters - Array of filter names to enable: 'attr_set', 'attr_includes', 'merge', 'remove_tag', 'if', 'attr_concat', 'fetch' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
  */
@@ -45,7 +43,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
   const plugins = {
     mdAutoRawTags,
     mdAutoNl2br,
-    mdAutoLinkFavicons,
+    autoLinkFavicons,
     siteData,
   };
 
@@ -81,7 +79,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 export {
   mdAutoRawTags,
   mdAutoNl2br,
-  mdAutoLinkFavicons,
+  autoLinkFavicons,
   attrSetFilter,
   attrIncludesFilter,
   mergeFilter,
@@ -100,6 +98,7 @@ export {
   cleanLinkText,
   buildFaviconLink,
   transformLink,
+  replaceLinksInHtml,
   merge,
   removeTag,
   iff,
