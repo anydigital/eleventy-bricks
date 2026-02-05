@@ -14,7 +14,7 @@ module.exports = async function eleventyBricksPlugin(eleventyConfig, options) {
   "mdAutoRawTags",
   "mdAutoNl2br",
   "attrSetFilter",
-  "whereInFilter",
+  "attrIncludesFilter",
   "mergeFilter",
   "removeTagFilter",
   "ifFilter",

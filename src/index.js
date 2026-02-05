@@ -10,7 +10,7 @@ import {
   transformLink,
 } from "./markdown.js";
 import { attrSetFilter, attrSet } from "./filters/attr_set.js";
-import { whereInFilter } from "./filters/where_in.js";
+import { attrIncludesFilter } from "./filters/attr_includes.js";
 import { mergeFilter, merge } from "./filters/merge.js";
 import { removeTagFilter, removeTag } from "./filters/remove_tag.js";
 import { ifFilter, iff } from "./filters/if.js";
@@ -38,7 +38,7 @@ try {
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
  * @param {boolean} options.mdAutoLinkFavicons - Enable mdAutoLinkFavicons to add favicons to plain text links (default: false)
- * @param {Array<string>} options.filters - Array of filter names to enable: 'attr_set', 'where_in', 'merge', 'remove_tag', 'if', 'attr_concat', 'fetch' (default: [])
+ * @param {Array<string>} options.filters - Array of filter names to enable: 'attr_set', 'attr_includes', 'merge', 'remove_tag', 'if', 'attr_concat', 'fetch' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
@@ -51,7 +51,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
 
   const filters = {
     attr_set: attrSetFilter,
-    where_in: whereInFilter,
+    attr_includes: attrIncludesFilter,
     merge: mergeFilter,
     remove_tag: removeTagFilter,
     if: ifFilter,
@@ -83,7 +83,7 @@ export {
   mdAutoNl2br,
   mdAutoLinkFavicons,
   attrSetFilter,
-  whereInFilter,
+  attrIncludesFilter,
   mergeFilter,
   removeTagFilter,
   ifFilter,

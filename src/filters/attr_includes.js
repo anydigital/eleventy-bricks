@@ -15,7 +15,7 @@ const { get } = lodash;
  * @param {*} targetValue - The value to match against
  * @returns {Array} Filtered collection
  */
-export function whereIn(collection, attrName, targetValue) {
+export function attrIncludes(collection, attrName, targetValue) {
   // If no targetValue, return original collection
   if (!targetValue) {
     return collection;
@@ -36,10 +36,10 @@ export function whereIn(collection, attrName, targetValue) {
 }
 
 /**
- * Registers the where_in filter with Eleventy
+ * Registers the attr_includes filter with Eleventy
  *
  * @param {Object} eleventyConfig - The Eleventy configuration object
  */
-export function whereInFilter(eleventyConfig) {
-  eleventyConfig.addFilter("where_in", whereIn);
+export function attrIncludesFilter(eleventyConfig) {
+  eleventyConfig.addFilter("attr_includes", attrIncludes);
 }

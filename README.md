@@ -27,7 +27,7 @@ export default function (eleventyConfig) {
     mdAutoNl2br: true,
     mdAutoLinkFavicons: true,
     siteData: true,
-    filters: ["attr_set", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch"],
   });
 
   // Your other configuration...
@@ -45,7 +45,7 @@ module.exports = function (eleventyConfig) {
     mdAutoNl2br: true,
     mdAutoLinkFavicons: true,
     siteData: true,
-    filters: ["attr_set", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch"],
   });
 
   // Your other configuration...
@@ -66,7 +66,7 @@ import {
   mdAutoNl2br,
   mdAutoLinkFavicons,
   attrSetFilter,
-  whereInFilter,
+  attrIncludesFilter,
   mergeFilter,
   removeTagFilter,
   ifFilter,
@@ -80,7 +80,7 @@ export default function (eleventyConfig) {
   mdAutoNl2br(eleventyConfig);
   mdAutoLinkFavicons(eleventyConfig);
   attrSetFilter(eleventyConfig);
-  whereInFilter(eleventyConfig);
+  attrIncludesFilter(eleventyConfig);
   mergeFilter(eleventyConfig);
   removeTagFilter(eleventyConfig);
   ifFilter(eleventyConfig);
@@ -103,7 +103,7 @@ const {
   mdAutoNl2br,
   mdAutoLinkFavicons,
   attrSetFilter,
-  whereInFilter,
+  attrIncludesFilter,
   mergeFilter,
   removeTagFilter,
   ifFilter,
@@ -117,7 +117,7 @@ module.exports = async function (eleventyConfig) {
   await mdAutoNl2br(eleventyConfig);
   await mdAutoLinkFavicons(eleventyConfig);
   await attrSetFilter(eleventyConfig);
-  await whereInFilter(eleventyConfig);
+  await attrIncludesFilter(eleventyConfig);
   await mergeFilter(eleventyConfig);
   await removeTagFilter(eleventyConfig);
   await ifFilter(eleventyConfig);
@@ -149,7 +149,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 **Available filter names for the `filters` array:**
 
 - `'attr_set'` - Override object attributes
-- `'where_in'` - Filter collections by attribute values
+- `'attr_includes'` - Filter collections by attribute values
 - `'merge'` - Merge arrays or objects
 - `'remove_tag'` - Remove HTML elements from content
 - `'if'` - Inline conditional/ternary operator
@@ -164,7 +164,7 @@ eleventyConfig.addPlugin(eleventyBricks, {
   mdAutoNl2br: true,
   mdAutoLinkFavicons: true,
   siteData: true,
-  filters: ["attr_set", "where_in", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+  filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch"],
 });
 ```
 
@@ -190,25 +190,25 @@ The plugin also exports the following utility functions for advanced usage:
 
 ### Filters
 
-|      Input | Nunjucks                                                                        | Liquid <hr>                                          |
-| ---------: | ------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| {.divider} | Logical                                                                         |
-|  `ANY \| ` | `default(VALUE)` <br>= `d(...)`                                                 | `default: VALUE`                                     |
-|   `ANY \|` | [`if(TEST, OP, VALUE)`](#if) <sub>currently only `if(TEST)`</sub>               | [`if: TEST, OP, VALUE`](#if)                         |
-| {.divider} | On objects                                                                      |
-|   `OBJ \|` | [`merge(OBJ2)`](#merge)                                                         | [`merge: OBJ2`](#merge)                              |
-| {.divider} | On object attributes                                                            |
-|   `OBJ \|` | `selectattr(BOOL_ATTR)`                                                         | `where: ATTR, VALUE`                                 |
-|   `OBJ \|` | `rejectattr(BOOL_ATTR)`                                                         | N/A                                                  |
-|   `OBJ \|` | [`attr_includes(ARRAY_ATTR, VALUE)`](#where_in) <sub>currently `where_in`</sub> | [`attr_includes: ARRAY_ATTR, VALUE`](#attr_includes) |
-|   `OBJ \|` | [`attr_set(ATTR, VALUE)`](#attr_set) <sub>was `attr`</sub>                      | [`attr_set: ATTR, VALUE`](#attr_set)                 |
-|   `OBJ \|` | [`attr_concat(ARRAY_ATTR, ARRAY2)`](#attr_concat)                               | [`attr_concat: ARRAY_ATTR, ARRAY2`](#attr_concat)    |
-| {.divider} | Textual                                                                         |
-|  `HTML \|` | `striptags`                                                                     | `strip_html`                                         |
-|  `HTML \|` | [`remove_tag(TAG)`](#remove_tag)                                                | [`remove_tag: TAG`](#remove_tag)                     |
-|   `STR \|` | `remove: STR2`                                                                  | `remove: STR2`                                       |
-| {.divider} | Other                                                                           |
-|   `URL \|` | [`fetch`](#fetch)                                                               | [`fetch`](#fetch)                                    |
+|      Input | Nunjucks                                                                       | Liquid <hr>                                          |
+| ---------: | ------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| {.divider} | Logical                                                                        |
+|  `ANY \| ` | `default(VALUE)` <br>= `d(...)`                                                | `default: VALUE`                                     |
+|   `ANY \|` | [`if(TEST, OP, VALUE)`](#if) <sub>currently only `if(TEST)`</sub>              | [`if: TEST, OP, VALUE`](#if)                         |
+| {.divider} | On objects                                                                     |
+|   `OBJ \|` | [`merge(OBJ2)`](#merge)                                                        | [`merge: OBJ2`](#merge)                              |
+| {.divider} | On object attributes                                                           |
+|   `OBJ \|` | `selectattr(BOOL_ATTR)`                                                        | `where: ATTR, VALUE`                                 |
+|   `OBJ \|` | `rejectattr(BOOL_ATTR)`                                                        | N/A                                                  |
+|   `OBJ \|` | [`attr_includes(ARRAY_ATTR, VALUE)`](#attr_includes) <sub>was `where_in`</sub> | [`attr_includes: ARRAY_ATTR, VALUE`](#attr_includes) |
+|   `OBJ \|` | [`attr_set(ATTR, VALUE)`](#attr_set) <sub>was `attr`</sub>                     | [`attr_set: ATTR, VALUE`](#attr_set)                 |
+|   `OBJ \|` | [`attr_concat(ARRAY_ATTR, ARRAY2)`](#attr_concat)                              | [`attr_concat: ARRAY_ATTR, ARRAY2`](#attr_concat)    |
+| {.divider} | Textual                                                                        |
+|  `HTML \|` | `striptags`                                                                    | `strip_html`                                         |
+|  `HTML \|` | [`remove_tag(TAG)`](#remove_tag)                                               | [`remove_tag: TAG`](#remove_tag)                     |
+|   `STR \|` | `remove: STR2`                                                                 | `remove: STR2`                                       |
+| {.divider} | Other                                                                          |
+|   `URL \|` | [`fetch`](#fetch)                                                              | [`fetch`](#fetch)                                    |
 
 Ref:
 
@@ -283,25 +283,25 @@ A new object with the specified attribute set to the given value. The original o
 {% endfor %}
 ```
 
-#### `where_in`
+#### `attr_includes`
 
 A filter that filters collection items by attribute value. It checks if an item's attribute matches a target value. If the attribute is an array, it checks if the array includes the target value. Supports nested attribute names using dot notation.
 
 **Why use this?**
 
-When working with Eleventy collections, you often need to filter items based on front matter data. The `where_in` filter provides a flexible way to filter by any attribute, with special handling for array attributes (like tags) and support for nested properties using dot notation.
+When working with Eleventy collections, you often need to filter items based on front matter data. The `attr_includes` filter provides a flexible way to filter by any attribute, with special handling for array attributes (like tags) and support for nested properties using dot notation.
 
 **Usage:**
 
-1. Enable the `where_in` filter in your Eleventy config:
+1. Enable the `attr_includes` filter in your Eleventy config:
 
 ```javascript
-import { whereInFilter } from "@anydigital/eleventy-bricks";
+import { attrIncludesFilter } from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
-  whereInFilter(eleventyConfig);
+  attrIncludesFilter(eleventyConfig);
   // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['where_in'] });
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr_includes'] });
 }
 ```
 
@@ -311,7 +311,7 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Get all posts with category 'blog' #}
-{% set blogPosts = collections.all | where_in('data.category', 'blog') %}
+{% set blogPosts = collections.all | attr_includes('data.category', 'blog') %}
 
 {% for post in blogPosts %}
   <h2>{{ post.data.title }}</h2>
@@ -322,7 +322,7 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Get all posts that include 'javascript' tag #}
-{% set jsPosts = collections.all | where_in('data.tags', 'javascript') %}
+{% set jsPosts = collections.all | attr_includes('data.tags', 'javascript') %}
 
 {% for post in jsPosts %}
   <h2>{{ post.data.title }}</h2>
@@ -360,16 +360,16 @@ Template usage:
 
 ```njk
 {# Filter by category (using dot notation for nested properties) #}
-{% set blogPosts = collections.all | where_in('data.category', 'blog') %}
+{% set blogPosts = collections.all | attr_includes('data.category', 'blog') %}
 
 {# Filter by tag (array) #}
-{% set jsTutorials = collections.all | where_in('data.tags', 'javascript') %}
+{% set jsTutorials = collections.all | attr_includes('data.tags', 'javascript') %}
 
 {# Filter by numeric value #}
-{% set highPriority = collections.all | where_in('data.priority', 1) %}
+{% set highPriority = collections.all | attr_includes('data.priority', 1) %}
 
 {# Chain filters #}
-{% set recentBlogPosts = collections.all | where_in('data.category', 'blog') | reverse | limit(5) %}
+{% set recentBlogPosts = collections.all | attr_includes('data.category', 'blog') | reverse | limit(5) %}
 ```
 
 #### `merge`
@@ -439,8 +439,8 @@ export default function (eleventyConfig) {
 
 ```njk
 {# Combine featured and regular posts #}
-{% set featuredPosts = collections.all | where_in('data.featured', true) %}
-{% set regularPosts = collections.all | where_in('data.featured', false) %}
+{% set featuredPosts = collections.all | attr_includes('data.featured', true) %}
+{% set regularPosts = collections.all | attr_includes('data.featured', false) %}
 {% set allPosts = featuredPosts | merge(regularPosts) %}
 
 {# Merge page metadata with defaults #}
