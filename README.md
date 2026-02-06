@@ -27,7 +27,7 @@ export default function (eleventyConfig) {
     mdAutoNl2br: true,
     autoLinkFavicons: true,
     siteData: true,
-    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "section", "fetch"],
   });
 
   // Your other configuration...
@@ -45,7 +45,7 @@ module.exports = function (eleventyConfig) {
     mdAutoNl2br: true,
     autoLinkFavicons: true,
     siteData: true,
-    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "section", "fetch"],
   });
 
   // Your other configuration...
@@ -71,6 +71,7 @@ import {
   removeTagFilter,
   ifFilter,
   attrConcatFilter,
+  sectionFilter,
   fetchFilter,
   siteData,
 } from "@anydigital/eleventy-bricks";
@@ -85,6 +86,7 @@ export default function (eleventyConfig) {
   removeTagFilter(eleventyConfig);
   ifFilter(eleventyConfig);
   attrConcatFilter(eleventyConfig);
+  sectionFilter(eleventyConfig);
   // fetchFilter is only available if @11ty/eleventy-fetch is installed
   if (fetchFilter) {
     fetchFilter(eleventyConfig);
@@ -108,6 +110,7 @@ const {
   removeTagFilter,
   ifFilter,
   attrConcatFilter,
+  sectionFilter,
   fetchFilter,
   siteData,
 } = require("@anydigital/eleventy-bricks");
@@ -122,6 +125,7 @@ module.exports = async function (eleventyConfig) {
   await removeTagFilter(eleventyConfig);
   await ifFilter(eleventyConfig);
   await attrConcatFilter(eleventyConfig);
+  await sectionFilter(eleventyConfig);
   // fetchFilter is only available if @11ty/eleventy-fetch is installed
   if (fetchFilter) {
     await fetchFilter(eleventyConfig);
@@ -154,6 +158,7 @@ When using the plugin (Option 1), you can configure which helpers to enable:
 - `'remove_tag'` - Remove HTML elements from content
 - `'if'` - Inline conditional/ternary operator
 - `'attr_concat'` - Concatenate values to an attribute array
+- `'section'` - Extract named sections from content marked with HTML comments
 - `'fetch'` - Fetch remote URLs or local files (requires `@11ty/eleventy-fetch`)
 
 **Example:**
@@ -164,7 +169,7 @@ eleventyConfig.addPlugin(eleventyBricks, {
   mdAutoNl2br: true,
   autoLinkFavicons: true,
   siteData: true,
-  filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+  filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "section", "fetch"],
 });
 ```
 
@@ -185,8 +190,9 @@ The plugin also exports the following utility functions for advanced usage:
 - `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
 - `attrConcat(obj, attr, values)`: The core function used by the `attr_concat` filter. Can be used programmatically to concatenate values to an attribute array.
 - `attrSet(obj, key, value)`: The core function used by the `attr_set` filter. Can be used programmatically to override object attributes.
+- `section(content, sectionName)`: The core function used by the `section` filter. Can be used programmatically to extract named sections from content.
 
-<!--TRICKS-->
+<!--section:11ty-->
 
 ## Tricks from [Eleventy Bricks](https://github.com/anydigital/eleventy-bricks) {#eleventy-bricks}
 
@@ -208,6 +214,7 @@ The plugin also exports the following utility functions for advanced usage:
 | {.divider} | Textual                                                                        |
 |  `HTML \|` | `striptags`                                                                    | `strip_html`                                         |
 |  `HTML \|` | [`remove_tag(TAG)`](#remove_tag)                                               | [`remove_tag: TAG`](#remove_tag)                     |
+|  `HTML \|` | [`section(NAME)`](#section)                                                    | [`section: NAME`](#section)                          |
 |   `STR \|` | `remove: STR2`                                                                 | `remove: STR2`                                       |
 | {.divider} | Other                                                                          |
 |   `URL \|` | [`fetch`](#fetch)                                                              | [`fetch`](#fetch)                                    |
@@ -519,6 +526,103 @@ export default function (eleventyConfig) {
 **Security Note:**
 
 While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
+
+#### `section`
+
+A filter that extracts a named section from content marked with HTML comments. This is useful for splitting a single content file (like a Markdown post) into multiple parts that can be displayed and styled independently in your templates.
+
+**Why use this?**
+
+When working with Markdown content in Eleventy, you're usually limited to a single `content` variable. The `section` filter allows you to define multiple named sections within your content using simple HTML comments, giving you granular control over where different parts of your content appear in your layout.
+
+**Usage:**
+
+1. Enable the `section` filter in your Eleventy config:
+
+```javascript
+import { sectionFilter } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  sectionFilter(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['section'] });
+}
+```
+
+2. Mark sections in your content file (e.g., `post.md`):
+
+```markdown
+# My Post
+
+&lt;!--section:intro-->
+
+This is the introduction that appears at the top of the page.
+
+&lt;!--section:main-->
+
+This is the main body of the post with all the details.
+
+&lt;!--section:summary,sidebar-->
+
+This content appears in both the summary and the sidebar!
+```
+
+3. Use the filter in your templates:
+
+```njk
+{# Get the intro section #}
+<div class="page-intro">
+  {{ content | section('intro') | safe }}
+</div>
+
+{# Get the main section #}
+<article>
+  {{ content | section('main') | safe }}
+</article>
+
+{# Get the sidebar section #}
+<aside>
+  {{ content | section('sidebar') | safe }}
+</aside>
+```
+
+**Parameters:**
+
+- `content`: The string content to process (usually `content` variable)
+- `sectionName`: The name(s) of the section to extract (string)
+
+**Features:**
+
+- **Multiple names**: A single section can have multiple names separated by commas: `&lt;!--section:name1,name2-->`
+- **Case-insensitive**: Section names are matched without regard to case
+- **Multiple occurrences**: If a section name appears multiple times, the filter concatenates all matching sections
+- **Non-destructive**: Returns extracted content without modifying the original input
+- **EOF support**: Sections continue until the next `&lt;!--section*-->` marker or the end of the file
+
+**Examples:**
+
+```njk
+{# Extract multiple sections with same name #}
+{# Example content has two &lt;!--section:note--> blocks #}
+<div class="notes-box">
+  {{ content | section('note') | safe }}
+</div>
+
+{# Use case-insensitive names #}
+{{ content | section('INTRO') | safe }}
+
+{# Handle missing sections gracefully (returns empty string) #}
+{% set footer = content | section('non-existent-section') %}
+{% if footer %}
+  <footer>{{ footer | safe }}</footer>
+{% endif %}
+```
+
+**Syntax Rules:**
+
+- Sections start with: `&lt;!--section:NAME-->` or `&lt;!--section:NAME1,NAME2-->`
+- Sections end at the next `&lt;!--section*-->` marker or end of file
+- Whitespace around names and inside comments is automatically trimmed
 
 #### `if`
 
@@ -1100,6 +1204,8 @@ A ready-to-use Sveltia CMS admin interface for content management.
 mkdir -p admin
 ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
 ```
+
+<!--section:npm,11ty-->
 
 ### Using the `do` Folder Pattern
 

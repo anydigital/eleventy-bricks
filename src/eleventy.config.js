@@ -36,7 +36,7 @@ export default function (eleventyConfig) {
     mdAutoRawTags: true,
     autoLinkFavicons: true,
     siteData: true,
-    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch"],
+    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch", "section"],
   });
   if (pluginTOC) {
     eleventyConfig.addPlugin(pluginTOC, {

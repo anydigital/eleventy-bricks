@@ -13,6 +13,7 @@ import { mergeFilter, merge } from "./filters/merge.js";
 import { removeTagFilter, removeTag } from "./filters/remove_tag.js";
 import { ifFilter, iff } from "./filters/if.js";
 import { attrConcatFilter, attrConcat } from "./filters/attr_concat.js";
+import { sectionFilter, section as sectionFn } from "./filters/section.js";
 import { siteData } from "./siteData.js";
 
 // Conditionally import fetchFilter only if @11ty/eleventy-fetch is available
@@ -36,7 +37,7 @@ try {
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
  * @param {boolean} options.autoLinkFavicons - Enable autoLinkFavicons to add favicons to plain text links (default: false)
- * @param {Array<string>} options.filters - Array of filter names to enable: 'attr_set', 'attr_includes', 'merge', 'remove_tag', 'if', 'attr_concat', 'fetch' (default: [])
+ * @param {Array<string>} options.filters - Array of filter names to enable: 'attr_set', 'attr_includes', 'merge', 'remove_tag', 'if', 'attr_concat', 'section', 'fetch' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
  */
 export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
@@ -54,6 +55,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
     remove_tag: removeTagFilter,
     if: ifFilter,
     attr_concat: attrConcatFilter,
+    section: sectionFilter,
     ...(fetchFilter && { fetch: fetchFilter }),
   };
 
@@ -86,6 +88,7 @@ export {
   removeTagFilter,
   ifFilter,
   attrConcatFilter,
+  sectionFilter,
   fetchFilter,
   siteData,
 };
@@ -104,4 +107,5 @@ export {
   iff,
   attrConcat,
   attrSet,
+  sectionFn as section,
 };
