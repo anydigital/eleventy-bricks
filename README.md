@@ -196,7 +196,7 @@ The plugin also exports the following utility functions for advanced usage:
 
 ## Tricks from [`eleventy-bricks`](https://github.com/anydigital/eleventy-bricks) {#eleventy-bricks}
 
-### Filters <sub>universal fitlers for `.njk` & `.liquid`</sub>
+### Filters <sub>universal filters for `.njk` & `.liquid`</sub>
 
 |      Input | Filter                            | Arguments                                          |
 | ---------: | --------------------------------- | -------------------------------------------------- |
