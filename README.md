@@ -194,35 +194,23 @@ The plugin also exports the following utility functions for advanced usage:
 
 <!--section:11ty-->
 
-## Tricks from [Eleventy Bricks](https://github.com/anydigital/eleventy-bricks) {#eleventy-bricks}
+## Tricks from [`eleventy-bricks`](https://github.com/anydigital/eleventy-bricks) {#eleventy-bricks}
 
-### Filters
+### Filters <sub>universal fitlers for `.njk` & `.liquid`</sub>
 
-|      Input | Nunjucks                                                                       | Liquid <hr>                                          |
-| ---------: | ------------------------------------------------------------------------------ | ---------------------------------------------------- |
-| {.divider} | Logical                                                                        |
-|  `ANY \| ` | `default(VALUE)` <br>= `d(...)`                                                | `default: VALUE`                                     |
-|   `ANY \|` | [`if(TEST, OP, VALUE)`](#if) <sub>currently only `if(TEST)`</sub>              | [`if: TEST, OP, VALUE`](#if)                         |
-| {.divider} | On objects                                                                     |
-|   `OBJ \|` | [`merge(OBJ2)`](#merge)                                                        | [`merge: OBJ2`](#merge)                              |
-| {.divider} | On object attributes                                                           |
-|   `OBJ \|` | `selectattr(BOOL_ATTR)`                                                        | `where: ATTR, VALUE`                                 |
-|   `OBJ \|` | `rejectattr(BOOL_ATTR)`                                                        | N/A                                                  |
-|   `OBJ \|` | [`attr_includes(ARRAY_ATTR, VALUE)`](#attr_includes) <sub>was `where_in`</sub> | [`attr_includes: ARRAY_ATTR, VALUE`](#attr_includes) |
-|   `OBJ \|` | [`attr_set(ATTR, VALUE)`](#attr_set) <sub>was `attr`</sub>                     | [`attr_set: ATTR, VALUE`](#attr_set)                 |
-|   `OBJ \|` | [`attr_concat(ARRAY_ATTR, ARRAY2)`](#attr_concat)                              | [`attr_concat: ARRAY_ATTR, ARRAY2`](#attr_concat)    |
-| {.divider} | Textual                                                                        |
-|  `HTML \|` | `striptags`                                                                    | `strip_html`                                         |
-|  `HTML \|` | [`remove_tag(TAG)`](#remove_tag)                                               | [`remove_tag: TAG`](#remove_tag)                     |
-|  `HTML \|` | [`section(NAME)`](#section)                                                    | [`section: NAME`](#section)                          |
-|   `STR \|` | `remove: STR2`                                                                 | `remove: STR2`                                       |
-| {.divider} | Other                                                                          |
-|   `URL \|` | [`fetch`](#fetch)                                                              | [`fetch`](#fetch)                                    |
-
-Ref:
-
-- https://mozilla.github.io/nunjucks/templating.html#builtin-filters
-- https://shopify.github.io/liquid/
+|      Input | Filter                            | Arguments                                          |
+| ---------: | --------------------------------- | -------------------------------------------------- |
+| {.divider} | Logical filters:                  |
+|   `ANY \|` | [`if`](#if)                       | `TEST, OP, VALUE` <sub>currently only `TEST`</sub> |
+| {.divider} | Filters for objects:              |
+|   `OBJ \|` | [`merge`](#merge)                 | `OBJ2`                                             |
+|   `OBJ \|` | [`attr_set`](#attr_set)           | `ATTR, VALUE`                                      |
+|   `OBJ \|` | [`attr_concat`](#attr_concat)     | `ATTR, ARRAY2`                                     |
+|   `OBJ \|` | [`attr_includes`](#attr_includes) | `ATTR, VALUE`                                      |
+| {.divider} | Other filters:                    |
+|   `URL \|` | [`fetch`](#fetch)                 |                                                    |
+|  `HTML \|` | [`section`](#section)             | `NAME`                                             |
+|  `HTML \|` | [`remove_tag`](#remove_tag)       | `TAG`                                              |
 
 #### `attr_set`
 
