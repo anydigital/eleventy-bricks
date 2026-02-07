@@ -192,9 +192,9 @@ The plugin also exports the following utility functions for advanced usage:
 - `attrSet(obj, key, value)`: The core function used by the `attr_set` filter. Can be used programmatically to override object attributes.
 - `section(content, sectionName)`: The core function used by the `section` filter. Can be used programmatically to extract named sections from content.
 
-<!--section:11ty-->
+## Features
 
-## Tricks from [`eleventy-bricks`](https://github.com/anydigital/eleventy-bricks) {#eleventy-bricks}
+<!--section:11ty-->
 
 ### Filters <sub>universal filters for `.njk` & `.liquid`</sub>
 
