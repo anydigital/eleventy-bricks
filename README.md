@@ -1201,59 +1201,49 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/ind
 
 <!--section:npm-h3-->
 
-### Using the `do` Folder Pattern
+### Reusable 11ty npm scripts <small>via npm workspace trick</small> <sub>by https://github.com/anydigital/eleventy-bricks</sub>
 
 This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
 
-**Setup:**
+**Quick Setup:**
 
-1. Create a `do` folder in your project root:
+1. Create a simple folder, which will hold reusable npm scripts:
 
-```bash
-mkdir do
-```
+   ```sh
+   mkdir do
+   ```
 
-2. Symlink the package.json from the eleventy-bricks package:
+2. Install https://github.com/anydigital/eleventy-bricks to reuse default 11ty scripts from there:
 
-```bash
-ln -s node_modules/@anydigital/eleventy-bricks/src/do/package.json do/package.json
-```
+   ```sh
+   npm install @anydigital/eleventy-bricks
+   ```
 
-3. Configure your root `package.json` to use npm workspaces:
+3. Symlink the `do/package.json` containing scripts into your project's `do` folder:
 
-```json
-{
-  "name": "my-project",
-  "workspaces": ["do"],
-  "scripts": {
-    "build": "npm -w do run build",
-    "start": "npm -w do run start"
-  }
-}
-```
+   ```sh
+   cd do
+   ln -s node_modules/@anydigital/eleventy-bricks/src/do/package.json
+   ```
 
-**Usage:**
+4. Finally register `do` folder as npm workspace in your `package.json`, and enjoy default 11ty scripts as simple as:
 
-Run your Eleventy project:
+   ```json {data-caption="YOUR project's package.json"}
+   {
+     "workspaces": ["do"],
+     "scripts": {
+       "start": "npm -w do run start",
+       "stage": "npm -w do run stage",
+       "build": "npm -w do run build"
+     }
+   }
+   ```
 
-```bash
-npm start
-```
+**Done!** 🎉 Now you can run:
 
-Build for production:
-
-```bash
-npm run build
-```
-
-**Available Scripts in `do` folder:**
-
-- `build` - Build the site with Eleventy and minify CSS with Tailwind
-- `start` - Start Eleventy dev server with live reload and Tailwind watch mode
-- `stage` - Clean build and serve locally for preview
-- `11ty` - Run Eleventy commands directly
-- `11ty:clean` - Remove the `_site` output directory
-- `tw` - Run Tailwind CSS commands
+- `npm start` to start 11ty dev server with live reload and Tailwind watch mode
+- `npm run stage` to build and serve production-like site locally
+- `npm run build` to finally build the site for production
 
 **Benefits:**
 
