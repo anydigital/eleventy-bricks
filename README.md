@@ -194,9 +194,9 @@ The plugin also exports the following utility functions for advanced usage:
 
 ## Features
 
-<!--section:11ty-->
+<!--section:filters-h3-->
 
-### Filters <sub>universal filters for `.njk` & `.liquid`</sub>
+### Universal 11ty filters <small>for `.njk` & `.liquid`</small> <sub>by https://github.com/anydigital/eleventy-bricks</sub>
 
 |      Input | Filter                            | Arguments                                          |
 | ---------: | --------------------------------- | -------------------------------------------------- |
@@ -542,15 +542,15 @@ export default function (eleventyConfig) {
 ```markdown
 # My Post
 
-&lt;!--section:intro-->
+<¡--section:intro-->
 
 This is the introduction that appears at the top of the page.
 
-&lt;!--section:main-->
+<¡--section:main-->
 
 This is the main body of the post with all the details.
 
-&lt;!--section:summary,sidebar-->
+<¡--section:summary,sidebar-->
 
 This content appears in both the summary and the sidebar!
 ```
@@ -581,11 +581,11 @@ This content appears in both the summary and the sidebar!
 
 **Features:**
 
-- **Multiple names**: A single section can have multiple names separated by commas: `&lt;!--section:name1,name2-->`
+- **Multiple names**: A single section can have multiple names separated by commas: `<¡--section:name1,name2-->`
 - **Case-insensitive**: Section names are matched without regard to case
 - **Multiple occurrences**: If a section name appears multiple times, the filter concatenates all matching sections
 - **Non-destructive**: Returns extracted content without modifying the original input
-- **EOF support**: Sections continue until the next `&lt;!--section*-->` marker or the end of the file
+- **EOF support**: Sections continue until the next `<¡--section*-->` marker or the end of the file
 
 **Examples:**
 
@@ -608,8 +608,8 @@ This content appears in both the summary and the sidebar!
 
 **Syntax Rules:**
 
-- Sections start with: `&lt;!--section:NAME-->` or `&lt;!--section:NAME1,NAME2-->`
-- Sections end at the next `&lt;!--section*-->` marker or end of file
+- Sections start with: `<¡--section:NAME-->` or `<¡--section:NAME1,NAME2-->`
+- Sections end at the next `<¡--section*-->` marker or end of file
 - Whitespace around names and inside comments is automatically trimmed
 
 #### `if`
@@ -902,9 +902,87 @@ your-project/
 
 **Note:** The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
 
-### Transforms
+<!--section:data&processors-h3-->
 
-#### mdAutoRawTags
+### Data & Processors
+
+#### Global `site` data helpers
+
+Adds global site data to your Eleventy project, providing commonly needed values that can be accessed in all templates.
+
+**Why use this?**
+
+Many websites need access to the current year (for copyright notices) and environment information (to conditionally enable features based on production vs development). This helper provides these as global `site` data without manually setting them up.
+
+**Usage:**
+
+1. Enable `siteData` in your Eleventy config:
+
+```javascript
+import { siteData } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  siteData(eleventyConfig);
+  // Or use as plugin:
+  // eleventyConfig.addPlugin(eleventyBricks, { siteData: true });
+}
+```
+
+2. Use the global data in your templates:
+
+**Current Year:**
+
+```njk
+<footer>
+  <p>&copy; {{ site.year }} Your Company Name. All rights reserved.</p>
+</footer>
+```
+
+**Environment Check:**
+
+```njk
+{% if site.prod %}
+  <!-- Production-only features -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
+{% else %}
+  <!-- Development-only features -->
+  <div class="dev-toolbar">Development Mode</div>
+{% endif %}
+```
+
+**Available Data:**
+
+- `site.year`: The current year as a number (e.g., `2026`)
+- `site.prod`: Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`)
+
+**Features:**
+
+- Automatically updates the year value
+- Detects production vs development mode based on `ELEVENTY_RUN_MODE` environment variable
+- Available globally in all templates without manual setup
+- No configuration required
+
+**Examples:**
+
+```njk
+{# Copyright notice #}
+<p>Copyright &copy; {{ site.year }} My Site</p>
+
+{# Conditional loading of analytics #}
+{% if site.prod %}
+  <script src="/analytics.js"></script>
+{% endif %}
+
+{# Different behavior in dev vs prod #}
+{% if site.prod %}
+  <link rel="stylesheet" href="/css/styles.min.css">
+{% else %}
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/live-reload.js"></script>
+{% endif %}
+```
+
+#### mdAutoRawTags preprocessor
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
@@ -936,7 +1014,7 @@ Use {{ variable }} to output variables.
 
 Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
 
-#### mdAutoNl2br
+#### mdAutoNl2br converter
 
 Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
 
@@ -977,7 +1055,7 @@ Will render as:
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
 
-#### autoLinkFavicons
+#### autoLinkFavicons transformer
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
@@ -1059,81 +1137,7 @@ a i img {
 
 **Note:** This transform only processes HTML output files (those ending in `.html`). It does not modify the original content files.
 
-### Global Data
-
-Adds global site data to your Eleventy project, providing commonly needed values that can be accessed in all templates.
-
-**Why use this?**
-
-Many websites need access to the current year (for copyright notices) and environment information (to conditionally enable features based on production vs development). This helper provides these as global `site` data without manually setting them up.
-
-**Usage:**
-
-1. Enable `siteData` in your Eleventy config:
-
-```javascript
-import { siteData } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  siteData(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { siteData: true });
-}
-```
-
-2. Use the global data in your templates:
-
-**Current Year:**
-
-```njk
-<footer>
-  <p>&copy; {{ site.year }} Your Company Name. All rights reserved.</p>
-</footer>
-```
-
-**Environment Check:**
-
-```njk
-{% if site.prod %}
-  <!-- Production-only features -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
-{% else %}
-  <!-- Development-only features -->
-  <div class="dev-toolbar">Development Mode</div>
-{% endif %}
-```
-
-**Available Data:**
-
-- `site.year`: The current year as a number (e.g., `2026`)
-- `site.prod`: Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`)
-
-**Features:**
-
-- Automatically updates the year value
-- Detects production vs development mode based on `ELEVENTY_RUN_MODE` environment variable
-- Available globally in all templates without manual setup
-- No configuration required
-
-**Examples:**
-
-```njk
-{# Copyright notice #}
-<p>Copyright &copy; {{ site.year }} My Site</p>
-
-{# Conditional loading of analytics #}
-{% if site.prod %}
-  <script src="/analytics.js"></script>
-{% endif %}
-
-{# Different behavior in dev vs prod #}
-{% if site.prod %}
-  <link rel="stylesheet" href="/css/styles.min.css">
-{% else %}
-  <link rel="stylesheet" href="/css/styles.css">
-  <script src="/live-reload.js"></script>
-{% endif %}
-```
+<!--section:config-h3-->
 
 ### Symlinked Configuration Files
 
@@ -1182,6 +1186,8 @@ npm install @uncenter/eleventy-plugin-toc
 ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js eleventy.config.js
 ```
 
+<!--section:cms-h4-->
+
 #### admin/index.html
 
 A ready-to-use Sveltia CMS admin interface for content management.
@@ -1193,7 +1199,7 @@ mkdir -p admin
 ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
 ```
 
-<!--section:npm,11ty-->
+<!--section:npm-h3-->
 
 ### Using the `do` Folder Pattern
 
