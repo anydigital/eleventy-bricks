@@ -1201,11 +1201,11 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/ind
 
 <!--section:npm-h3-->
 
-### Reusable 11ty npm scripts <small>via npm workspace trick</small> <sub>by https://github.com/anydigital/eleventy-bricks</sub>
+### Reusable 11ty npm scripts <small>via npm workspace trick</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
 
 This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
 
-**Quick Setup:**
+**Quick setup:**
 
 1. Create a simple folder, which will hold reusable npm scripts:
 
@@ -1244,6 +1244,9 @@ This package provides a pre-configured `do` folder setup that helps organize you
 - `npm start` to start 11ty dev server with live reload and Tailwind watch mode
 - `npm run stage` to build and serve production-like site locally
 - `npm run build` to finally build the site for production
+- all available scripts: https://github.com/anydigital/eleventy-bricks/blob/main/src/do/package.json
+
+**Example setup:** https://github.com/anydigital/sveleven
 
 **Benefits:**
 
