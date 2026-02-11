@@ -1139,22 +1139,9 @@ a i img {
 
 <!--section:config-h3-->
 
-### Symlinked Configuration Files
+### Symlinked `eleventy.config.js` <sub>from https://github.com/anydigital/eleventy-bricks</sub>
 
-The package includes pre-configured starter files in `node_modules/@anydigital/eleventy-bricks/src/` that you can symlink to your project for quick setup:
-
-Benefits of Symlinking:
-
-- **Always up-to-date**: Configuration automatically updates when you upgrade the package
-- **Less maintenance**: No need to manually sync configuration changes
-- **Quick setup**: Get started immediately with best-practice configurations
-- **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
-
-If you prefer to customize the configurations extensively, you can copy the files instead.
-
-#### eleventy.config.js
-
-A fully-configured Eleventy config file with:
+The package includes a fully-configured Eleventy config file `eleventy.config.js` that you can symlink to your project to get:
 
 - All eleventy-bricks plugins enabled
 - Eleventy Navigation plugin
@@ -1163,32 +1150,27 @@ A fully-configured Eleventy config file with:
 - YAML data support
 - CLI input directory support
 - Symlink support for development
+- _and more_
 
-**Required dependencies:**
+**Benefits of symlinking:**
 
-```bash
-npm install @11ty/eleventy-navigation markdown-it markdown-it-anchor markdown-it-attrs js-yaml minimist
+- **Always up-to-date**: Configuration automatically updates when you upgrade the package
+- **Less maintenance**: No need to manually sync configuration changes
+- **Quick setup**: Get started immediately with best-practice configurations
+- **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
+
+**Quick setup:**
+
+```sh
+npm install @anydigital/eleventy-bricks
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
-**Optional dependencies:**
-
-```bash
-# For the fetch filter
-npm install @11ty/eleventy-fetch
-
-# For table of contents generation
-npm install @uncenter/eleventy-plugin-toc
-```
-
-**Symlink to your project:**
-
-```bash
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js eleventy.config.js
-```
+Done! 🎉
 
 <!--section:cms-h4-->
 
-#### admin/index.html
+### Symlinked CMS
 
 A ready-to-use Sveltia CMS admin interface for content management.
 
