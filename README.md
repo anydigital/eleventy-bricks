@@ -449,7 +449,7 @@ ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 
 </details>
 
-### `autoLinkFavicons` processor
+### `autoLinkFavicons` transformer
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This processor processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
