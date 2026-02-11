@@ -590,7 +590,9 @@ A filter that creates a new object with an overridden attribute value. This is u
 
 A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
-**Why use this?** When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
+**Why use this?**
+
+When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
 
 ##### Example: Get all posts that include `#javascript` tag
 
@@ -610,39 +612,9 @@ A filter that merges arrays or objects together, similar to Twig's merge filter.
 
 When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
 
-**Usage:**
+##### Examples:
 
-1. Enable the `merge` filter in your Eleventy config:
-
-```javascript
-import { mergeFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mergeFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['merge'] });
-}
-```
-
-2. Use the filter in your templates:
-
-**Merge arrays:**
-
-```njk
-{# Combine two arrays #}
-{% set allItems = featured | merge(regular) %}
-
-{# Merge multiple arrays #}
-{% set combined = array1 | merge(array2, array3, array4) %}
-
-{% for item in allItems %}
-  <p>{{ item }}</p>
-{% endfor %}
-```
-
-**Merge objects:**
-
-```njk
+```jinja2
 {# Merge configuration objects #}
 {% set defaultConfig = { theme: 'light', lang: 'en' } %}
 {% set userConfig = { theme: 'dark' } %}
@@ -651,28 +623,7 @@ export default function (eleventyConfig) {
 {# Result: { theme: 'dark', lang: 'en' } #}
 ```
 
-**Parameters:**
-
-- `first`: The first array or object (the base to merge into)
-- `...rest`: One or more arrays or objects to merge in
-
-**Features:**
-
-- Works with both arrays and objects
-- Supports merging multiple items at once
-- Non-mutating: Creates new arrays/objects, leaving originals unchanged
-- For objects: Later values override earlier ones (shallow merge)
-- For arrays: Concatenates all arrays together
-- Handles null/undefined gracefully
-
-**Examples:**
-
-```njk
-{# Combine featured and regular posts #}
-{% set featuredPosts = collections.all | attr_includes('data.featured', true) %}
-{% set regularPosts = collections.all | attr_includes('data.featured', false) %}
-{% set allPosts = featuredPosts | merge(regularPosts) %}
-
+```jinja2
 {# Merge page metadata with defaults #}
 {% set defaultMeta = {
   author: 'Site Admin',
@@ -680,14 +631,6 @@ export default function (eleventyConfig) {
   comments: false
 } %}
 {% set pageMeta = defaultMeta | merge(page.data) %}
-
-{# Combine arrays of tags #}
-{% set commonTags = ['javascript', 'html', 'css'] %}
-{% set specialTags = page.data.tags or [] %}
-{% set allTags = commonTags | merge(specialTags) %}
-
-{# Merge multiple configuration sources #}
-{% set config = defaults | merge(siteConfig, pageConfig, userPrefs) %}
 ```
 
 #### `remove_tag`
