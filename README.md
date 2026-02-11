@@ -575,151 +575,6 @@ export default function (eleventyConfig) {
 ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
-#### `attr_set`
-
-A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
-
-##### Example: How to pass `collections` to `| renderContent` in `.liquid`?
-
-```liquid {data-caption="in .liquid:"}
-{% assign _ = null | attr_set: 'collections', collections %}
-{{ _tpl | renderContent: 'liquid,md', _ }}
-```
-
-#### `attr_includes`
-
-A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
-
-##### Why use this?
-
-When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
-
-##### Example: Get all posts that include `#javascript` tag
-
-```jinja2 {data-caption="in .njk:"}
-{% set js_posts = collections.all | attr_includes('data.tags', '#javascript') %}
-
-{% for post in js_posts %}
-  <h2>{{ post.data.title }}</h2>
-{% endfor %}
-```
-
-#### `merge`
-
-A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
-
-##### Why use this?
-
-When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
-
-##### Examples: <!-- @TODO: better examples -->
-
-```jinja2
-{# Merge configuration objects #}
-{% set defaultConfig = { theme: 'light', lang: 'en' } %}
-{% set userConfig = { theme: 'dark' } %}
-{% set finalConfig = defaultConfig | merge(userConfig) %}
-
-{# Result: { theme: 'dark', lang: 'en' } #}
-```
-
-```jinja2
-{# Merge page metadata with defaults #}
-{% set defaultMeta = {
-  author: 'Site Admin',
-  category: 'general',
-  comments: false
-} %}
-{% set pageMeta = defaultMeta | merge(page.data) %}
-```
-
-#### `remove_tag`
-
-A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
-
-##### Why use this?
-
-When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `remove_tag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
-
-##### Example: Remove all script tags from content <!-- @TODO: better examples -->
-
-```jinja2
-{% set cleanContent = htmlContent | remove_tag('script') %}
-
-{{ cleanContent | safe }}
-```
-
-##### Features:
-
-- Removes both opening and closing tags along with their content
-- Handles self-closing tags (e.g., `<br />`, `<img />`)
-- Handles tags with attributes
-- Case-insensitive matching
-- Non-destructive: Returns new string, doesn't modify original
-
-##### Security Note:
-
-While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
-
-#### `section`
-
-A filter that extracts a named section from content marked with HTML comments. This is useful for splitting a single content file (like a Markdown post) into multiple parts that can be displayed and styled independently in your templates.
-
-##### Usage:
-
-1. Mark sections in your content file (e.g., `post.md`):
-
-⚠️ `NOTE:` The `¡` symbol is used instead of `!` only to give examples below. Use `!` in your actual content files.
-
-```markdown
-# My Post
-
-<¡--section:intro-->
-
-This is the introduction that appears at the top of the page.
-
-<¡--section:main-->
-
-This is the main body of the post with all the details.
-
-<¡--section:summary,sidebar-->
-
-This content appears in both the summary and the sidebar!
-```
-
-2. Use the filter in your templates: <!-- @TODO: better examples -->
-
-```jinja2
-{# Get the intro section #}
-<div class="page-intro">
-  {{ content | section('intro') | safe }}
-</div>
-
-{# Get the main section #}
-<article>
-  {{ content | section('main') | safe }}
-</article>
-
-{# Get the sidebar section #}
-<aside>
-  {{ content | section('sidebar') | safe }}
-</aside>
-```
-
-##### Features:
-
-- **Multiple names**: A single section can have multiple names separated by commas: `<¡--section:name1,name2-->`
-- **Case-insensitive**: Section names are matched without regard to case
-- **Multiple occurrences**: If a section name appears multiple times, the filter concatenates all matching sections
-- **Non-destructive**: Returns extracted content without modifying the original input
-- **EOF support**: Sections continue until the next `<¡--section*-->` marker or the end of the file
-
-##### Syntax Rules:
-
-- Sections start with: `<¡--section:NAME-->` or `<¡--section:NAME1,NAME2-->`
-- Sections end at the next `<¡--section*-->` marker or end of file
-- Whitespace around names and inside comments is automatically trimmed
-
 #### `if`
 
 An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax, it is especially useful in `.liquid` templates.
@@ -760,6 +615,46 @@ An inline conditional/ternary operator filter that returns one value if a condit
 - Treats empty objects `{}` as falsy
 - Default `falseValue` is an empty string if not provided
 - Works with any data type for values
+
+#### `merge`
+
+A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
+
+##### Why use this?
+
+When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
+
+##### Examples: <!-- @TODO: better examples -->
+
+```jinja2
+{# Merge configuration objects #}
+{% set defaultConfig = { theme: 'light', lang: 'en' } %}
+{% set userConfig = { theme: 'dark' } %}
+{% set finalConfig = defaultConfig | merge(userConfig) %}
+
+{# Result: { theme: 'dark', lang: 'en' } #}
+```
+
+```jinja2
+{# Merge page metadata with defaults #}
+{% set defaultMeta = {
+  author: 'Site Admin',
+  category: 'general',
+  comments: false
+} %}
+{% set pageMeta = defaultMeta | merge(page.data) %}
+```
+
+#### `attr_set`
+
+A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
+
+##### Example: How to pass `collections` to `| renderContent` in `.liquid`?
+
+```liquid {data-caption="in .liquid:"}
+{% assign _ = null | attr_set: 'collections', collections %}
+{{ _tpl | renderContent: 'liquid,md', _ }}
+```
 
 #### `attr_concat`
 
@@ -802,6 +697,24 @@ When working with objects that have array attributes (like tags), you often need
 - Creates the attribute as an empty array if it doesn't exist
 - Logs an error if the existing attribute is not an array
 - `TBC:` Supports nested attributes (e.g., `data.tags`)
+
+#### `attr_includes`
+
+A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
+
+##### Why use this?
+
+When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
+
+##### Example: Get all posts that include `#javascript` tag
+
+```jinja2 {data-caption="in .njk:"}
+{% set js_posts = collections.all | attr_includes('data.tags', '#javascript') %}
+
+{% for post in js_posts %}
+  <h2>{{ post.data.title }}</h2>
+{% endfor %}
+```
 
 #### `fetch`
 
@@ -874,3 +787,90 @@ npm install @11ty/eleventy-fetch
 - Include shared content snippets without using Eleventy's include syntax
 
 > `NOTE:` The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
+
+#### `section`
+
+A filter that extracts a named section from content marked with HTML comments. This is useful for splitting a single content file (like a Markdown post) into multiple parts that can be displayed and styled independently in your templates.
+
+##### Usage:
+
+1. Mark sections in your content file (e.g., `post.md`):
+
+⚠️ `NOTE:` The `¡` symbol is used instead of `!` only to give examples below. Use `!` in your actual content files.
+
+```markdown
+# My Post
+
+<¡--section:intro-->
+
+This is the introduction that appears at the top of the page.
+
+<¡--section:main-->
+
+This is the main body of the post with all the details.
+
+<¡--section:summary,sidebar-->
+
+This content appears in both the summary and the sidebar!
+```
+
+2. Use the filter in your templates: <!-- @TODO: better examples -->
+
+```jinja2
+{# Get the intro section #}
+<div class="page-intro">
+  {{ content | section('intro') | safe }}
+</div>
+
+{# Get the main section #}
+<article>
+  {{ content | section('main') | safe }}
+</article>
+
+{# Get the sidebar section #}
+<aside>
+  {{ content | section('sidebar') | safe }}
+</aside>
+```
+
+##### Features:
+
+- **Multiple names**: A single section can have multiple names separated by commas: `<¡--section:name1,name2-->`
+- **Case-insensitive**: Section names are matched without regard to case
+- **Multiple occurrences**: If a section name appears multiple times, the filter concatenates all matching sections
+- **Non-destructive**: Returns extracted content without modifying the original input
+- **EOF support**: Sections continue until the next `<¡--section*-->` marker or the end of the file
+
+##### Syntax Rules:
+
+- Sections start with: `<¡--section:NAME-->` or `<¡--section:NAME1,NAME2-->`
+- Sections end at the next `<¡--section*-->` marker or end of file
+- Whitespace around names and inside comments is automatically trimmed
+
+#### `remove_tag`
+
+A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
+
+##### Why use this?
+
+When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `remove_tag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
+
+##### Example: Remove all script tags from content <!-- @TODO: better examples -->
+
+```jinja2
+{% set cleanContent = htmlContent | remove_tag('script') %}
+
+{{ cleanContent | safe }}
+```
+
+##### Features:
+
+- Removes both opening and closing tags along with their content
+- Handles self-closing tags (e.g., `<br />`, `<img />`)
+- Handles tags with attributes
+- Case-insensitive matching
+- Non-destructive: Returns new string, doesn't modify original
+
+##### Security Note:
+
+While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
