@@ -218,7 +218,7 @@ This package provides a pre-configured `do` folder setup that helps organize you
 
    ```sh
    cd do
-   ln -s node_modules/@anydigital/eleventy-bricks/src/do/package.json
+   ln -s ./node_modules/@anydigital/eleventy-bricks/src/do/package.json
    ```
 
 4. Finally register `do` folder as npm workspace in your `package.json`, and enjoy default 11ty scripts as simple as:
@@ -280,7 +280,7 @@ The package includes a fully-configured Eleventy config file `eleventy.config.js
 
 ```sh
 npm install @anydigital/eleventy-bricks
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
 Done! 🎉
@@ -337,7 +337,7 @@ export default function (eleventyConfig) {
 ```
 
 ```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
 </details>
@@ -386,7 +386,7 @@ export default function (eleventyConfig) {
 ```
 
 ```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
 </details>
@@ -444,7 +444,7 @@ export default function (eleventyConfig) {
 ```
 
 ```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
 </details>
@@ -520,16 +520,14 @@ export default function (eleventyConfig) {
 ```
 
 ```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
 </details>
 
-<!--section-->
-
 <!--section:filters-h3-->
 
-### Universal 11ty filters <small>for `.njk` & `.liquid`</small> <sub>by https://github.com/anydigital/eleventy-bricks</sub>
+### Universal 11ty filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
 
 |      Input | Filter                            | Arguments                                          |
 | ---------: | --------------------------------- | -------------------------------------------------- |
@@ -544,6 +542,38 @@ ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 |   `URL \|` | [`fetch`](#fetch)                 |                                                    |
 |  `HTML \|` | [`section`](#section)             | `NAME`                                             |
 |  `HTML \|` | [`remove_tag`](#remove_tag)       | `TAG`                                              |
+
+#### Quick setup
+
+```sh
+npm install @anydigital/eleventy-bricks
+```
+
+Then choose one of the following options:
+
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, {
+    filters: ["attr_set", "attr_concat", ...],
+  });
+}
+```
+
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  attrSetFilter(eleventyConfig);
+  attrConcatFilter(eleventyConfig);
+  ...
+}
+```
+
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
 
 #### `attr_set`
 
