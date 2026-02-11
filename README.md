@@ -908,79 +908,42 @@ your-project/
 
 #### Global `site` data helpers
 
-Adds global site data to your Eleventy project, providing commonly needed values that can be accessed in all templates.
+Adds global `site` data to your Eleventy project, providing commonly needed values that can be accessed in all templates:
 
-**Why use this?**
+| Variable          | Value                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------ |
+| `{{ site.year }}` | The current year as a number (e.g., `2026`)                                                                  |
+| `{{ site.prod }}` | Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`) |
 
-Many websites need access to the current year (for copyright notices) and environment information (to conditionally enable features based on production vs development). This helper provides these as global `site` data without manually setting them up.
+**Quick setup:**
 
-**Usage:**
-
-1. Enable `siteData` in your Eleventy config:
-
-```javascript
-import { siteData } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  siteData(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { siteData: true });
-}
+```sh
+npm install @anydigital/eleventy-bricks
 ```
 
-2. Use the global data in your templates:
+Then choose one of the following options:
 
-**Current Year:**
+1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
+   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 
-```njk
-<footer>
-  <p>&copy; {{ site.year }} Your Company Name. All rights reserved.</p>
-</footer>
-```
+   export default function (eleventyConfig) {
+     eleventyConfig.addPlugin(eleventyBricksPlugin, { siteData: true });
+   }
+   ```
 
-**Environment Check:**
+2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
+   import { siteData } from "@anydigital/eleventy-bricks";
 
-```njk
-{% if site.prod %}
-  <!-- Production-only features -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
-{% else %}
-  <!-- Development-only features -->
-  <div class="dev-toolbar">Development Mode</div>
-{% endif %}
-```
+   export default function (eleventyConfig) {
+     siteData(eleventyConfig);
+   }
+   ```
 
-**Available Data:**
+3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
+   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+   ```
 
-- `site.year`: The current year as a number (e.g., `2026`)
-- `site.prod`: Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`)
-
-**Features:**
-
-- Automatically updates the year value
-- Detects production vs development mode based on `ELEVENTY_RUN_MODE` environment variable
-- Available globally in all templates without manual setup
-- No configuration required
-
-**Examples:**
-
-```njk
-{# Copyright notice #}
-<p>Copyright &copy; {{ site.year }} My Site</p>
-
-{# Conditional loading of analytics #}
-{% if site.prod %}
-  <script src="/analytics.js"></script>
-{% endif %}
-
-{# Different behavior in dev vs prod #}
-{% if site.prod %}
-  <link rel="stylesheet" href="/css/styles.min.css">
-{% else %}
-  <link rel="stylesheet" href="/css/styles.css">
-  <script src="/live-reload.js"></script>
-{% endif %}
-```
+{.list-[upper-roman]}
 
 #### mdAutoRawTags preprocessor
 
