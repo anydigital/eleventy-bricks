@@ -1,4 +1,4 @@
-import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./transforms/markdown.js";
+import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./processors/markdown.js";
 import {
   autoLinkFavicons,
   isPlainUrlText,
@@ -6,7 +6,7 @@ import {
   buildFaviconLink,
   transformLink,
   replaceLinksInHtml,
-} from "./transforms/autoLinkFavicons.js";
+} from "./processors/autoLinkFavicons.js";
 import { attrSetFilter, attrSet } from "./filters/attr_set.js";
 import { attrIncludesFilter } from "./filters/attr_includes.js";
 import { mergeFilter, merge } from "./filters/merge.js";

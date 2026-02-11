@@ -177,13 +177,13 @@ eleventyConfig.addPlugin(eleventyBricks, {
 
 The plugin also exports the following utility functions for advanced usage:
 
-- `transformAutoRaw(content)`: The transform function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
-- `transformNl2br(content)`: The transform function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\n` sequences to `<br>` tags.
+- `transformAutoRaw(content)`: The processor function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
+- `transformNl2br(content)`: The processor function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\\n` sequences to `\u003cbr\u003e` tags.
 - `isPlainUrlText(linkText, domain)`: Helper function that checks if link text looks like a plain URL or domain.
 - `cleanLinkText(linkText, domain)`: Helper function that cleans link text by removing protocol, domain, and leading slash.
 - `buildFaviconLink(attrs, domain, text)`: Helper function that builds HTML for a link with favicon.
-- `transformLink(match, attrs, url, linkText)`: The transform function used by `autoLinkFavicons` that transforms a single link to include a favicon.
-- `replaceLinksInHtml(content, transformer)`: Helper function that replaces all anchor links in HTML content with transformed versions.
+- `transformLink(match, attrs, url, linkText)`: The processor function used by `autoLinkFavicons` that processes a single link to include a favicon.
+- `replaceLinksInHtml(content, processor)`: Helper function that replaces all anchor links in HTML content with processed versions.
 - `attrIncludes(collection, attrName, targetValue)`: The core logic for filtering collection items by checking if an attribute array includes a target value. Can be used programmatically to filter collections.
 - `merge(first, ...rest)`: The core merge function used by the `merge` filter. Can be used programmatically to merge arrays or objects.
 - `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
@@ -1057,13 +1057,13 @@ Then choose one of the following options:
 
 </details>
 
-### `autoLinkFavicons` transformer
+### `autoLinkFavicons` processor
 
-Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
+Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This processor processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
 **Why use this?**
 
-When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This transform automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
+When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This processor automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
 
 **How it works:**
 
@@ -1075,13 +1075,13 @@ When you have links in your content that display raw URLs or domain names (like 
 
 **Example:**
 
-Before transformation:
+Before processing:
 
 ```html
 <a href="https://github.com/anydigital/eleventy-bricks">https://github.com/anydigital/eleventy-bricks</a>
 ```
 
-After transformation:
+After processing:
 
 ```html
 <a href="https://github.com/anydigital/eleventy-bricks" class="whitespace-nowrap" target="_blank">
@@ -1097,7 +1097,7 @@ After transformation:
 - Removes the trailing slash from the display text
 - Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
 - Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
-- Adds `target="_blank"` to the transformed links (only if not already present)
+- Adds `target="_blank"` to the processed links (only if not already present)
 - Adds `whitespace-nowrap` class to the link
 - Wraps the link text in a `<span>` element
 - The favicon is wrapped in an `<i>` tag for easy styling
