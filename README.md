@@ -590,7 +590,7 @@ A filter that creates a new object with an overridden attribute value. This is u
 
 A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
-**Why use this?**
+##### Why use this?
 
 When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
 
@@ -608,11 +608,11 @@ When working with Eleventy collections, you often need to filter items based on 
 
 A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
 
-**Why use this?**
+##### Why use this?
 
 When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
 
-##### Examples:
+##### Examples: <!-- @TODO: better examples -->
 
 ```jinja2
 {# Merge configuration objects #}
@@ -637,39 +637,19 @@ When working with data in templates, you often need to combine multiple arrays o
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
 
-**Why use this?**
+##### Why use this?
 
 When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `remove_tag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
 
-**Usage:**
+##### Example: Remove all script tags from content <!-- @TODO: better examples -->
 
-1. Enable the `remove_tag` filter in your Eleventy config:
-
-```javascript
-import { removeTagFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  removeTagFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['remove_tag'] });
-}
-```
-
-2. Use the filter in your templates:
-
-```njk
-{# Remove all script tags from content #}
+```jinja2
 {% set cleanContent = htmlContent | remove_tag('script') %}
 
 {{ cleanContent | safe }}
 ```
 
-**Parameters:**
-
-- `html`: The HTML content to process (string)
-- `tagName`: The tag name to remove (string)
-
-**Features:**
+##### Features:
 
 - Removes both opening and closing tags along with their content
 - Handles self-closing tags (e.g., `<br />`, `<img />`)
@@ -677,32 +657,7 @@ export default function (eleventyConfig) {
 - Case-insensitive matching
 - Non-destructive: Returns new string, doesn't modify original
 
-**Examples:**
-
-```njk
-{# Remove scripts from user-generated content #}
-{% set userContent = '<p>Hello</p><script>alert("XSS")</script><p>World</p>' %}
-{% set safeContent = userContent | remove_tag('script') %}
-{# Result: '<p>Hello</p><p>World</p>' #}
-
-{# Strip specific formatting tags #}
-{% set formatted = '<div><strong>Bold</strong> and <em>italic</em> text</div>' %}
-{% set noStrong = formatted | remove_tag('strong') %}
-{# Result: '<div>Bold and <em>italic</em> text</div>' #}
-
-{# Chain multiple remove_tag filters for multiple tags #}
-{% set richContent = page.content %}
-{% set stripped = richContent
-  | remove_tag('script')
-  | remove_tag('style')
-  | remove_tag('iframe')
-%}
-
-{# Remove images for text-only preview #}
-{% set textOnly = htmlContent | remove_tag('img') %}
-```
-
-**Security Note:**
+##### Security Note:
 
 While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
 
