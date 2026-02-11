@@ -192,7 +192,340 @@ The plugin also exports the following utility functions for advanced usage:
 - `attrSet(obj, key, value)`: The core function used by the `attr_set` filter. Can be used programmatically to override object attributes.
 - `section(content, sectionName)`: The core function used by the `section` filter. Can be used programmatically to extract named sections from content.
 
-## Features
+## Command Line
+
+<!--section:npm-h3-->
+
+### Reusable 11ty npm scripts <small>via npm workspace</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
+
+This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
+
+**Quick setup:**
+
+1. Create a simple folder, which will hold reusable npm scripts:
+
+   ```sh
+   mkdir do
+   ```
+
+2. Install https://github.com/anydigital/eleventy-bricks to reuse default 11ty scripts from there:
+
+   ```sh
+   npm install @anydigital/eleventy-bricks
+   ```
+
+3. Symlink the `do/package.json` containing scripts into your project's `do` folder:
+
+   ```sh
+   cd do
+   ln -s node_modules/@anydigital/eleventy-bricks/src/do/package.json
+   ```
+
+4. Finally register `do` folder as npm workspace in your `package.json`, and enjoy default 11ty scripts as simple as:
+
+   ```json {data-caption="YOUR project's package.json"}
+   {
+     "workspaces": ["do"],
+     "scripts": {
+       "start": "npm -w do run start",
+       "stage": "npm -w do run stage",
+       "build": "npm -w do run build"
+     }
+   }
+   ```
+
+**Done!** 🎉 Now you can run:
+
+- `npm start` to start 11ty dev server with live reload and Tailwind watch mode
+- `npm run stage` to build and serve production-like site locally
+- `npm run build` to finally build the site for production
+- all available scripts: https://github.com/anydigital/eleventy-bricks/blob/main/src/do/package.json
+
+**Example setup:** https://github.com/anydigital/sveleven
+
+**Benefits:**
+
+- **Clean separation**: Keep build scripts separate from project configuration
+- **Reusable workflows**: Update scripts by upgrading the package
+- **Workspace isolation**: Scripts run in their own workspace context
+- **Easy maintenance**: No need to manually maintain build scripts
+
+<!--section-->
+
+## Configuration
+
+<!--section:config-h3-->
+
+### Symlinked `eleventy.config.js` <sub>from https://github.com/anydigital/eleventy-bricks</sub>
+
+The package includes a fully-configured Eleventy config file `eleventy.config.js` that you can symlink to your project to get:
+
+- All eleventy-bricks plugins enabled
+- Eleventy Navigation plugin
+- Table of Contents plugin (conditionally loaded if installed)
+- Markdown-it with anchors and attributes
+- YAML data support
+- CLI input directory support
+- Symlink support for development
+- _and more_
+
+**Benefits of symlinking:**
+
+- **Always up-to-date**: Configuration automatically updates when you upgrade the package
+- **Less maintenance**: No need to manually sync configuration changes
+- **Quick setup**: Get started immediately with best-practice configurations
+- **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
+
+**Quick setup:**
+
+```sh
+npm install @anydigital/eleventy-bricks
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
+
+Done! 🎉
+
+<!--section:cms-h4-->
+
+### Symlinked CMS
+
+A ready-to-use Sveltia CMS admin interface for content management.
+
+**Symlink to your project:**
+
+```bash
+mkdir -p admin
+ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
+```
+
+## Templating
+
+<!--section:data&processors-h3-->
+
+### Global `site` data helpers
+
+Adds global `site` data to your Eleventy project, providing commonly needed values that can be accessed in all templates:
+
+| Variable          | Value                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------ |
+| `{{ site.year }}` | The current year as a number (e.g., `2026`)                                                                  |
+| `{{ site.prod }}` | Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`) |
+
+<details>
+<summary>Quick setup</summary>
+
+```sh
+npm install @anydigital/eleventy-bricks
+```
+
+Then choose one of the following options:
+
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { siteData: true });
+}
+```
+
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { siteData } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  siteData(eleventyConfig);
+}
+```
+
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
+
+</details>
+
+### `mdAutoRawTags` preprocessor
+
+Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
+
+**Why use this?**
+
+When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
+
+**Example:**
+
+Before `mdAutoRawTags`, writing this in Markdown:
+
+```markdown
+### Using {{ variable }} to output variables
+```
+
+Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
+
+<details>
+<summary>Quick setup</summary>
+
+```sh
+npm install @anydigital/eleventy-bricks
+```
+
+Then choose one of the following options:
+
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoRawTags: true });
+}
+```
+
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  mdAutoRawTags(eleventyConfig);
+}
+```
+
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
+
+</details>
+
+### `mdAutoNl2br` converter
+
+Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
+
+**Why use this?**
+
+Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
+
+**Example:**
+
+In your Markdown file:
+
+```markdown
+| Column 1               | Column 2                          |
+| ---------------------- | --------------------------------- |
+| Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
+```
+
+Will render as:
+
+```html
+<td>Line 1<br />Line 2<br />Line 3</td>
+<td>Another cell<br />With multiple lines</td>
+```
+
+**Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
+
+<details>
+<summary>Quick setup</summary>
+
+```sh
+npm install @anydigital/eleventy-bricks
+```
+
+Then choose one of the following options:
+
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoNl2br: true });
+}
+```
+
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  mdAutoNl2br(eleventyConfig);
+}
+```
+
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
+
+</details>
+
+### `autoLinkFavicons` processor
+
+Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This processor processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
+
+**Why use this?**
+
+When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This processor automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
+
+**How it works:**
+
+1. Scans all HTML output files for `<a>` tags
+2. Checks if the link text appears to be a plain URL or domain
+3. Extracts the domain from the URL
+4. Removes the domain from the link text (keeping only the path)
+5. Adds a favicon image from Google's favicon service inline with the remaining text
+
+**Example:**
+
+Before processing:
+
+```html
+<a href="https://github.com/anydigital/eleventy-bricks">https://github.com/anydigital/eleventy-bricks</a>
+```
+
+After processing:
+
+```html
+<a href="https://github.com/anydigital/eleventy-bricks" class="whitespace-nowrap" target="_blank">
+  <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
+  <span>/anydigital/eleventy-bricks</span>
+</a>
+```
+
+**Rules:**
+
+- Only applies to links where the text looks like a plain URL (contains the domain or starts with `http://`/`https://`)
+- Removes the protocol and domain from the display text
+- Removes the trailing slash from the display text
+- Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
+- Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
+- Adds `target="_blank"` to the processed links (only if not already present)
+- Adds `whitespace-nowrap` class to the link
+- Wraps the link text in a `<span>` element
+- The favicon is wrapped in an `<i>` tag for easy styling
+
+<details>
+<summary>Quick setup</summary>
+
+```sh
+npm install @anydigital/eleventy-bricks
+```
+
+Then choose one of the following options:
+
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { autoLinkFavicons: true });
+}
+```
+
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { autoLinkFavicons } from "@anydigital/eleventy-bricks";
+
+export default function (eleventyConfig) {
+  autoLinkFavicons(eleventyConfig);
+}
+```
+
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
+
+</details>
+
+<!--section-->
 
 <!--section:filters-h3-->
 
@@ -901,328 +1234,3 @@ your-project/
 - Include shared content snippets without using Eleventy's include syntax
 
 **Note:** The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
-
-<!--section:data&processors-h3-->
-
-### Global `site` data helpers
-
-Adds global `site` data to your Eleventy project, providing commonly needed values that can be accessed in all templates:
-
-| Variable          | Value                                                                                                        |
-| ----------------- | ------------------------------------------------------------------------------------------------------------ |
-| `{{ site.year }}` | The current year as a number (e.g., `2026`)                                                                  |
-| `{{ site.prod }}` | Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`) |
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { siteData: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { siteData } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  siteData(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
-
-### `mdAutoRawTags` preprocessor
-
-Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
-
-**Why use this?**
-
-When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
-
-**Example:**
-
-Before `mdAutoRawTags`, writing this in Markdown:
-
-```markdown
-### Using {{ variable }} to output variables
-```
-
-Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoRawTags: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoRawTags(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
-
-### `mdAutoNl2br` converter
-
-Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
-
-**Why use this?**
-
-Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
-
-**Example:**
-
-In your Markdown file:
-
-```markdown
-| Column 1               | Column 2                          |
-| ---------------------- | --------------------------------- |
-| Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
-```
-
-Will render as:
-
-```html
-<td>Line 1<br />Line 2<br />Line 3</td>
-<td>Another cell<br />With multiple lines</td>
-```
-
-**Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoNl2br: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoNl2br(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
-
-### `autoLinkFavicons` processor
-
-Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This processor processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
-
-**Why use this?**
-
-When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This processor automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
-
-**How it works:**
-
-1. Scans all HTML output files for `<a>` tags
-2. Checks if the link text appears to be a plain URL or domain
-3. Extracts the domain from the URL
-4. Removes the domain from the link text (keeping only the path)
-5. Adds a favicon image from Google's favicon service inline with the remaining text
-
-**Example:**
-
-Before processing:
-
-```html
-<a href="https://github.com/anydigital/eleventy-bricks">https://github.com/anydigital/eleventy-bricks</a>
-```
-
-After processing:
-
-```html
-<a href="https://github.com/anydigital/eleventy-bricks" class="whitespace-nowrap" target="_blank">
-  <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
-  <span>/anydigital/eleventy-bricks</span>
-</a>
-```
-
-**Rules:**
-
-- Only applies to links where the text looks like a plain URL (contains the domain or starts with `http://`/`https://`)
-- Removes the protocol and domain from the display text
-- Removes the trailing slash from the display text
-- Only applies if at least 3 characters remain after removing the domain (to avoid showing favicons for bare domain links)
-- Uses Google's favicon service at `https://www.google.com/s2/favicons?domain=DOMAIN&sz=32`
-- Adds `target="_blank"` to the processed links (only if not already present)
-- Adds `whitespace-nowrap` class to the link
-- Wraps the link text in a `<span>` element
-- The favicon is wrapped in an `<i>` tag for easy styling
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { autoLinkFavicons: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { autoLinkFavicons } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  autoLinkFavicons(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
-
-<!--section:config-h3-->
-
-### Symlinked `eleventy.config.js` <sub>from https://github.com/anydigital/eleventy-bricks</sub>
-
-The package includes a fully-configured Eleventy config file `eleventy.config.js` that you can symlink to your project to get:
-
-- All eleventy-bricks plugins enabled
-- Eleventy Navigation plugin
-- Table of Contents plugin (conditionally loaded if installed)
-- Markdown-it with anchors and attributes
-- YAML data support
-- CLI input directory support
-- Symlink support for development
-- _and more_
-
-**Benefits of symlinking:**
-
-- **Always up-to-date**: Configuration automatically updates when you upgrade the package
-- **Less maintenance**: No need to manually sync configuration changes
-- **Quick setup**: Get started immediately with best-practice configurations
-- **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
-
-**Quick setup:**
-
-```sh
-npm install @anydigital/eleventy-bricks
-ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-Done! 🎉
-
-<!--section:cms-h4-->
-
-### Symlinked CMS
-
-A ready-to-use Sveltia CMS admin interface for content management.
-
-**Symlink to your project:**
-
-```bash
-mkdir -p admin
-ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
-```
-
-<!--section:npm-h3-->
-
-### Reusable 11ty npm scripts <small>via npm workspace</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
-
-This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
-
-**Quick setup:**
-
-1. Create a simple folder, which will hold reusable npm scripts:
-
-   ```sh
-   mkdir do
-   ```
-
-2. Install https://github.com/anydigital/eleventy-bricks to reuse default 11ty scripts from there:
-
-   ```sh
-   npm install @anydigital/eleventy-bricks
-   ```
-
-3. Symlink the `do/package.json` containing scripts into your project's `do` folder:
-
-   ```sh
-   cd do
-   ln -s node_modules/@anydigital/eleventy-bricks/src/do/package.json
-   ```
-
-4. Finally register `do` folder as npm workspace in your `package.json`, and enjoy default 11ty scripts as simple as:
-
-   ```json {data-caption="YOUR project's package.json"}
-   {
-     "workspaces": ["do"],
-     "scripts": {
-       "start": "npm -w do run start",
-       "stage": "npm -w do run stage",
-       "build": "npm -w do run build"
-     }
-   }
-   ```
-
-**Done!** 🎉 Now you can run:
-
-- `npm start` to start 11ty dev server with live reload and Tailwind watch mode
-- `npm run stage` to build and serve production-like site locally
-- `npm run build` to finally build the site for production
-- all available scripts: https://github.com/anydigital/eleventy-bricks/blob/main/src/do/package.json
-
-**Example setup:** https://github.com/anydigital/sveleven
-
-**Benefits:**
-
-- **Clean separation**: Keep build scripts separate from project configuration
-- **Reusable workflows**: Update scripts by upgrading the package
-- **Workspace isolation**: Scripts run in their own workspace context
-- **Easy maintenance**: No need to manually maintain build scripts
