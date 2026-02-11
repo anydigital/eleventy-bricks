@@ -922,27 +922,25 @@ npm install @anydigital/eleventy-bricks
 
 Then choose one of the following options:
 
-1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
-   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     eleventyConfig.addPlugin(eleventyBricksPlugin, { siteData: true });
-   }
-   ```
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { siteData: true });
+}
+```
 
-2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
-   import { siteData } from "@anydigital/eleventy-bricks";
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { siteData } from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     siteData(eleventyConfig);
-   }
-   ```
+export default function (eleventyConfig) {
+  siteData(eleventyConfig);
+}
+```
 
-3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
-   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-   ```
-
-{.list-[upper-roman]}
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
 
 </details>
 
@@ -973,27 +971,25 @@ npm install @anydigital/eleventy-bricks
 
 Then choose one of the following options:
 
-1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
-   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoRawTags: true });
-   }
-   ```
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoRawTags: true });
+}
+```
 
-2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
-   import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     mdAutoRawTags(eleventyConfig);
-   }
-   ```
+export default function (eleventyConfig) {
+  mdAutoRawTags(eleventyConfig);
+}
+```
 
-3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
-   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-   ```
-
-{.list-[upper-roman]}
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
 
 </details>
 
@@ -1033,27 +1029,25 @@ npm install @anydigital/eleventy-bricks
 
 Then choose one of the following options:
 
-1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
-   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoNl2br: true });
-   }
-   ```
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoNl2br: true });
+}
+```
 
-2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
-   import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     mdAutoNl2br(eleventyConfig);
-   }
-   ```
+export default function (eleventyConfig) {
+  mdAutoNl2br(eleventyConfig);
+}
+```
 
-3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
-   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-   ```
-
-{.list-[upper-roman]}
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
 
 </details>
 
@@ -1111,27 +1105,25 @@ npm install @anydigital/eleventy-bricks
 
 Then choose one of the following options:
 
-1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
-   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     eleventyConfig.addPlugin(eleventyBricksPlugin, { autoLinkFavicons: true });
-   }
-   ```
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, { autoLinkFavicons: true });
+}
+```
 
-2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
-   import { autoLinkFavicons } from "@anydigital/eleventy-bricks";
+```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
+import { autoLinkFavicons } from "@anydigital/eleventy-bricks";
 
-   export default function (eleventyConfig) {
-     autoLinkFavicons(eleventyConfig);
-   }
-   ```
+export default function (eleventyConfig) {
+  autoLinkFavicons(eleventyConfig);
+}
+```
 
-3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
-   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-   ```
-
-{.list-[upper-roman]}
+```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
+ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
 
 </details>
 
