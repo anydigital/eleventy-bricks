@@ -904,9 +904,7 @@ your-project/
 
 <!--section:data&processors-h3-->
 
-### Data & Processors
-
-#### Global `site` data helpers
+### Global `site` data helpers
 
 Adds global `site` data to your Eleventy project, providing commonly needed values that can be accessed in all templates:
 
@@ -948,7 +946,7 @@ Then choose one of the following options:
 
 </details>
 
-#### `mdAutoRawTags` preprocessor
+### `mdAutoRawTags` preprocessor
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
@@ -999,7 +997,7 @@ Then choose one of the following options:
 
 </details>
 
-#### `mdAutoNl2br` converter
+### `mdAutoNl2br` converter
 
 Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
 
@@ -1059,7 +1057,7 @@ Then choose one of the following options:
 
 </details>
 
-#### `autoLinkFavicons` transformer
+### `autoLinkFavicons` transformer
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
