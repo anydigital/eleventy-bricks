@@ -765,83 +765,43 @@ An inline conditional/ternary operator filter that returns one value if a condit
 
 A filter that concatenates values to an attribute array, returning a new object with the combined array. Useful for adding items to arrays like tags, classes, or other list-based attributes.
 
-**Why use this?**
+##### Why use this?
 
 When working with objects that have array attributes (like tags), you often need to add additional values without mutating the original object. The `attr_concat` filter provides a clean way to combine existing array values with new ones, automatically handling duplicates.
 
-**Usage:**
+##### Example: Add tags to a post object in `.njk`:
 
-1. Enable the `attr_concat` filter in your Eleventy config:
-
-```javascript
-import { attrConcatFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  attrConcatFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr_concat'] });
-}
-```
-
-2. Use the filter in your templates:
-
-```njk
-{# Add tags to a post object #}
+```jinja2
 {% set enhancedPost = post | attr_concat('tags', ['featured', 'popular']) %}
-
-{# Add a single value #}
-{% set updatedPost = post | attr_concat('tags', 'important') %}
-
-{# Add values from a JSON string #}
-{% set modifiedPost = post | attr_concat('tags', '["new", "trending"]') %}
 ```
 
-**Parameters:**
+##### `PRO` Example: Add scripts and styles to the `site` object in `.liquid`:
 
-- `obj`: The object to modify
-- `attr`: The attribute name (must be an array or will be treated as one)
-- `values`: Values to concatenate (can be an array, JSON string array, or single value)
+```liquid
+{% capture _ %}[
+  "https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css",
+  "https://cdn.jsdelivr.net/npm/prismjs@1/plugins/treeview/prism-treeview.min.css",
+  "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7/css/all.min.css",
+  "/styles.css"
+]{% endcapture %}
+{% assign site = site | attr_concat: 'styles', _ %}
 
-**Returns:**
+{% capture _ %}[
+  "https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js",
+  "https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js",
+  "https://cdn.jsdelivr.net/npm/prismjs@1/plugins/treeview/prism-treeview.min.js"
+]{% endcapture %}
+{% assign site = site | attr_concat: 'scripts', _ %}
+```
 
-A new object with the specified attribute containing the combined unique array. The original object is not modified.
-
-**Features:**
+##### Features:
 
 - Non-mutating: Creates a new object, leaving the original unchanged
 - Automatically removes duplicates using Set
-- Handles multiple input types: arrays, JSON string arrays, or single values
+- Handles multiple input types: arrays, JSON string arrays (killer feature for `.liquid`), or single values
 - Creates the attribute as an empty array if it doesn't exist
 - Logs an error if the existing attribute is not an array
-
-**Examples:**
-
-```njk
-{# Add multiple tags #}
-{% set post = { title: 'My Post', tags: ['javascript'] } %}
-{% set enhancedPost = post | attr_concat('tags', ['tutorial', 'beginner']) %}
-{# Result: { title: 'My Post', tags: ['javascript', 'tutorial', 'beginner'] } #}
-
-{# Add single value #}
-{% set updatedPost = post | attr_concat('tags', 'featured') %}
-{# Result: { title: 'My Post', tags: ['javascript', 'tutorial', 'beginner', 'featured'] } #}
-
-{# No duplicates #}
-{% set deduped = post | attr_concat('tags', ['javascript', 'advanced']) %}
-{# Result: Only 'advanced' is added, 'javascript' already exists #}
-
-{# Chain multiple attr_concat filters #}
-{% set finalPost = post
-  | attr_concat('tags', 'popular')
-  | attr_concat('categories', ['tech', 'programming'])
-%}
-
-{# Use in loops to enhance collection items #}
-{% for item in collections.posts %}
-  {% set enhancedItem = item | attr_concat('data.tags', 'blog') %}
-  {# ... use enhancedItem ... #}
-{% endfor %}
-```
+- `TBC:` Supports nested attributes (e.g., `data.tags`)
 
 #### `fetch`
 
