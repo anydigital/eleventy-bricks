@@ -948,7 +948,7 @@ Then choose one of the following options:
 
 </details>
 
-#### mdAutoRawTags preprocessor
+#### `mdAutoRawTags` preprocessor
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
@@ -956,29 +956,48 @@ Prevents Nunjucks syntax from being processed in Markdown files by automatically
 
 When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
 
-**Usage:**
-
-1. Enable `mdAutoRawTags` in your Eleventy config:
-
-```javascript
-import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoRawTags(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoRawTags: true });
-}
-```
-
 **Example:**
 
 Before `mdAutoRawTags`, writing this in Markdown:
 
 ```markdown
-Use {{ variable }} to output variables.
+### Using {{ variable }} to output variables
 ```
 
 Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
+
+<details>
+<summary>Quick setup</summary>
+
+```sh
+npm install @anydigital/eleventy-bricks
+```
+
+Then choose one of the following options:
+
+1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
+   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+   export default function (eleventyConfig) {
+     eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoRawTags: true });
+   }
+   ```
+
+2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
+   import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
+
+   export default function (eleventyConfig) {
+     mdAutoRawTags(eleventyConfig);
+   }
+   ```
+
+3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
+   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+   ```
+
+{.list-[upper-roman]}
+
+</details>
 
 #### mdAutoNl2br converter
 
