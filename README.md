@@ -665,25 +665,9 @@ While this filter can help sanitize HTML content, it should not be relied upon a
 
 A filter that extracts a named section from content marked with HTML comments. This is useful for splitting a single content file (like a Markdown post) into multiple parts that can be displayed and styled independently in your templates.
 
-**Why use this?**
+##### Usage:
 
-When working with Markdown content in Eleventy, you're usually limited to a single `content` variable. The `section` filter allows you to define multiple named sections within your content using simple HTML comments, giving you granular control over where different parts of your content appear in your layout.
-
-**Usage:**
-
-1. Enable the `section` filter in your Eleventy config:
-
-```javascript
-import { sectionFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  sectionFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['section'] });
-}
-```
-
-2. Mark sections in your content file (e.g., `post.md`):
+1. Mark sections in your content file (e.g., `post.md`):
 
 ```markdown
 # My Post
@@ -701,7 +685,7 @@ This is the main body of the post with all the details.
 This content appears in both the summary and the sidebar!
 ```
 
-3. Use the filter in your templates:
+2. Use the filter in your templates: <!-- @TODO: better examples -->
 
 ```njk
 {# Get the intro section #}
@@ -720,12 +704,7 @@ This content appears in both the summary and the sidebar!
 </aside>
 ```
 
-**Parameters:**
-
-- `content`: The string content to process (usually `content` variable)
-- `sectionName`: The name(s) of the section to extract (string)
-
-**Features:**
+##### Features:
 
 - **Multiple names**: A single section can have multiple names separated by commas: `<¡--section:name1,name2-->`
 - **Case-insensitive**: Section names are matched without regard to case
@@ -733,26 +712,7 @@ This content appears in both the summary and the sidebar!
 - **Non-destructive**: Returns extracted content without modifying the original input
 - **EOF support**: Sections continue until the next `<¡--section*-->` marker or the end of the file
 
-**Examples:**
-
-```njk
-{# Extract multiple sections with same name #}
-{# Example content has two &lt;!--section:note--> blocks #}
-<div class="notes-box">
-  {{ content | section('note') | safe }}
-</div>
-
-{# Use case-insensitive names #}
-{{ content | section('INTRO') | safe }}
-
-{# Handle missing sections gracefully (returns empty string) #}
-{% set footer = content | section('non-existent-section') %}
-{% if footer %}
-  <footer>{{ footer | safe }}</footer>
-{% endif %}
-```
-
-**Syntax Rules:**
+##### Syntax Rules:
 
 - Sections start with: `<¡--section:NAME-->` or `<¡--section:NAME1,NAME2-->`
 - Sections end at the next `<¡--section*-->` marker or end of file
