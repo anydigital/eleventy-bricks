@@ -807,11 +807,11 @@ When working with objects that have array attributes (like tags), you often need
 
 A filter that fetches content from remote URLs or local files. For remote URLs, it uses `@11ty/eleventy-fetch` to download and cache files. For local paths, it reads files relative to the input directory.
 
-**Why use this?**
+##### Why use this?
 
 When building static sites, you often need to include content from external sources or reuse content from local files. The `fetch` filter provides a unified way to retrieve content from both remote URLs and local files, with automatic caching for remote resources to improve build performance.
 
-**Requirements:**
+##### Requirements:
 
 This filter requires the `@11ty/eleventy-fetch` package to be installed:
 
@@ -819,73 +819,11 @@ This filter requires the `@11ty/eleventy-fetch` package to be installed:
 npm install @11ty/eleventy-fetch
 ```
 
-> **Note:** If `@11ty/eleventy-fetch` is not installed, this filter will not be available. The plugin automatically detects whether the package is installed and only enables the filter if it's present.
+> `NOTE:` If `@11ty/eleventy-fetch` is not installed, this filter will not be available. The plugin automatically detects whether the package is installed and only enables the filter if it's present.
 
-**Usage:**
+##### Examples:
 
-1. Install the required dependency:
-
-```bash
-npm install @11ty/eleventy-fetch
-```
-
-2. Enable the `fetch` filter in your Eleventy config:
-
-```javascript
-import { fetchFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  fetchFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['fetch'] });
-}
-```
-
-3. Use the filter in your templates:
-
-**Fetch remote URLs:**
-
-```njk
-{# Fetch content from a remote URL #}
-{% set externalContent = "https://example.com/data.json" | fetch %}
-{{ externalContent }}
-
-{# Fetch and parse JSON #}
-{% set apiData = "https://api.example.com/posts" | fetch %}
-{% set posts = apiData | fromJson %}
-```
-
-**Fetch local files:**
-
-```njk
-{# Fetch content from a local file (relative to input directory) #}
-{% set localData = "_data/content.txt" | fetch %}
-{{ localData }}
-
-{# Include content from another file #}
-{% set snippet = "_includes/snippets/example.md" | fetch %}
-{{ snippet | markdown | safe }}
-```
-
-**Parameters:**
-
-- `url`: A URL (starting with `http://` or `https://`) or a local file path (relative to the input directory)
-
-**Features:**
-
-- **Remote URLs**: Downloads and caches content using `@11ty/eleventy-fetch`
-  - Caches files for 1 day by default
-  - Stores cached files in `[input-dir]/_downloads/` directory
-  - Automatically revalidates after cache expires
-- **Local files**: Reads files relative to the Eleventy input directory
-  - No caching needed for local files
-  - Supports any file type that can be read as text
-- **Error handling**: Throws descriptive errors if fetching fails
-- **Conditional loading**: Only available when `@11ty/eleventy-fetch` is installed
-
-**Examples:**
-
-```njk
+```jinja2
 {# Fetch and display remote content #}
 {% set readme = "https://raw.githubusercontent.com/user/repo/main/README.md" | fetch %}
 <div class="readme">
@@ -913,19 +851,20 @@ export default function (eleventyConfig) {
 {{ sharedContent | safe }}
 ```
 
-**Cache Directory:**
+##### Features:
 
-Remote files are cached in the `_downloads` folder within your input directory:
+- Supports a URL (starting with `http://` or `https://`) or a local file path (relative to the input directory):
+  - **Remote URLs**: Downloads and caches content using `@11ty/eleventy-fetch`
+    - Caches files for 1 day by default
+    - Stores cached files in `[input-dir]/_downloads/` directory
+    - Automatically revalidates after cache expires
+  - **Local files**: Reads files relative to the Eleventy input directory
+    - No caching needed for local files
+    - Supports any file type that can be read as text
+- **Error handling**: Throws descriptive errors if fetching fails
+- **Conditional loading**: Only available when `@11ty/eleventy-fetch` is installed
 
-```
-your-project/
-├── src/              (or your input directory)
-│   ├── _downloads/   (cached remote files)
-│   ├── index.njk
-│   └── ...
-```
-
-**Use Cases:**
+##### Use Cases:
 
 - Fetch content from external APIs during build time
 - Include README files from GitHub repositories
@@ -934,4 +873,4 @@ your-project/
 - Fetch data from headless CMS or external data sources
 - Include shared content snippets without using Eleventy's include syntax
 
-**Note:** The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
+> `NOTE:` The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
