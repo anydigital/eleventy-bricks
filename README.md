@@ -1059,7 +1059,7 @@ Then choose one of the following options:
 
 </details>
 
-#### autoLinkFavicons transformer
+#### `autoLinkFavicons` transformer
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This transform processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
@@ -1067,23 +1067,7 @@ Automatically adds favicon images from Google's favicon service to links that di
 
 When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This transform automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
 
-**Usage:**
-
-1. Enable `autoLinkFavicons` in your Eleventy config:
-
-```javascript
-import { autoLinkFavicons } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  autoLinkFavicons(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { autoLinkFavicons: true });
-}
-```
-
 **How it works:**
-
-The transform:
 
 1. Scans all HTML output files for `<a>` tags
 2. Checks if the link text appears to be a plain URL or domain
@@ -1120,26 +1104,38 @@ After transformation:
 - Wraps the link text in a `<span>` element
 - The favicon is wrapped in an `<i>` tag for easy styling
 
-**Styling:**
+<details>
+<summary>Quick setup</summary>
 
-You can style the favicon icons with CSS:
-
-```css
-/* Style the favicon wrapper */
-a i {
-  display: inline-block;
-  margin-right: 0.25em;
-}
-
-/* Style the favicon image */
-a i img {
-  width: 16px;
-  height: 16px;
-  vertical-align: middle;
-}
+```sh
+npm install @anydigital/eleventy-bricks
 ```
 
-**Note:** This transform only processes HTML output files (those ending in `.html`). It does not modify the original content files.
+Then choose one of the following options:
+
+1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
+   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+   export default function (eleventyConfig) {
+     eleventyConfig.addPlugin(eleventyBricksPlugin, { autoLinkFavicons: true });
+   }
+   ```
+
+2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
+   import { autoLinkFavicons } from "@anydigital/eleventy-bricks";
+
+   export default function (eleventyConfig) {
+     autoLinkFavicons(eleventyConfig);
+   }
+   ```
+
+3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
+   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+   ```
+
+{.list-[upper-roman]}
+
+</details>
 
 <!--section:config-h3-->
 
