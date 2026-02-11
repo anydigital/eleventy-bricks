@@ -577,70 +577,13 @@ ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 
 #### `attr_set`
 
-A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original.
+A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
 
-**Why use this?**
+##### Example: How to pass `collections` to `| renderContent` in `.liquid`?
 
-When working with Eleventy data, you sometimes need to modify an object's properties for a specific use case. The `attr_set` filter provides a clean way to create a modified copy of an object without affecting the original.
-
-**Usage:**
-
-1. Enable the `attr_set` filter in your Eleventy config:
-
-```javascript
-import { attrSetFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  attrSetFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr_set'] });
-}
-```
-
-2. Use the filter in your templates:
-
-```njk
-{# Create a modified version of a page object #}
-{% set modifiedPage = page | attr_set('title', 'New Title') %}
-
-<h1>{{ modifiedPage.title }}</h1>
-<p>Original title: {{ page.title }}</p>
-```
-
-**Parameters:**
-
-- `obj`: The object to modify
-- `key`: The attribute name to set (string)
-- `value`: The value to set for the attribute (any type)
-
-**Returns:**
-
-A new object with the specified attribute set to the given value. The original object is not modified.
-
-**Features:**
-
-- Non-mutating: Creates a new object, leaving the original unchanged
-- Works with any object type
-- Supports any attribute name and value type
-- Can be chained with other filters
-
-**Examples:**
-
-```njk
-{# Override a single attribute #}
-{% set updatedPost = post | attr_set('featured', true) %}
-
-{# Chain multiple attr_set filters #}
-{% set modifiedPost = post
-  | attr_set('category', 'blog')
-  | attr_set('priority', 1)
-%}
-
-{# Use in loops #}
-{% for item in collection %}
-  {% set enhancedItem = item | attr_set('processed', true) %}
-  {# ... use enhancedItem ... #}
-{% endfor %}
+```liquid {data-caption="in .liquid:"}
+{% assign _ = null | attr_set: 'collections', collections %}
+{{ _tpl | renderContent: 'liquid,md', _ }}
 ```
 
 #### `attr_includes`
