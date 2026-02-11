@@ -669,6 +669,8 @@ A filter that extracts a named section from content marked with HTML comments. T
 
 1. Mark sections in your content file (e.g., `post.md`):
 
+⚠️ `NOTE:` The `¡` symbol is used instead of `!` only to give examples below. Use `!` in your actual content files.
+
 ```markdown
 # My Post
 
@@ -687,7 +689,7 @@ This content appears in both the summary and the sidebar!
 
 2. Use the filter in your templates: <!-- @TODO: better examples -->
 
-```njk
+```jinja2
 {# Get the intro section #}
 <div class="page-intro">
   {{ content | section('intro') | safe }}
@@ -720,57 +722,16 @@ This content appears in both the summary and the sidebar!
 
 #### `if`
 
-An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax.
+An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax, it is especially useful in `.liquid` templates.
 
-**Why use this?**
+##### Examples: <!-- @TODO: better examples -->
 
-When you need simple conditional values in templates without verbose if/else blocks, the `if` filter provides a clean inline solution. It's especially useful for class names, attributes, or displaying alternate text based on conditions.
+```jinja2
+{# Basic usage (defaults to empty string) #}
+<div class="{{ 'active' | if: isActive | default: 'inactive' }}">Status</div>
 
-**Usage:**
-
-1. Enable the `if` filter in your Eleventy config:
-
-```javascript
-import { ifFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  ifFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['if'] });
-}
-```
-
-2. Use the filter in your templates:
-
-```njk
-{# Basic usage #}
-<div class="{{ 'active' | if: isActive, 'inactive' }}">Status</div>
-
-{# Without falsy value (defaults to empty string) #}
-<span class="{{ 'highlight' | if: shouldHighlight }}">Text</span>
-
-{# With variable values #}
-{% set status = 'Published' | if: post.published, 'Draft' %}
-```
-
-**Parameters:**
-
-- `trueValue`: The value to return if condition is truthy
-- `condition`: The condition to evaluate
-- `falseValue`: The value to return if condition is falsy (optional, defaults to empty string)
-
-**Features:**
-
-- Returns `trueValue` if condition is truthy, otherwise returns `falseValue`
-- Treats empty objects `{}` as falsy
-- Default `falseValue` is an empty string if not provided
-- Works with any data type for values
-
-**Examples:**
-
-```njk
 {# Toggle CSS classes #}
-<button class="{{ 'btn-primary' | if: isPrimary, 'btn-secondary' }}">
+<button class="{{ 'btn-primary' | if: isPrimary | default: 'btn-secondary' }}">
   Click me
 </button>
 
@@ -792,6 +753,13 @@ export default function (eleventyConfig) {
 {# Chain with other filters #}
 {% set cssClass = 'featured' | if: post.featured | upper %}
 ```
+
+##### Features:
+
+- Returns `trueValue` if condition is truthy, otherwise returns `falseValue`
+- Treats empty objects `{}` as falsy
+- Default `falseValue` is an empty string if not provided
+- Works with any data type for values
 
 #### `attr_concat`
 
