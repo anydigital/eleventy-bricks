@@ -999,27 +999,13 @@ Then choose one of the following options:
 
 </details>
 
-#### mdAutoNl2br converter
+#### `mdAutoNl2br` converter
 
 Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
 
 **Why use this?**
 
 Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
-
-**Usage:**
-
-1. Enable `mdAutoNl2br` in your Eleventy config:
-
-```javascript
-import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoNl2br(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { mdAutoNl2br: true });
-}
-```
 
 **Example:**
 
@@ -1039,6 +1025,39 @@ Will render as:
 ```
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
+
+<details>
+<summary>Quick setup</summary>
+
+```sh
+npm install @anydigital/eleventy-bricks
+```
+
+Then choose one of the following options:
+
+1. ```js {data-caption="As a plugin in eleventy.config.js (balanced)"}
+   import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+
+   export default function (eleventyConfig) {
+     eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoNl2br: true });
+   }
+   ```
+
+2. ```js {data-caption="Individual import in eleventy.config.js (minimal)"}
+   import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
+
+   export default function (eleventyConfig) {
+     mdAutoNl2br(eleventyConfig);
+   }
+   ```
+
+3. ```sh {data-caption="Symlink entire eleventy.config.js (easiest)"}
+   ln -s node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+   ```
+
+{.list-[upper-roman]}
+
+</details>
 
 #### autoLinkFavicons transformer
 
