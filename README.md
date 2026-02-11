@@ -588,76 +588,18 @@ A filter that creates a new object with an overridden attribute value. This is u
 
 #### `attr_includes`
 
-A filter that filters collection items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
+A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
-**Why use this?**
+**Why use this?** When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
 
-When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
+##### Example: Get all posts that include `#javascript` tag
 
-**Usage:**
+```jinja2 {data-caption="in .njk:"}
+{% set js_posts = collections.all | attr_includes('data.tags', '#javascript') %}
 
-1. Enable the `attr_includes` filter in your Eleventy config:
-
-```javascript
-import { attrIncludesFilter } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  attrIncludesFilter(eleventyConfig);
-  // Or use as plugin:
-  // eleventyConfig.addPlugin(eleventyBricks, { filters: ['attr_includes'] });
-}
-```
-
-2. Use the filter in your templates:
-
-**Filter by array attribute (tags):**
-
-```njk
-{# Get all posts that include 'javascript' tag #}
-{% set jsPosts = collections.all | attr_includes('data.tags', 'javascript') %}
-
-{% for post in jsPosts %}
+{% for post in js_posts %}
   <h2>{{ post.data.title }}</h2>
 {% endfor %}
-```
-
-**Parameters:**
-
-- `collection`: The collection to filter (array of items)
-- `attrName`: The attribute name to check (string, supports dot notation for nested properties)
-- `targetValue`: The value to check for in the array (any type)
-
-**Features:**
-
-- Works with any array attribute in front matter
-- Supports dot notation for nested properties (e.g., `'data.tags'`, `'data.author.roles'`)
-- Returns empty array if collection is invalid
-- Filters out items where the specified attribute is not an array or doesn't exist
-
-**Examples:**
-
-Front matter:
-
-```yaml
----
-title: My Post
-category: blog
-tags: [javascript, tutorial, beginner]
-priority: 1
----
-```
-
-Template usage:
-
-```njk
-{# Filter by tag (array) using dot notation for nested properties #}
-{% set jsTutorials = collections.all | attr_includes('data.tags', 'javascript') %}
-
-{# Filter by numeric value in array #}
-{% set highPriority = collections.all | attr_includes('data.priorities', 1) %}
-
-{# Chain filters #}
-{% set recentTutorials = collections.all | attr_includes('data.tags', 'tutorial') | reverse | limit(5) %}
 ```
 
 #### `merge`
