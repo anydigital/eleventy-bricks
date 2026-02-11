@@ -298,7 +298,7 @@ mkdir -p admin
 ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
 ```
 
-## Templating
+## Data & Processors
 
 <!--section:data&processors-h3-->
 
@@ -525,9 +525,9 @@ ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 
 </details>
 
-<!--section:filters-h3-->
+<!--section:filters-h2-->
 
-### Universal 11ty filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
+## Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
 
 |      Input | Filter                            | Arguments                                          |
 | ---------: | --------------------------------- | -------------------------------------------------- |
@@ -543,7 +543,7 @@ ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 |  `HTML \|` | [`section`](#section)             | `NAME`                                             |
 |  `HTML \|` | [`remove_tag`](#remove_tag)       | `TAG`                                              |
 
-#### Quick setup
+### Quick Setup
 
 ```sh
 npm install @anydigital/eleventy-bricks
@@ -575,7 +575,7 @@ export default function (eleventyConfig) {
 ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
-#### `if`
+### `if`
 
 An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax, it is especially useful in `.liquid` templates.
 
@@ -616,7 +616,7 @@ An inline conditional/ternary operator filter that returns one value if a condit
 - Default `falseValue` is an empty string if not provided
 - Works with any data type for values
 
-#### `merge`
+### `merge`
 
 A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
 
@@ -645,7 +645,7 @@ When working with data in templates, you often need to combine multiple arrays o
 {% set pageMeta = defaultMeta | merge(page.data) %}
 ```
 
-#### `attr_set`
+### `attr_set`
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
 
@@ -656,7 +656,7 @@ A filter that creates a new object with an overridden attribute value. This is u
 {{ _tpl | renderContent: 'liquid,md', _ }}
 ```
 
-#### `attr_concat`
+### `attr_concat`
 
 A filter that concatenates values to an attribute array, returning a new object with the combined array. Useful for adding items to arrays like tags, classes, or other list-based attributes.
 
@@ -698,7 +698,7 @@ When working with objects that have array attributes (like tags), you often need
 - Logs an error if the existing attribute is not an array
 - `TBC:` Supports nested attributes (e.g., `data.tags`)
 
-#### `attr_includes`
+### `attr_includes`
 
 A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
@@ -716,7 +716,7 @@ When working with Eleventy collections, you often need to filter items based on 
 {% endfor %}
 ```
 
-#### `fetch`
+### `fetch`
 
 A filter that fetches content from remote URLs or local files. For remote URLs, it uses `@11ty/eleventy-fetch` to download and cache files. For local paths, it reads files relative to the input directory.
 
@@ -788,7 +788,7 @@ npm install @11ty/eleventy-fetch
 
 > `NOTE:` The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
 
-#### `section`
+### `section`
 
 A filter that extracts a named section from content marked with HTML comments. This is useful for splitting a single content file (like a Markdown post) into multiple parts that can be displayed and styled independently in your templates.
 
@@ -847,7 +847,7 @@ This content appears in both the summary and the sidebar!
 - Sections end at the next `<¡--section*-->` marker or end of file
 - Whitespace around names and inside comments is automatically trimmed
 
-#### `remove_tag`
+### `remove_tag`
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
 
