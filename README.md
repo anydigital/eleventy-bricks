@@ -915,7 +915,8 @@ Adds global `site` data to your Eleventy project, providing commonly needed valu
 | `{{ site.year }}` | The current year as a number (e.g., `2026`)                                                                  |
 | `{{ site.prod }}` | Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`) |
 
-**Quick setup:**
+<details>
+<summary>Quick setup</summary>
 
 ```sh
 npm install @anydigital/eleventy-bricks
@@ -944,6 +945,8 @@ Then choose one of the following options:
    ```
 
 {.list-[upper-roman]}
+
+</details>
 
 #### mdAutoRawTags preprocessor
 
