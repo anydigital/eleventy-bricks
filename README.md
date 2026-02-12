@@ -56,7 +56,7 @@ export default function (eleventyConfig) {
 }
 ```
 
-## Command Line
+## Command Line Tools
 
 <!--section:npm-h3-->
 
@@ -116,7 +116,7 @@ This package provides a pre-configured `do` folder setup that helps organize you
 
 <!--section-->
 
-## Configuration
+## Configuration Tools
 
 <!--section:config-h3-->
 
@@ -164,7 +164,7 @@ mkdir -p admin
 ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/index.html
 ```
 
-## Data & Processors
+## Data Tools & Processors
 
 <!--section:data&processors-h3-->
 
