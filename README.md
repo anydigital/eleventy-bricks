@@ -38,7 +38,9 @@ export default function (eleventyConfig) {
 }
 ```
 
-### Option C. Import individual components
+### Option C. Individual imports
+
+For advanced use, import individual components only in `eleventy.config.js`:
 
 ```js
 import { siteData, mdAutoRawTags, mdAutoNl2br, autoLinkFavicons, attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-bricks";
