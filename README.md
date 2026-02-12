@@ -4,193 +4,51 @@ A collection of helpful utilities and filters for Eleventy (11ty).
 
 ## Installation
 
-```bash
+1. First:
+
+```sh
 npm install @anydigital/eleventy-bricks
 ```
 
-## Usage
+2. Then choose one of the following options:
 
-You can use this library in two ways:
+`Option A.` Starting 11ty from scratch? Consider symlinking entire `eleventy.config.js` ([learn more below](#symlink-config) and see https://github.com/anydigital/sveleven as a living example):
 
-### Option 1: As a Plugin
+```sh
+ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+```
 
-Import and use the entire plugin. You can configure which helpers to enable using the options parameter:
+`Option B.` Adding to existing 11ty site? Use as a plugin (recommended):
 
-**ES Modules:**
-
-```javascript
-import eleventyBricks from "@anydigital/eleventy-bricks";
+```js {data-caption=eleventy.config.js}
+import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricks, {
+  eleventyConfig.addPlugin(eleventyBricksPlugin, {
     mdAutoRawTags: true,
     mdAutoNl2br: true,
     autoLinkFavicons: true,
     siteData: true,
-    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "section", "fetch"],
+    filters: ["attr_set", "attr_concat", ...],
   });
-
-  // Your other configuration...
 }
 ```
 
-**CommonJS:**
+`Option C.` Or import individual components only (for advanced use):
 
-```javascript
-const eleventyBricks = require("@anydigital/eleventy-bricks");
-
-module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricks, {
-    mdAutoRawTags: true,
-    mdAutoNl2br: true,
-    autoLinkFavicons: true,
-    siteData: true,
-    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "section", "fetch"],
-  });
-
-  // Your other configuration...
-};
-```
-
-> **Note:** The CommonJS wrapper uses dynamic imports internally and returns async functions. Eleventy's `addPlugin()` method handles this automatically.
-
-### Option 2: Import Individual Helpers (Recommended)
-
-Import only the specific helpers you need without using the plugin:
-
-**ES Modules:**
-
-```javascript
-import {
-  mdAutoRawTags,
-  mdAutoNl2br,
-  autoLinkFavicons,
-  attrSetFilter,
-  attrIncludesFilter,
-  mergeFilter,
-  removeTagFilter,
-  ifFilter,
-  attrConcatFilter,
-  sectionFilter,
-  fetchFilter,
-  siteData,
-} from "@anydigital/eleventy-bricks";
+```js {data-caption=eleventy.config.js}
+import { siteData, mdAutoRawTags, mdAutoNl2br, autoLinkFavicons, attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
+  siteData(eleventyConfig);
   mdAutoRawTags(eleventyConfig);
   mdAutoNl2br(eleventyConfig);
   autoLinkFavicons(eleventyConfig);
   attrSetFilter(eleventyConfig);
-  attrIncludesFilter(eleventyConfig);
-  mergeFilter(eleventyConfig);
-  removeTagFilter(eleventyConfig);
-  ifFilter(eleventyConfig);
   attrConcatFilter(eleventyConfig);
-  sectionFilter(eleventyConfig);
-  // fetchFilter is only available if @11ty/eleventy-fetch is installed
-  if (fetchFilter) {
-    fetchFilter(eleventyConfig);
-  }
-  siteData(eleventyConfig);
-
-  // Your other configuration...
+  ...
 }
 ```
-
-**CommonJS:**
-
-```javascript
-const {
-  mdAutoRawTags,
-  mdAutoNl2br,
-  autoLinkFavicons,
-  attrSetFilter,
-  attrIncludesFilter,
-  mergeFilter,
-  removeTagFilter,
-  ifFilter,
-  attrConcatFilter,
-  sectionFilter,
-  fetchFilter,
-  siteData,
-} = require("@anydigital/eleventy-bricks");
-
-module.exports = async function (eleventyConfig) {
-  await mdAutoRawTags(eleventyConfig);
-  await mdAutoNl2br(eleventyConfig);
-  await autoLinkFavicons(eleventyConfig);
-  await attrSetFilter(eleventyConfig);
-  await attrIncludesFilter(eleventyConfig);
-  await mergeFilter(eleventyConfig);
-  await removeTagFilter(eleventyConfig);
-  await ifFilter(eleventyConfig);
-  await attrConcatFilter(eleventyConfig);
-  await sectionFilter(eleventyConfig);
-  // fetchFilter is only available if @11ty/eleventy-fetch is installed
-  if (fetchFilter) {
-    await fetchFilter(eleventyConfig);
-  }
-  await siteData(eleventyConfig);
-
-  // Your other configuration...
-};
-```
-
-> **Note:** When using CommonJS with individual helpers, the config function must be `async` and each helper must be `await`ed, as the CommonJS wrapper uses dynamic imports internally.
-
-## Configuration Options
-
-When using the plugin (Option 1), you can configure which helpers to enable:
-
-| Option             | Type            | Default | Description                                                      |
-| ------------------ | --------------- | ------- | ---------------------------------------------------------------- |
-| `mdAutoRawTags`    | boolean         | `false` | Enable the mdAutoRawTags preprocessor for Markdown files         |
-| `mdAutoNl2br`      | boolean         | `false` | Enable the mdAutoNl2br preprocessor to convert \n to `<br>` tags |
-| `autoLinkFavicons` | boolean         | `false` | Enable the autoLinkFavicons transform to add favicons to links   |
-| `siteData`         | boolean         | `false` | Enable site.year and site.prod global data                       |
-| `filters`          | array of string | `[]`    | Array of filter names to enable (see Available Filters section)  |
-
-**Available filter names for the `filters` array:**
-
-- `'attr_set'` - Override object attributes
-- `'attr_includes'` - Filter collections by attribute values
-- `'merge'` - Merge arrays or objects
-- `'remove_tag'` - Remove HTML elements from content
-- `'if'` - Inline conditional/ternary operator
-- `'attr_concat'` - Concatenate values to an attribute array
-- `'section'` - Extract named sections from content marked with HTML comments
-- `'fetch'` - Fetch remote URLs or local files (requires `@11ty/eleventy-fetch`)
-
-**Example:**
-
-```javascript
-eleventyConfig.addPlugin(eleventyBricks, {
-  mdAutoRawTags: true,
-  mdAutoNl2br: true,
-  autoLinkFavicons: true,
-  siteData: true,
-  filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "section", "fetch"],
-});
-```
-
-### Additional Exports
-
-The plugin also exports the following utility functions for advanced usage:
-
-- `transformAutoRaw(content)`: The processor function used by `mdAutoRawTags` preprocessor. Can be used programmatically to wrap Nunjucks syntax with raw tags.
-- `transformNl2br(content)`: The processor function used by `mdAutoNl2br` preprocessor. Can be used programmatically to convert `\\n` sequences to `\u003cbr\u003e` tags.
-- `isPlainUrlText(linkText, domain)`: Helper function that checks if link text looks like a plain URL or domain.
-- `cleanLinkText(linkText, domain)`: Helper function that cleans link text by removing protocol, domain, and leading slash.
-- `buildFaviconLink(attrs, domain, text)`: Helper function that builds HTML for a link with favicon.
-- `transformLink(match, attrs, url, linkText)`: The processor function used by `autoLinkFavicons` that processes a single link to include a favicon.
-- `replaceLinksInHtml(content, processor)`: Helper function that replaces all anchor links in HTML content with processed versions.
-- `attrIncludes(collection, attrName, targetValue)`: The core logic for filtering collection items by checking if an attribute array includes a target value. Can be used programmatically to filter collections.
-- `merge(first, ...rest)`: The core merge function used by the `merge` filter. Can be used programmatically to merge arrays or objects.
-- `removeTag(html, tagName)`: The core function used by the `remove_tag` filter. Can be used programmatically to remove HTML tags from content.
-- `iff(trueValue, condition, falseValue)`: The core conditional function used by the `if` filter. Can be used programmatically as a ternary operator.
-- `attrConcat(obj, attr, values)`: The core function used by the `attr_concat` filter. Can be used programmatically to concatenate values to an attribute array.
-- `attrSet(obj, key, value)`: The core function used by the `attr_set` filter. Can be used programmatically to override object attributes.
-- `section(content, sectionName)`: The core function used by the `section` filter. Can be used programmatically to extract named sections from content.
 
 ## Command Line
 
@@ -255,6 +113,8 @@ This package provides a pre-configured `do` folder setup that helps organize you
 ## Configuration
 
 <!--section:config-h3-->
+
+<a id="symlink-config"></a>
 
 ### Symlinked `eleventy.config.js` <sub>from https://github.com/anydigital/eleventy-bricks</sub>
 
@@ -542,38 +402,6 @@ ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 |   `URL \|` | [`fetch`](#fetch)                 |                                                    |
 |  `HTML \|` | [`section`](#section)             | `NAME`                                             |
 |  `HTML \|` | [`remove_tag`](#remove_tag)       | `TAG`                                              |
-
-### Quick Setup
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, {
-    filters: ["attr_set", "attr_concat", ...],
-  });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  attrSetFilter(eleventyConfig);
-  attrConcatFilter(eleventyConfig);
-  ...
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
 
 ### `if`
 
