@@ -18,9 +18,9 @@ npm install @anydigital/eleventy-bricks
 ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
-`Option B.` Adding to existing 11ty site? Use as a plugin (recommended):
+`Option B.` Adding to existing 11ty site? Use as a plugin in `eleventy.config.js` (recommended):
 
-```js {data-caption=eleventy.config.js}
+```js
 import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
@@ -34,9 +34,9 @@ export default function (eleventyConfig) {
 }
 ```
 
-`Option C.` Or import individual components only (for advanced use):
+`Option C.` Or import individual components only in `eleventy.config.js` (for advanced use):
 
-```js {data-caption=eleventy.config.js}
+```js
 import { siteData, mdAutoRawTags, mdAutoNl2br, autoLinkFavicons, attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-bricks";
 
 export default function (eleventyConfig) {
