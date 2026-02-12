@@ -162,7 +162,7 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/admin/index.html admin/ind
 
 <!--section:data&processors-h3-->
 
-### Global `site` data helpers
+### Global `siteData` helper
 
 Adds global `site` data to your Eleventy project, providing commonly needed values that can be accessed in all templates:
 
@@ -170,37 +170,6 @@ Adds global `site` data to your Eleventy project, providing commonly needed valu
 | ----------------- | ------------------------------------------------------------------------------------------------------------ |
 | `{{ site.year }}` | The current year as a number (e.g., `2026`)                                                                  |
 | `{{ site.prod }}` | Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`) |
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { siteData: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { siteData } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  siteData(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
 
 ### `mdAutoRawTags` preprocessor
 
@@ -219,37 +188,6 @@ Before `mdAutoRawTags`, writing this in Markdown:
 ```
 
 Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoRawTags: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { mdAutoRawTags } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoRawTags(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
 
 ### `mdAutoNl2br` converter
 
@@ -277,37 +215,6 @@ Will render as:
 ```
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { mdAutoNl2br: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { mdAutoNl2br } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  mdAutoNl2br(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
 
 ### `autoLinkFavicons` transformer
 
@@ -353,37 +260,6 @@ After processing:
 - Adds `whitespace-nowrap` class to the link
 - Wraps the link text in a `<span>` element
 - The favicon is wrapped in an `<i>` tag for easy styling
-
-<details>
-<summary>Quick setup</summary>
-
-```sh
-npm install @anydigital/eleventy-bricks
-```
-
-Then choose one of the following options:
-
-```js {data-caption="A. As a plugin in eleventy.config.js (balanced)"}
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, { autoLinkFavicons: true });
-}
-```
-
-```js {data-caption="B. Individual import in eleventy.config.js (minimal)"}
-import { autoLinkFavicons } from "@anydigital/eleventy-bricks";
-
-export default function (eleventyConfig) {
-  autoLinkFavicons(eleventyConfig);
-}
-```
-
-```sh {data-caption="C. Symlink entire eleventy.config.js (easiest)"}
-ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
-```
-
-</details>
 
 <!--section:filters-h2-->
 
