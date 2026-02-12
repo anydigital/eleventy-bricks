@@ -4,21 +4,25 @@ A collection of helpful utilities and filters for Eleventy (11ty).
 
 ## Installation
 
-1. First:
-
 ```sh
 npm install @anydigital/eleventy-bricks
 ```
 
-2. Then choose one of the following options:
+Then choose one of the following options:
 
-`Option A.` Starting 11ty from scratch? Consider symlinking entire `eleventy.config.js` ([learn more below](#symlink-config) and see https://github.com/anydigital/sveleven as a living example):
+### Option A. Starting 11ty from scratch?
+
+Consider symlinking entire `eleventy.config.js`:
 
 ```sh
 ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
-`Option B.` Adding to existing 11ty site? Use as a plugin in `eleventy.config.js` (recommended):
+[Learn more below](#symlink-config) and see https://github.com/anydigital/sveleven as a living example.
+
+### Option B. Adding to existing 11ty site?
+
+Use as a plugin in `eleventy.config.js` (recommended):
 
 ```js
 import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
@@ -34,7 +38,7 @@ export default function (eleventyConfig) {
 }
 ```
 
-`Option C.` Or import individual components only in `eleventy.config.js` (for advanced use):
+### Option C. Import individual components
 
 ```js
 import { siteData, mdAutoRawTags, mdAutoNl2br, autoLinkFavicons, attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-bricks";
