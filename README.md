@@ -2,7 +2,7 @@
 
 A collection of helpful utilities and filters for Eleventy (11ty).
 
-## Installation
+## Install
 
 ```sh
 npm install @anydigital/eleventy-bricks
