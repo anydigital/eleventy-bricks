@@ -64,7 +64,7 @@ export default function (eleventyConfig) {
 
 This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
 
-**Quick setup:**
+**Installation steps:**
 
 1. Create a simple folder, which will hold reusable npm scripts:
 
@@ -142,14 +142,12 @@ The package includes a fully-configured Eleventy config file `eleventy.config.js
 - **Quick setup**: Get started immediately with best-practice configurations
 - **Easy customization**: Override specific settings by creating your own config that imports from the symlinked version
 
-**Quick setup:**
+**Installation as simple as:**
 
 ```sh
 npm install @anydigital/eleventy-bricks
 ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
-
-Done! 🎉
 
 <!--section:cms-h4-->
 
@@ -203,9 +201,7 @@ Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTag
 
 Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
 
-**Why use this?**
-
-Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
+**Why use this?** Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
@@ -233,9 +229,7 @@ Will render as:
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This processor processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
-**Why use this?**
-
-When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This processor automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
+**Why use this?** When you have links in your content that display raw URLs or domain names (like `https://example.com/page`), adding favicons provides a visual indicator of the external site. This processor automatically detects these plain-text URL links and enhances them with favicon images, making them more visually appealing and easier to recognize.
 
 **How it works:**
 
