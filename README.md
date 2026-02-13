@@ -177,13 +177,17 @@ Adds global `site` data to your Eleventy project, providing commonly needed valu
 | `{{ site.year }}` | The current year as a number (e.g., `2026`)                                                                  |
 | `{{ site.prod }}` | Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`) |
 
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/siteData.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/siteData.js)
+
 ### `mdAutoRawTags` preprocessor
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
-**Why use this?**
+**Why use this?** When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
 
-When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
 
 **Example:**
 
@@ -202,6 +206,9 @@ Automatically converts `\n` sequences to `<br>` tags in Markdown content. This i
 **Why use this?**
 
 Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
 
 **Example:**
 
@@ -237,6 +244,9 @@ When you have links in your content that display raw URLs or domain names (like 
 3. Extracts the domain from the URL
 4. Removes the domain from the link text (keeping only the path)
 5. Adds a favicon image from Google's favicon service inline with the remaining text
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/processors/autoLinkFavicons.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/autoLinkFavicons.js)
 
 **Example:**
 
@@ -298,6 +308,9 @@ An inline conditional/ternary operator filter that returns one value if a condit
 - Default `falseValue` is an empty string if not provided
 - Works with any data type for values
 
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/if.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/if.js)
+
 **Examples:** <!-- @TODO: better examples -->
 
 ```jinja2
@@ -334,6 +347,9 @@ A filter that merges arrays or objects together, similar to Twig's merge filter.
 
 **Why use this?** When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
 
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/merge.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/merge.js)
+
 **Examples:** <!-- @TODO: better examples -->
 
 ```jinja2
@@ -359,6 +375,9 @@ A filter that merges arrays or objects together, similar to Twig's merge filter.
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
 
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/attr_set.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_set.js)
+
 #### Example: How to pass `collections` to `| renderContent` in `.liquid`?
 
 ```liquid {data-caption="in .liquid:"}
@@ -380,6 +399,9 @@ A filter that concatenates values to an attribute array, returning a new object 
 - Creates the attribute as an empty array if it doesn't exist
 - Logs an error if the existing attribute is not an array
 - `TBC:` Supports nested attributes (e.g., `data.tags`)
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/attr_concat.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_concat.js)
 
 #### Example: Add tags to a post object in `.njk`:
 
@@ -411,6 +433,9 @@ A filter that concatenates values to an attribute array, returning a new object 
 A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
 **Why use this?** When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/attr_includes.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_includes.js)
 
 #### Example: Get all posts that include `#javascript` tag
 
@@ -459,6 +484,9 @@ npm install @11ty/eleventy-fetch
 - Include shared content snippets without using Eleventy's include syntax
 
 > `NOTE:` The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/fetch.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/fetch.js)
 
 **Examples:**
 
@@ -549,6 +577,9 @@ This content appears in both the summary and the sidebar!
 - Sections end at the next `<¡--section*-->` marker or end of file
 - Whitespace around names and inside comments is automatically trimmed
 
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/section.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/section.js)
+
 ### `remove_tag`
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
@@ -566,7 +597,7 @@ A filter that removes a specified HTML element from provided HTML content. It re
 **Security note:** While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/remove_tag.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/remove_tag.js)
+[`src/filters/remove_tag.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/remove_tag.js)
 
 #### Example: Remove all script tags from content <!-- @TODO: better examples -->
 
