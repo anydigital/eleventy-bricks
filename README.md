@@ -269,6 +269,8 @@ After processing:
 
 <!--section:filters-h2-->
 
+<a id="filters"></a>
+
 ## Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
 
 |      Input | Filter                            | Arguments                                          |
