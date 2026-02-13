@@ -68,32 +68,32 @@ This package provides a pre-configured `do` folder setup that helps organize you
 
 1. Install https://github.com/anydigital/eleventy-bricks to reuse pre-defined 11ty scripts from there:
 
-   ```sh
-   npm install @anydigital/eleventy-bricks
-   ```
+```sh
+npm install @anydigital/eleventy-bricks
+```
 
 2. Create a helper folder `do` to symlink the `do/package.json` within:
 
-   ```sh
-   mkdir do
-   cd ./do
-   ln -s ../node_modules/@anydigital/eleventy-bricks/src/do/package.json
-   ```
+```sh
+mkdir do
+cd ./do
+ln -s ../node_modules/@anydigital/eleventy-bricks/src/do/package.json
+```
 
 3. Finally register `do` folder as npm workspace in your root `package.json`:
 
-   ```json {data-caption=./package.json}
-   {
-    ...
-     "workspaces": ["do"],
-     "scripts": {
-       "start": "npm -w do run start",
-       "stage": "npm -w do run stage",
-       "build": "npm -w do run build"
-     }
-     ...
-   }
-   ```
+```json {data-caption=./package.json}
+{
+  ...
+  "workspaces": ["do"],
+  "scripts": {
+    "start": "npm -w do run start",
+    "stage": "npm -w do run stage",
+    "build": "npm -w do run build"
+  },
+  ...
+}
+```
 
 **Done!** 🎉 Now you can run:
 
