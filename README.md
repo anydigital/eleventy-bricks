@@ -291,7 +291,14 @@ After processing:
 
 An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax, it is especially useful in `.liquid` templates.
 
-##### Examples: <!-- @TODO: better examples -->
+**Features:**
+
+- Returns `trueValue` if condition is truthy, otherwise returns `falseValue`
+- Treats empty objects `{}` as falsy
+- Default `falseValue` is an empty string if not provided
+- Works with any data type for values
+
+**Examples:** <!-- @TODO: better examples -->
 
 ```jinja2
 {# Basic usage (defaults to empty string) #}
@@ -321,22 +328,13 @@ An inline conditional/ternary operator filter that returns one value if a condit
 {% set cssClass = 'featured' | if: post.featured | upper %}
 ```
 
-##### Features:
-
-- Returns `trueValue` if condition is truthy, otherwise returns `falseValue`
-- Treats empty objects `{}` as falsy
-- Default `falseValue` is an empty string if not provided
-- Works with any data type for values
-
 ### `merge`
 
 A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
 
-##### Why use this?
+**Why use this?** When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
 
-When working with data in templates, you often need to combine multiple arrays or objects. The `merge` filter provides a clean way to merge data structures without writing custom JavaScript, making it easy to combine collections, merge configuration objects, or aggregate data from multiple sources.
-
-##### Examples: <!-- @TODO: better examples -->
+**Examples:** <!-- @TODO: better examples -->
 
 ```jinja2
 {# Merge configuration objects #}
@@ -361,7 +359,7 @@ When working with data in templates, you often need to combine multiple arrays o
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
 
-##### Example: How to pass `collections` to `| renderContent` in `.liquid`?
+#### Example: How to pass `collections` to `| renderContent` in `.liquid`?
 
 ```liquid {data-caption="in .liquid:"}
 {% assign _ = null | attr_set: 'collections', collections %}
@@ -372,17 +370,24 @@ A filter that creates a new object with an overridden attribute value. This is u
 
 A filter that concatenates values to an attribute array, returning a new object with the combined array. Useful for adding items to arrays like tags, classes, or other list-based attributes.
 
-##### Why use this?
+**Why use this?** When working with objects that have array attributes (like tags), you often need to add additional values without mutating the original object. The `attr_concat` filter provides a clean way to combine existing array values with new ones, automatically handling duplicates.
 
-When working with objects that have array attributes (like tags), you often need to add additional values without mutating the original object. The `attr_concat` filter provides a clean way to combine existing array values with new ones, automatically handling duplicates.
+**Features:**
 
-##### Example: Add tags to a post object in `.njk`:
+- Non-mutating: Creates a new object, leaving the original unchanged
+- Automatically removes duplicates using Set
+- Handles multiple input types: arrays, JSON string arrays (killer feature for `.liquid`), or single values
+- Creates the attribute as an empty array if it doesn't exist
+- Logs an error if the existing attribute is not an array
+- `TBC:` Supports nested attributes (e.g., `data.tags`)
+
+#### Example: Add tags to a post object in `.njk`:
 
 ```jinja2
 {% set enhancedPost = post | attr_concat('tags', ['featured', 'popular']) %}
 ```
 
-##### `PRO` Example: Add scripts and styles to the `site` object in `.liquid`:
+#### `PRO` Example: Add scripts and styles to the `site` object in `.liquid`:
 
 ```liquid
 {% capture _ %}[
@@ -401,24 +406,13 @@ When working with objects that have array attributes (like tags), you often need
 {% assign site = site | attr_concat: 'scripts', _ %}
 ```
 
-##### Features:
-
-- Non-mutating: Creates a new object, leaving the original unchanged
-- Automatically removes duplicates using Set
-- Handles multiple input types: arrays, JSON string arrays (killer feature for `.liquid`), or single values
-- Creates the attribute as an empty array if it doesn't exist
-- Logs an error if the existing attribute is not an array
-- `TBC:` Supports nested attributes (e.g., `data.tags`)
-
 ### `attr_includes`
 
 A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
-##### Why use this?
+**Why use this?** When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
 
-When working with Eleventy collections, you often need to filter items based on tags or other array attributes in front matter. The `attr_includes` filter provides a flexible way to filter by any array attribute, with support for nested properties using dot notation.
-
-##### Example: Get all posts that include `#javascript` tag
+#### Example: Get all posts that include `#javascript` tag
 
 ```jinja2 {data-caption="in .njk:"}
 {% set js_posts = collections.all | attr_includes('data.tags', '#javascript') %}
@@ -432,13 +426,9 @@ When working with Eleventy collections, you often need to filter items based on 
 
 A filter that fetches content from remote URLs or local files. For remote URLs, it uses `@11ty/eleventy-fetch` to download and cache files. For local paths, it reads files relative to the input directory.
 
-##### Why use this?
+**Why use this?** When building static sites, you often need to include content from external sources or reuse content from local files. The `fetch` filter provides a unified way to retrieve content from both remote URLs and local files, with automatic caching for remote resources to improve build performance.
 
-When building static sites, you often need to include content from external sources or reuse content from local files. The `fetch` filter provides a unified way to retrieve content from both remote URLs and local files, with automatic caching for remote resources to improve build performance.
-
-##### Requirements:
-
-This filter requires the `@11ty/eleventy-fetch` package to be installed:
+**Requirements:** This filter requires the `@11ty/eleventy-fetch` package to be installed:
 
 ```bash
 npm install @11ty/eleventy-fetch
@@ -446,7 +436,31 @@ npm install @11ty/eleventy-fetch
 
 > `NOTE:` If `@11ty/eleventy-fetch` is not installed, this filter will not be available. The plugin automatically detects whether the package is installed and only enables the filter if it's present.
 
-##### Examples:
+**Features:**
+
+- Supports a URL (starting with `http://` or `https://`) or a local file path (relative to the input directory):
+  - **Remote URLs**: Downloads and caches content using `@11ty/eleventy-fetch`
+    - Caches files for 1 day by default
+    - Stores cached files in `[input-dir]/_downloads/` directory
+    - Automatically revalidates after cache expires
+  - **Local files**: Reads files relative to the Eleventy input directory
+    - No caching needed for local files
+    - Supports any file type that can be read as text
+- **Error handling**: Throws descriptive errors if fetching fails
+- **Conditional loading**: Only available when `@11ty/eleventy-fetch` is installed
+
+**Use Cases:**
+
+- Fetch content from external APIs during build time
+- Include README files from GitHub repositories
+- Reuse content from local files across multiple pages
+- Download and inline external CSS or JavaScript
+- Fetch data from headless CMS or external data sources
+- Include shared content snippets without using Eleventy's include syntax
+
+> `NOTE:` The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
+
+**Examples:**
 
 ```jinja2
 {# Fetch and display remote content #}
@@ -476,35 +490,11 @@ npm install @11ty/eleventy-fetch
 {{ sharedContent | safe }}
 ```
 
-##### Features:
-
-- Supports a URL (starting with `http://` or `https://`) or a local file path (relative to the input directory):
-  - **Remote URLs**: Downloads and caches content using `@11ty/eleventy-fetch`
-    - Caches files for 1 day by default
-    - Stores cached files in `[input-dir]/_downloads/` directory
-    - Automatically revalidates after cache expires
-  - **Local files**: Reads files relative to the Eleventy input directory
-    - No caching needed for local files
-    - Supports any file type that can be read as text
-- **Error handling**: Throws descriptive errors if fetching fails
-- **Conditional loading**: Only available when `@11ty/eleventy-fetch` is installed
-
-##### Use Cases:
-
-- Fetch content from external APIs during build time
-- Include README files from GitHub repositories
-- Reuse content from local files across multiple pages
-- Download and inline external CSS or JavaScript
-- Fetch data from headless CMS or external data sources
-- Include shared content snippets without using Eleventy's include syntax
-
-> `NOTE:` The filter returns raw text content. Use Eleventy's built-in filters like `| safe`, `| markdown`, or `| fromJson` to process the content as needed.
-
 ### `section`
 
 A filter that extracts a named section from content marked with HTML comments. This is useful for splitting a single content file (like a Markdown post) into multiple parts that can be displayed and styled independently in your templates.
 
-##### Usage:
+**Usage:**
 
 1. Mark sections in your content file (e.g., `post.md`):
 
@@ -545,7 +535,7 @@ This content appears in both the summary and the sidebar!
 </aside>
 ```
 
-##### Features:
+**Features:**
 
 - **Multiple names**: A single section can have multiple names separated by commas: `<¡--section:name1,name2-->`
 - **Case-insensitive**: Section names are matched without regard to case
@@ -553,7 +543,7 @@ This content appears in both the summary and the sidebar!
 - **Non-destructive**: Returns extracted content without modifying the original input
 - **EOF support**: Sections continue until the next `<¡--section*-->` marker or the end of the file
 
-##### Syntax Rules:
+**Syntax Rules:**
 
 - Sections start with: `<¡--section:NAME-->` or `<¡--section:NAME1,NAME2-->`
 - Sections end at the next `<¡--section*-->` marker or end of file
@@ -563,19 +553,9 @@ This content appears in both the summary and the sidebar!
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
 
-##### Why use this?
+**Why use this?** When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `remove_tag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
 
-When working with content from external sources or user-generated content, you may need to strip certain HTML tags for security or presentation purposes. The `remove_tag` filter provides a simple way to remove unwanted tags like `<script>`, `<style>`, or any other HTML elements from your content.
-
-##### Example: Remove all script tags from content <!-- @TODO: better examples -->
-
-```jinja2
-{% set cleanContent = htmlContent | remove_tag('script') %}
-
-{{ cleanContent | safe }}
-```
-
-##### Features:
+**Features:**
 
 - Removes both opening and closing tags along with their content
 - Handles self-closing tags (e.g., `<br />`, `<img />`)
@@ -583,6 +563,15 @@ When working with content from external sources or user-generated content, you m
 - Case-insensitive matching
 - Non-destructive: Returns new string, doesn't modify original
 
-##### Security Note:
+**Security note:** While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
 
-While this filter can help sanitize HTML content, it should not be relied upon as the sole security measure. For critical security requirements, use a dedicated HTML sanitization library on the server side before content reaches your templates.
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/remove_tag.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/remove_tag.js)
+
+#### Example: Remove all script tags from content <!-- @TODO: better examples -->
+
+```jinja2
+{% set cleanContent = htmlContent | remove_tag('script') %}
+
+{{ cleanContent | safe }}
+```
