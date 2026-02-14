@@ -38,7 +38,8 @@ export default function (eleventyConfig) {
 }
 ```
 
-### Option C. Individual imports
+<details>
+<summary><h3>Option C. Individual imports</h3></summary>
 
 For advanced usage, import individual components only in `eleventy.config.js`:
 
@@ -55,6 +56,8 @@ export default function (eleventyConfig) {
   ...
 }
 ```
+
+</details>
 
 ## Command Line Tools
 
@@ -117,9 +120,7 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/do/package.json
 
 <!--section:config-h3-->
 
-<a id="symlink-config"></a>
-
-### Symlinked `eleventy.config.js` <sub>from https://github.com/anydigital/eleventy-bricks</sub>
+### Symlinked `eleventy.config.js` <sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="symlink-config"></a>
 
 The package includes a fully-configured Eleventy config file `eleventy.config.js` that you can symlink to your project to get:
 
@@ -271,9 +272,7 @@ After processing:
 
 <!--section:filters-h2-->
 
-<a id="filters"></a>
-
-## Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
+## Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="filters"></a>
 
 |      Input | Filter                            | Arguments                                          |
 | ---------: | --------------------------------- | -------------------------------------------------- |
