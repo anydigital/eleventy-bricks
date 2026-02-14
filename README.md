@@ -370,11 +370,11 @@ A filter that merges arrays or objects together, similar to Twig's merge filter.
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
 
-#### Example: How to pass `collections` to `| renderContent` in `.liquid`?
+#### Example: How to pass object(s) as argument(s) to a filter in `.liquid`?
 
-```liquid {data-caption="in .liquid:"}
-{% assign _ = null | attr_set: 'collections', collections %}
-{{ _tpl | renderContent: 'liquid,md', _ }}
+```liquid {data-caption="trick for '| renderContent' filter"}
+{% assign _ctx = null | attr_set: 'collections', collections %}
+{{ ... | renderContent: 'liquid,md', _ctx }}
 ```
 
 ### `attr_concat`
