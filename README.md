@@ -38,8 +38,10 @@ export default function (eleventyConfig) {
 }
 ```
 
-<details>
-<summary><h3>Option C. Individual imports</h3></summary>
+<details><summary>
+
+### Option C. Individual imports
+</summary>
 
 For advanced usage, import individual components only in `eleventy.config.js`:
 
