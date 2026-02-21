@@ -41,6 +41,7 @@ export default function (eleventyConfig) {
 <details><summary>
 
 ### Option C. Individual imports
+
 </summary>
 
 For advanced usage, import individual components only in `eleventy.config.js`:
@@ -65,7 +66,7 @@ export default function (eleventyConfig) {
 
 <!--section:npm-h3-->
 
-### Reusable 11ty npm scripts <small>via npm workspace</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub>
+### 🥷 Reusable 11ty npm scripts <small>via npm workspace</small> <br><sub>from https://github.com/anydigital/eleventy-bricks</sub>
 
 This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
 
@@ -122,7 +123,7 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/do/package.json
 
 <!--section:config-h3-->
 
-### Symlinked `eleventy.config.js` <sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="symlink-config"></a>
+### 🥷 Symlinked `eleventy.config.js` <br><sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="symlink-config"></a>
 
 The package includes a fully-configured Eleventy config file `eleventy.config.js` that you can symlink to your project to get:
 
@@ -149,9 +150,13 @@ npm install @anydigital/eleventy-bricks
 ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 ```
 
-<!--section:cms-h4-->
+<!--section:cms-h3-->
 
-### Symlinked CMS
+<details><summary>
+
+### Symlinked CMS `index.html`
+
+</summary>
 
 A ready-to-use Sveltia CMS admin interface for content management.
 
@@ -162,6 +167,8 @@ mkdir -p ./src/admin
 cd ./src/admin
 ln -s ../../node_modules/@anydigital/eleventy-bricks/src/admin/index.html
 ```
+
+</details>
 
 ## Data Tools & Processors
 
@@ -179,54 +186,7 @@ Adds global `site` data to your Eleventy project, providing commonly needed valu
 | `{{ site.year }}` | The current year as a number (e.g., `2026`)                                                                  |
 | `{{ site.prod }}` | Boolean indicating if running in production mode (`true` for `eleventy build`, `false` for `eleventy serve`) |
 
-### `mdAutoRawTags` preprocessor
-
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
-
-Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
-
-**Why use this?** When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
-
-**Example:**
-
-Before `mdAutoRawTags`, writing this in Markdown:
-
-```markdown
-### Using {{ variable }} to output variables
-```
-
-Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
-
-### `mdAutoNl2br` converter
-
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
-
-Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
-
-**Why use this?** Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
-
-**Example:**
-
-In your Markdown file:
-
-```markdown
-| Column 1               | Column 2                          |
-| ---------------------- | --------------------------------- |
-| Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
-```
-
-Will render as:
-
-```html
-<td>Line 1<br />Line 2<br />Line 3</td>
-<td>Another cell<br />With multiple lines</td>
-```
-
-**Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
-
-### `autoLinkFavicons` transformer
+### 🥷 `autoLinkFavicons` transformer
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/processors/autoLinkFavicons.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/autoLinkFavicons.js)
@@ -272,25 +232,74 @@ After processing:
 - Wraps the link text in a `<span>` element
 - The favicon is wrapped in an `<i>` tag for easy styling
 
+<details><summary>
+
+### mdAutoRawTags preprocessor
+
+</summary>
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
+
+Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
+
+**Why use this?** When writing documentation or tutorials about templating in Markdown files, you often want to show Nunjucks/Liquid syntax as literal text. This preprocessor automatically escapes these special characters so they display as-is instead of being processed by the template engine.
+
+**Example:**
+
+Before `mdAutoRawTags`, writing this in Markdown:
+
+```markdown
+### Using {{ variable }} to output variables
+```
+
+Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
+
+</details>
+
+<details><summary>
+
+### mdAutoNl2br converter
+
+</summary>
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
+
+Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
+
+**Why use this?** Markdown tables don't support multi-line content in cells. By using `\n` in your content, this preprocessor will convert it to `<br>` tags, allowing you to display line breaks within table cells and other content.
+
+**Example:**
+
+In your Markdown file:
+
+```markdown
+| Column 1               | Column 2                          |
+| ---------------------- | --------------------------------- |
+| Line 1\nLine 2\nLine 3 | Another cell\nWith multiple lines |
+```
+
+Will render as:
+
+```html
+<td>Line 1<br />Line 2<br />Line 3</td>
+<td>Another cell<br />With multiple lines</td>
+```
+
+**Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
+
+</details>
+
 <!--section:filters-h2-->
 
-## Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="filters"></a>
+## 🥷 Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="filters"></a>
 
-|      Input | Filter                            | Arguments                                          |
-| ---------: | --------------------------------- | -------------------------------------------------- |
-| {.divider} | Logical filters:                  |
-|   `ANY \|` | [`if`](#if)                       | `TEST, OP, VALUE` <sub>currently only `TEST`</sub> |
-| {.divider} | Filters for objects:              |
-|   `OBJ \|` | [`merge`](#merge)                 | `OBJ2`                                             |
-|   `OBJ \|` | [`attr_set`](#attr_set)           | `ATTR, VALUE`                                      |
-|   `OBJ \|` | [`attr_concat`](#attr_concat)     | `ATTR, ARRAY2`                                     |
-|   `OBJ \|` | [`attr_includes`](#attr_includes) | `ATTR, VALUE`                                      |
-| {.divider} | Other filters:                    |
-|   `URL \|` | [`fetch`](#fetch)                 |                                                    |
-|  `HTML \|` | [`section`](#section)             | `NAME`                                             |
-|  `HTML \|` | [`remove_tag`](#remove_tag)       | `TAG`                                              |
+<details><summary>
 
 ### `if`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/if.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/if.js)
@@ -334,7 +343,13 @@ An inline conditional/ternary operator filter that returns one value if a condit
 {% set cssClass = 'featured' | if: post.featured | upper %}
 ```
 
+</details>
+
+<details><summary>
+
 ### `merge`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/merge.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/merge.js)
@@ -364,7 +379,13 @@ A filter that merges arrays or objects together, similar to Twig's merge filter.
 {% set pageMeta = defaultMeta | merge(page.data) %}
 ```
 
+</details>
+
+<details><summary>
+
 ### `attr_set`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/attr_set.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_set.js)
@@ -378,7 +399,13 @@ A filter that creates a new object with an overridden attribute value. This is u
 {{ ... | renderContent: 'liquid,md', _ctx }}
 ```
 
+</details>
+
+<details><summary>
+
 ### `attr_concat`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/attr_concat.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_concat.js)
@@ -421,7 +448,13 @@ A filter that concatenates values to an attribute array, returning a new object 
 {% assign site = site | attr_concat: 'scripts', _ %}
 ```
 
+</details>
+
+<details><summary>
+
 ### `attr_includes`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/attr_includes.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_includes.js)
@@ -440,7 +473,13 @@ A filter that filters a list of items by checking if an attribute array includes
 {% endfor %}
 ```
 
+</details>
+
+<details><summary>
+
 ### `fetch`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/fetch.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/fetch.js)
@@ -511,7 +550,13 @@ npm install @11ty/eleventy-fetch
 {{ sharedContent | safe }}
 ```
 
+</details>
+
+<details><summary>
+
 ### `section`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/section.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/section.js)
@@ -573,7 +618,13 @@ This content appears in both the summary and the sidebar!
 - Sections end at the next `<¡--section*-->` marker or end of file
 - Whitespace around names and inside comments is automatically trimmed
 
+</details>
+
+<details><summary>
+
 ### `remove_tag`
+
+</summary>
 
 🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
 [`src/filters/remove_tag.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/remove_tag.js)
@@ -599,3 +650,52 @@ A filter that removes a specified HTML element from provided HTML content. It re
 
 {{ cleanContent | safe }}
 ```
+
+</details>
+
+<details><summary>
+
+### `strip_tag`
+
+</summary>
+
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
+[`src/filters/strip_tag.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/strip_tag.js)
+
+A filter that strips a specified HTML element from content while keeping its inner content intact. Only the opening and closing tags are removed; everything inside the tag is preserved in place.
+
+**Why use this?** When rendering HTML from a CMS or external source you sometimes need to unwrap a specific element (e.g. remove a wrapping `<div>` or `<section>`) without losing the content it contains. Unlike `remove_tag`, which discards the entire element and its content, `strip_tag` surgically removes only the tags themselves.
+
+**Features:**
+
+- Removes only the opening and closing tags — inner content is preserved
+- Handles tags with any attributes
+- Strips all occurrences of the tag, including nested ones
+- Case-insensitive matching
+- Non-destructive: Returns a new string, leaves the original unchanged
+
+#### Example: Unwrap a wrapping `<div>` from content
+
+```jinja2
+{% set unwrapped = htmlContent | strip_tag('div') %}
+
+{{ unwrapped | safe }}
+```
+
+Input:
+
+```html
+<div class="wrapper">
+  <p>Hello</p>
+  <p>World</p>
+</div>
+```
+
+Output:
+
+```html
+<p>Hello</p>
+<p>World</p>
+```
+
+</details>
