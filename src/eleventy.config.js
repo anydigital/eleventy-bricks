@@ -4,7 +4,7 @@ import minimist from "minimist";
 import { RenderPlugin } from "@11ty/eleventy";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
-/* Conditional imports */
+/* Dynamic plugins */
 let pluginTOC;
 try {
   pluginTOC = (await import("@uncenter/eleventy-plugin-toc")).default;
@@ -12,6 +12,7 @@ try {
   // @uncenter/eleventy-plugin-toc not installed
 }
 /* Libraries */
+import slugify from "@sindresorhus/slugify";
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItAttrs from "markdown-it-attrs";
@@ -36,7 +37,7 @@ export default function (eleventyConfig) {
     mdAutoRawTags: true,
     autoLinkFavicons: true,
     siteData: true,
-    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch", "section"],
+    filters: ["attr_set", "attr_includes", "merge", "remove_tag", "if", "attr_concat", "fetch", "section", "strip_tag"],
   });
   if (pluginTOC) {
     eleventyConfig.addPlugin(pluginTOC, {
@@ -54,6 +55,7 @@ export default function (eleventyConfig) {
       linkify: true,
     })
       .use(markdownItAnchor, {
+        slugify: slugify, // @TODO: TRICKS
         permalink: markdownItAnchor.permalink.ariaHidden(),
       })
       .use(markdownItAttrs),
