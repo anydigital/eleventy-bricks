@@ -2,9 +2,14 @@
 import minimist from "minimist";
 /* Plugins */
 import { RenderPlugin } from "@11ty/eleventy";
-import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
 /* Dynamic plugins */
+let eleventyNavigationPlugin;
+try {
+  eleventyNavigationPlugin = (await import("@11ty/eleventy-navigation")).default;
+} catch (e) {
+  // @11ty/eleventy-navigation not installed
+}
 let pluginTOC;
 try {
   pluginTOC = (await import("@uncenter/eleventy-plugin-toc")).default;
@@ -12,10 +17,26 @@ try {
   // @uncenter/eleventy-plugin-toc not installed
 }
 /* Libraries */
-import slugify from "@sindresorhus/slugify";
 import markdownIt from "markdown-it";
-import markdownItAnchor from "markdown-it-anchor";
-import markdownItAttrs from "markdown-it-attrs";
+/* Dynamic libraries */
+let slugify;
+try {
+  slugify = (await import("@sindresorhus/slugify")).default;
+} catch (e) {
+  // @sindresorhus/slugify not installed
+}
+let markdownItAnchor;
+try {
+  markdownItAnchor = (await import("markdown-it-anchor")).default;
+} catch (e) {
+  // markdown-it-anchor not installed
+}
+let markdownItAttrs;
+try {
+  markdownItAttrs = (await import("markdown-it-attrs")).default;
+} catch (e) {
+  // markdown-it-attrs not installed
+}
 /* Data */
 import yaml from "js-yaml";
 
@@ -27,11 +48,11 @@ import yaml from "js-yaml";
 export default function (eleventyConfig) {
   /* CLI support */
   const argv = minimist(process.argv.slice(2));
-  const inputDir = argv.input || "src";
+  const inputDir = argv.input || ".";
 
   /* Plugins */
   eleventyConfig.addPlugin(RenderPlugin);
-  eleventyConfig.addPlugin(eleventyNavigationPlugin);
+  if (eleventyNavigationPlugin) eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addPlugin(eleventyBricksPlugin, {
     mdAutoNl2br: true,
     mdAutoRawTags: true,
@@ -47,22 +68,25 @@ export default function (eleventyConfig) {
   }
 
   /* Libraries */
-  eleventyConfig.setLibrary(
-    "md",
-    markdownIt({
-      html: true,
-      // breaks: true,
-      linkify: true,
-    })
-      .use(markdownItAnchor, {
-        slugify: slugify, // @TODO: TRICKS
-        permalink: markdownItAnchor.permalink.ariaHidden(),
-      })
-      .use(markdownItAttrs),
-  );
+  eleventyConfig.setLiquidOptions({
+    dynamicPartials: false, // This allows unquoted includes like Jekyll
+  });
+  let md = markdownIt({
+    html: true,
+    linkify: true,
+  });
+  if (markdownItAnchor) {
+    md = md.use(markdownItAnchor, {
+      slugify: slugify, // @TODO: TRICKS
+      permalink: markdownItAnchor.permalink.ariaHidden(),
+    });
+  }
+  if (markdownItAttrs) md = md.use(markdownItAttrs);
+  eleventyConfig.setLibrary("md", md);
+  eleventyConfig.addFilter("markdownify", (content) => md.render(String(content ?? "")));
 
   /* Data */
-  eleventyConfig.addGlobalData("layout", "__layout");
+  // eleventyConfig.addGlobalData("layout", "__layout");
   eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
 
   /* Build */
@@ -82,7 +106,7 @@ export default function (eleventyConfig) {
   return {
     dir: {
       input: inputDir,
-      includes: "_theme",
+      // includes: "_theme",
     },
   };
 }
