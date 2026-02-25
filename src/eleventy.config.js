@@ -86,7 +86,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("markdownify", (content) => md.render(String(content ?? "")));
 
   /* Data */
-  // eleventyConfig.addGlobalData("layout", "__layout");
+  eleventyConfig.addGlobalData("layout", "default"); // Jekyll parity
   eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
 
   /* Build */
