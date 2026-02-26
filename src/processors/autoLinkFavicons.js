@@ -50,7 +50,7 @@ export function buildFaviconLink(attrs, domain, text) {
     updatedAttrs = updatedAttrs + ' target="_blank"';
   }
 
-  return `<a ${updatedAttrs}><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"></i><span>${text}</span></a>`;
+  return `<a ${updatedAttrs}><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64"></i><span>${text}</span></a>`;
 }
 
 /**
