@@ -50,6 +50,12 @@ export default function (eleventyConfig) {
   const argv = minimist(process.argv.slice(2));
   const inputDir = argv.input || ".";
 
+  /* Jekyll parity */
+  eleventyConfig.addPassthroughCopy("assets", { expand: true }); // follows symlinks
+  eleventyConfig.addGlobalData("layout", "default");
+  eleventyConfig.setLiquidOptions({ dynamicPartials: false }); // allows unquoted Jekyll-style includes
+  eleventyConfig.addFilter("relative_url", (content) => content);
+
   /* Plugins */
   eleventyConfig.addPlugin(RenderPlugin);
   if (eleventyNavigationPlugin) eleventyConfig.addPlugin(eleventyNavigationPlugin);
@@ -84,13 +90,6 @@ export default function (eleventyConfig) {
 
   /* Data */
   eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
-
-  /* Jekyll parity */
-  eleventyConfig.addGlobalData("layout", "default");
-  eleventyConfig.setLiquidOptions({
-    dynamicPartials: false, // This allows unquoted includes like Jekyll
-  });
-  eleventyConfig.addFilter("relative_url", (content) => content);
 
   /* Build */
   eleventyConfig.addPassthroughCopy(
