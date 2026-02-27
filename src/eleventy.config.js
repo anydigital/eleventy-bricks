@@ -68,9 +68,6 @@ export default function (eleventyConfig) {
   }
 
   /* Libraries */
-  eleventyConfig.setLiquidOptions({
-    dynamicPartials: false, // This allows unquoted includes like Jekyll
-  });
   let md = markdownIt({
     html: true,
     linkify: true,
@@ -86,8 +83,14 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("markdownify", (content) => md.render(String(content ?? "")));
 
   /* Data */
-  eleventyConfig.addGlobalData("layout", "default"); // Jekyll parity
   eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
+
+  /* Jekyll parity */
+  eleventyConfig.addGlobalData("layout", "default");
+  eleventyConfig.setLiquidOptions({
+    dynamicPartials: false, // This allows unquoted includes like Jekyll
+  });
+  eleventyConfig.addFilter("relative_url", (content) => content);
 
   /* Build */
   eleventyConfig.addPassthroughCopy(
