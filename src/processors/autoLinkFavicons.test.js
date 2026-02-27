@@ -90,7 +90,7 @@ describe("buildFaviconLink", () => {
     const result = buildFaviconLink('href="https://example.com/docs"', "example.com", "/docs");
     assert.equal(
       result,
-      '<a href="https://example.com/docs" class="whitespace-nowrap" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i><span>/docs</span></a>',
+      '<a href="https://example.com/docs" class="whitespace-nowrap" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=64"></i><span>/docs</span></a>',
     );
   });
 
@@ -98,13 +98,13 @@ describe("buildFaviconLink", () => {
     const result = buildFaviconLink('href="https://example.com" class="link"', "example.com", "text");
     assert.equal(
       result,
-      '<a href="https://example.com" class="link whitespace-nowrap" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=32"></i><span>text</span></a>',
+      '<a href="https://example.com" class="link whitespace-nowrap" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=example.com&sz=64"></i><span>text</span></a>',
     );
   });
 
-  it("should use sz=32 parameter for favicon size", () => {
+  it("should use sz=64 parameter for favicon size", () => {
     const result = buildFaviconLink('href="https://example.com"', "example.com", "text");
-    assert.match(result, /sz=32/);
+    assert.match(result, /sz=64/);
   });
 
   it("should wrap img in <i> tag", () => {
@@ -116,7 +116,7 @@ describe("buildFaviconLink", () => {
     const result = buildFaviconLink('href="https://github.com/repo"', "github.com", "/repo");
     assert.equal(
       result,
-      '<a href="https://github.com/repo" class="whitespace-nowrap" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32"></i><span>/repo</span></a>',
+      '<a href="https://github.com/repo" class="whitespace-nowrap" target="_blank"><i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=64"></i><span>/repo</span></a>',
     );
   });
 
@@ -136,7 +136,7 @@ describe("transformLink", () => {
     );
     assert.match(
       result,
-      /<i><img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=32"><\/i><span>\/docs<\/span>/,
+      /<i><img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=64"><\/i><span>\/docs<\/span>/,
     );
   });
 
@@ -395,7 +395,7 @@ describe("replaceLinksInHtml", () => {
     const html = '<a href="https://example.com/docs">https://example.com/docs</a>';
     const result = replaceLinksInHtml(html, transformLink);
     // transformLink should add favicon for plain URL links
-    assert.match(result, /<img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=32">/);
+    assert.match(result, /<img src="https:\/\/www\.google\.com\/s2\/favicons\?domain=example\.com&sz=64">/);
     assert.match(result, /<span>\/docs<\/span><\/a>/);
   });
 
