@@ -51,7 +51,7 @@ export default function (eleventyConfig) {
   const inputDir = argv.input || ".";
 
   /* Jekyll parity */
-  eleventyConfig.addPassthroughCopy("assets", { expand: true }); // follows symlinks
+  eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addGlobalData("layout", "default");
   eleventyConfig.setLiquidOptions({ dynamicPartials: false }); // allows unquoted Jekyll-style includes
   eleventyConfig.addFilter("relative_url", (content) => content);
