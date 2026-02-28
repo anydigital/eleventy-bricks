@@ -36,15 +36,6 @@ export function cleanLinkText(linkText, domain) {
 export function buildFaviconLink(attrs, domain, text) {
   let updatedAttrs = attrs;
 
-  // Check if attrs already contains a class attribute
-  if (/class\s*=\s*["']/.test(attrs)) {
-    // Append whitespace-nowrap to existing class
-    updatedAttrs = attrs.replace(/class\s*=\s*["']([^"']*)["']/i, 'class="$1 whitespace-nowrap"');
-  } else {
-    // Add new class attribute
-    updatedAttrs = attrs + ' class="whitespace-nowrap"';
-  }
-
   // Check if attrs already contains a target attribute
   if (!/target\s*=/.test(attrs)) {
     updatedAttrs = updatedAttrs + ' target="_blank"';
