@@ -15,6 +15,7 @@ import { stripTagFilter, stripTag } from "./filters/strip_tag.js";
 import { ifFilter, iff } from "./filters/if.js";
 import { attrConcatFilter, attrConcat } from "./filters/attr_concat.js";
 import { sectionFilter, section as sectionFn } from "./filters/section.js";
+import { unindentFilter, unindent } from "./filters/unindent.js";
 import { siteData } from "./siteData.js";
 
 // Conditionally import fetchFilter only if @11ty/eleventy-fetch is available
@@ -58,6 +59,7 @@ export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
     if: ifFilter,
     attr_concat: attrConcatFilter,
     section: sectionFilter,
+    unindent: unindentFilter,
     ...(fetchFilter && { fetch: fetchFilter }),
   };
 
@@ -92,6 +94,7 @@ export {
   ifFilter,
   attrConcatFilter,
   sectionFilter,
+  unindentFilter,
   fetchFilter,
   siteData,
 };
@@ -112,4 +115,5 @@ export {
   attrConcat,
   attrSet,
   sectionFn as section,
+  unindent,
 };
