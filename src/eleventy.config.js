@@ -1,5 +1,3 @@
-/* CLI */
-import minimist from "minimist";
 /* Plugins */
 import { RenderPlugin } from "@11ty/eleventy";
 import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
@@ -46,9 +44,7 @@ import yaml from "js-yaml";
  * @returns {Object} The Eleventy configuration object
  */
 export default function (eleventyConfig) {
-  /* CLI support */
-  const argv = minimist(process.argv.slice(2));
-  const inputDir = argv.input || ".";
+  const inputDir = eleventyConfig.directories.input;
 
   /* Jekyll parity */
   eleventyConfig.addPassthroughCopy("assets");
@@ -114,12 +110,4 @@ export default function (eleventyConfig) {
   /* Dev tools */
   // Follow symlinks in Chokidar used by 11ty to watch files
   eleventyConfig.setChokidarConfig({ followSymlinks: true });
-
-  /* Config */
-  return {
-    dir: {
-      input: inputDir,
-      // includes: "_theme",
-    },
-  };
 }

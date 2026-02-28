@@ -18,7 +18,7 @@ export function fetchFilter(eleventyConfig) {
     }
 
     // Get the input directory from Eleventy config
-    const inputDir = eleventyConfig.dir?.input || ".";
+    const inputDir = this.eleventy.directories.input;
 
     // Check if it's a URL or local path
     const isUrl = url.startsWith("http://") || url.startsWith("https://");
