@@ -1,6 +1,6 @@
 {
   "name": "@anydigital/eleventy-bricks",
-  "version": "0.28.0-alpha.4",
+  "version": "0.28.0-alpha.5",
   "description": "A collection of helpful utilities and filters for Eleventy (11ty)",
   "type": "module",
   "main": "./src/index.js",
