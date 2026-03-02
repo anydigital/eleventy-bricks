@@ -88,7 +88,10 @@ export default function (eleventyConfig) {
   if (markdownItAnchor) {
     md = md.use(markdownItAnchor, {
       slugify: slugify, // @TODO: TRICKS
-      permalink: markdownItAnchor.permalink.ariaHidden(),
+      permalink: markdownItAnchor.permalink.ariaHidden({
+        class: null,
+        renderAttrs: () => ({ "data-is-anchor": true }),
+      }),
     });
   }
   if (markdownItAttrs) md = md.use(markdownItAttrs);
