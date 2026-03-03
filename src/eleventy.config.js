@@ -75,8 +75,9 @@ export default function (eleventyConfig) {
   });
   if (pluginTOC) {
     eleventyConfig.addPlugin(pluginTOC, {
-      ignoredElements: ["sub", ".header-anchor"],
+      ignoredElements: ["sub", "[data-is-anchor]"],
       ul: true,
+      wrapper: (toc) => `<div data-is-toc>${toc}</div>`,
     });
   }
 
