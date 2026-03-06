@@ -1,6 +1,6 @@
 /* Plugins */
 import { RenderPlugin } from "@11ty/eleventy";
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+import eleventyBladesPlugin from "@anydigital/eleventy-blades";
 /* Dynamic plugins */
 let eleventyNavigationPlugin;
 try {
@@ -55,7 +55,7 @@ export default function (eleventyConfig) {
   /* Plugins */
   eleventyConfig.addPlugin(RenderPlugin);
   if (eleventyNavigationPlugin) eleventyConfig.addPlugin(eleventyNavigationPlugin);
-  eleventyConfig.addPlugin(eleventyBricksPlugin, {
+  eleventyConfig.addPlugin(eleventyBladesPlugin, {
     mdAutoNl2br: true,
     mdAutoRawTags: true,
     autoLinkFavicons: true,

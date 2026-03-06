@@ -1,11 +1,11 @@
-# `@anydigital/eleventy-bricks`
+# `@anydigital/eleventy-blades`
 
 A collection of helpful utilities and filters for Eleventy (11ty).
 
 ## Install
 
 ```sh
-npm install @anydigital/eleventy-bricks
+npm install @anydigital/eleventy-blades
 ```
 
 Then choose one of the following options:
@@ -15,7 +15,7 @@ Then choose one of the following options:
 Consider symlinking entire `eleventy.config.js`:
 
 ```sh
-ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+ln -s ./node_modules/@anydigital/eleventy-blades/src/eleventy.config.js
 ```
 
 [Learn more below](#symlink-config) and see https://github.com/anydigital/sveleven as a living example.
@@ -25,10 +25,10 @@ ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
 Use as a plugin in `eleventy.config.js` (recommended):
 
 ```js
-import eleventyBricksPlugin from "@anydigital/eleventy-bricks";
+import eleventyBladesPlugin from "@anydigital/eleventy-blades";
 
 export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(eleventyBricksPlugin, {
+  eleventyConfig.addPlugin(eleventyBladesPlugin, {
     mdAutoRawTags: true,
     mdAutoNl2br: true,
     autoLinkFavicons: true,
@@ -47,7 +47,7 @@ export default function (eleventyConfig) {
 For advanced usage, import individual components only in `eleventy.config.js`:
 
 ```js
-import { siteData, mdAutoRawTags, mdAutoNl2br, autoLinkFavicons, attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-bricks";
+import { siteData, mdAutoRawTags, mdAutoNl2br, autoLinkFavicons, attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-blades";
 
 export default function (eleventyConfig) {
   siteData(eleventyConfig);
@@ -66,16 +66,16 @@ export default function (eleventyConfig) {
 
 <!--section:npm-h3-->
 
-### 🥷 Reusable 11ty npm scripts <small>via npm workspace</small> <br><sub>from https://github.com/anydigital/eleventy-bricks</sub>
+### 🥷 Reusable 11ty npm scripts <small>via npm workspace</small> <br><sub>from https://github.com/anydigital/eleventy-blades</sub>
 
 This package provides a pre-configured `do` folder setup that helps organize your development workflow using npm workspaces. The `do` folder contains scripts for building and running your Eleventy project.
 
 **Installation:**
 
-1. Install https://github.com/anydigital/eleventy-bricks to reuse pre-defined 11ty scripts from there:
+1. Install https://github.com/anydigital/eleventy-blades to reuse pre-defined 11ty scripts from there:
 
 ```sh
-npm install @anydigital/eleventy-bricks
+npm install @anydigital/eleventy-blades
 ```
 
 2. Create a helper folder `do` to symlink the `do/package.json` within:
@@ -83,7 +83,7 @@ npm install @anydigital/eleventy-bricks
 ```sh
 mkdir do
 cd ./do
-ln -s ../node_modules/@anydigital/eleventy-bricks/src/do/package.json
+ln -s ../node_modules/@anydigital/eleventy-blades/src/do/package.json
 ```
 
 3. Finally register `do` folder as npm workspace in your root `package.json`:
@@ -106,7 +106,7 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/do/package.json
 - `npm start` to start 11ty dev server with live reload and Tailwind watch mode
 - `npm run stage` to build and serve production-like site locally
 - `npm run build` to finally build the site for production
-- all available scripts: https://github.com/anydigital/eleventy-bricks/blob/main/src/do/package.json
+- all available scripts: https://github.com/anydigital/eleventy-blades/blob/main/src/do/package.json
 
 **Living example:** https://github.com/anydigital/sveleven
 
@@ -123,11 +123,11 @@ ln -s ../node_modules/@anydigital/eleventy-bricks/src/do/package.json
 
 <!--section:config-h3-->
 
-### 🥷 Symlinked `eleventy.config.js` <br><sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="symlink-config"></a>
+### 🥷 Symlinked `eleventy.config.js` <br><sub>from https://github.com/anydigital/eleventy-blades</sub> <a id="symlink-config"></a>
 
 The package includes a fully-configured Eleventy config file `eleventy.config.js` that you can symlink to your project to get:
 
-- All eleventy-bricks plugins enabled
+- All eleventy-blades plugins enabled
 - Eleventy Navigation plugin
 - Table of Contents plugin (conditionally loaded if installed)
 - Markdown-it with anchors and attributes
@@ -146,8 +146,8 @@ The package includes a fully-configured Eleventy config file `eleventy.config.js
 **Installation as simple as:**
 
 ```sh
-npm install @anydigital/eleventy-bricks
-ln -s ./node_modules/@anydigital/eleventy-bricks/src/eleventy.config.js
+npm install @anydigital/eleventy-blades
+ln -s ./node_modules/@anydigital/eleventy-blades/src/eleventy.config.js
 ```
 
 <!--section:cms-h3-->
@@ -165,7 +165,7 @@ A ready-to-use Sveltia CMS admin interface for content management.
 ```sh
 mkdir -p ./src/admin
 cd ./src/admin
-ln -s ../../node_modules/@anydigital/eleventy-bricks/src/admin/index.html
+ln -s ../../node_modules/@anydigital/eleventy-blades/src/admin/index.html
 ```
 
 </details>
@@ -176,8 +176,8 @@ ln -s ../../node_modules/@anydigital/eleventy-bricks/src/admin/index.html
 
 ### Global `siteData` helper
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/siteData.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/siteData.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/siteData.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/siteData.js)
 
 Adds global `site` data to your Eleventy project, providing commonly needed values that can be accessed in all templates:
 
@@ -188,8 +188,8 @@ Adds global `site` data to your Eleventy project, providing commonly needed valu
 
 ### 🥷 `autoLinkFavicons` transformer
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/processors/autoLinkFavicons.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/autoLinkFavicons.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/processors/autoLinkFavicons.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/processors/autoLinkFavicons.js)
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This processor processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 
@@ -208,15 +208,15 @@ Automatically adds favicon images from Google's favicon service to links that di
 Before processing:
 
 ```html
-<a href="https://github.com/anydigital/eleventy-bricks">https://github.com/anydigital/eleventy-bricks</a>
+<a href="https://github.com/anydigital/eleventy-blades">https://github.com/anydigital/eleventy-blades</a>
 ```
 
 After processing:
 
 ```html
-<a href="https://github.com/anydigital/eleventy-bricks" class="whitespace-nowrap" target="_blank">
+<a href="https://github.com/anydigital/eleventy-blades" class="whitespace-nowrap" target="_blank">
   <i><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" /></i>
-  <span>/anydigital/eleventy-bricks</span>
+  <span>/anydigital/eleventy-blades</span>
 </a>
 ```
 
@@ -238,8 +238,8 @@ After processing:
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/processors/markdown.js)
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
@@ -263,8 +263,8 @@ Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTag
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/processors/markdown.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/processors/markdown.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/processors/markdown.js)
 
 Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
 
@@ -293,7 +293,7 @@ Will render as:
 
 <!--section:filters-h2-->
 
-## 🥷 Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-bricks</sub> <a id="filters"></a>
+## 🥷 Universal 11ty Filters <small>for `.njk` & `.liquid`</small> <sub>from https://github.com/anydigital/eleventy-blades</sub> <a id="filters"></a>
 
 <details><summary>
 
@@ -301,8 +301,8 @@ Will render as:
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/if.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/if.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/if.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/if.js)
 
 An inline conditional/ternary operator filter that returns one value if a condition is truthy, and another if it's falsy. Similar to Nunjucks' inline if syntax, it is especially useful in `.liquid` templates.
 
@@ -351,8 +351,8 @@ An inline conditional/ternary operator filter that returns one value if a condit
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/merge.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/merge.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/merge.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/merge.js)
 
 A filter that merges arrays or objects together, similar to Twig's merge filter. For arrays, it concatenates them. For objects, it performs a shallow merge where later values override earlier ones.
 
@@ -387,8 +387,8 @@ A filter that merges arrays or objects together, similar to Twig's merge filter.
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/attr_set.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_set.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/attr_set.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/attr_set.js)
 
 A filter that creates a new object with an overridden attribute value. This is useful for modifying data objects in templates without mutating the original. Or even constructing an object from scratch.
 
@@ -407,8 +407,8 @@ A filter that creates a new object with an overridden attribute value. This is u
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/attr_concat.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_concat.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/attr_concat.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/attr_concat.js)
 
 A filter that concatenates values to an attribute array, returning a new object with the combined array. Useful for adding items to arrays like tags, classes, or other list-based attributes.
 
@@ -456,8 +456,8 @@ A filter that concatenates values to an attribute array, returning a new object 
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/attr_includes.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/attr_includes.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/attr_includes.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/attr_includes.js)
 
 A filter that filters a list of items by checking if an attribute array includes a target value. Supports nested attribute names using dot notation.
 
@@ -481,8 +481,8 @@ A filter that filters a list of items by checking if an attribute array includes
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/fetch.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/fetch.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/fetch.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/fetch.js)
 
 A filter that fetches content from remote URLs or local files. For remote URLs, it uses `@11ty/eleventy-fetch` to download and cache files. For local paths, it reads files relative to the input directory.
 
@@ -558,8 +558,8 @@ npm install @11ty/eleventy-fetch
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/section.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/section.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/section.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/section.js)
 
 A filter that extracts a named section from content marked with HTML comments. This is useful for splitting a single content file (like a Markdown post) into multiple parts that can be displayed and styled independently in your templates.
 
@@ -626,8 +626,8 @@ This content appears in both the summary and the sidebar!
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/remove_tag.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/remove_tag.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/remove_tag.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/remove_tag.js)
 
 A filter that removes a specified HTML element from provided HTML content. It removes the tag along with its content, including self-closing tags.
 
@@ -659,8 +659,8 @@ A filter that removes a specified HTML element from provided HTML content. It re
 
 </summary>
 
-🧩 [Install via Plugin](https://github.com/anydigital/eleventy-bricks#install) — or copy-paste from
-[`src/filters/strip_tag.js`](https://github.com/anydigital/eleventy-bricks/blob/main/src/filters/strip_tag.js)
+🧩 [Install via Plugin](https://github.com/anydigital/eleventy-blades#install) — or copy-paste from
+[`src/filters/strip_tag.js`](https://github.com/anydigital/eleventy-blades/blob/main/src/filters/strip_tag.js)
 
 A filter that strips a specified HTML element from content while keeping its inner content intact. Only the opening and closing tags are removed; everything inside the tag is preserved in place.
 

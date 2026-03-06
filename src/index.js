@@ -29,7 +29,7 @@ try {
 }
 
 /**
- * 11ty Bricks Plugin
+ * 11ty Blades Plugin
  *
  * A collection of helpful utilities and filters for Eleventy (11ty).
  * Can be used as a plugin or by importing individual helpers.
@@ -42,7 +42,7 @@ try {
  * @param {Array<string>} options.filters - Array of filter names to enable: 'attr_set', 'attr_includes', 'merge', 'remove_tag', 'strip_tag', 'if', 'attr_concat', 'section', 'fetch' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
  */
-export default function eleventyBricksPlugin(eleventyConfig, options = {}) {
+export default function eleventyBladesPlugin(eleventyConfig, options = {}) {
   const plugins = {
     mdAutoRawTags,
     mdAutoNl2br,
