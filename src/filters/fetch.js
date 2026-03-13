@@ -32,7 +32,7 @@ export function fetchFilter(eleventyConfig) {
           type: "text", // Return as text
           directory: cacheDirectory,
         });
-        return content;
+        return content.toString(); // toString() handles bytes cache (inside eleventyComputed)
       } else {
         // Handle local file paths relative to input directory
         const filePath = path.join(inputDir, url);
