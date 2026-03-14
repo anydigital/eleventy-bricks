@@ -1,6 +1,6 @@
-# `@anydigital/eleventy-blades`
+# 🥷 Eleventy Blades
 
-A collection of helpful utilities and filters for Eleventy (11ty).
+Ultimate blade kit for 11ty (Build Awesome).
 
 ## Install
 
