@@ -1,5 +1,5 @@
 <!--section:index-->
-<hgroup><small>Build Awesome plugin</small><h2>Eleventy blades</h2><p></p></hgroup>
+<hgroup id="11ty"><small>Build Awesome plugin</small><h2>Eleventy blades</h2><p></p></hgroup>
 
 Ultimate blade kit for 11ty (Build Awesome).
 
@@ -156,25 +156,7 @@ npm install @anydigital/eleventy-blades
 ln -s ./node_modules/@anydigital/eleventy-blades/src/eleventy.config.js
 ```
 
-<!--section:cms-h3-->
-
-<details><summary>
-
-### Symlinked CMS `index.html`
-
-</summary>
-
-A ready-to-use Sveltia CMS admin interface for content management.
-
-**Installation:**
-
-```sh
-mkdir -p ./src/admin
-cd ./src/admin
-ln -s ../../node_modules/@anydigital/eleventy-blades/src/admin/index.html
-```
-
-</details>
+<!--section-->
 
 ## Data Tools & Processors
 
