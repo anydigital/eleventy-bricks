@@ -1,8 +1,9 @@
-# 🥷 Eleventy Blades
+<!--section:index-->
+<hgroup><small>Build Awesome plugin</small><h2>Eleventy blades</h2><p></p></hgroup>
 
 Ultimate blade kit for 11ty (Build Awesome).
 
-## Install
+<details><summary role="button" class="outline">Install Eleventy blades</summary>
 
 ```sh
 npm install @anydigital/eleventy-blades
@@ -10,7 +11,7 @@ npm install @anydigital/eleventy-blades
 
 Then choose one of the following options:
 
-### Option A. Starting 11ty from scratch?
+<mark>Option A.</mark> Starting 11ty from scratch?
 
 Consider symlinking entire `eleventy.config.js`:
 
@@ -18,11 +19,14 @@ Consider symlinking entire `eleventy.config.js`:
 ln -s ./node_modules/@anydigital/eleventy-blades/src/eleventy.config.js
 ```
 
-[Learn more below](#symlink-config) and see https://github.com/anydigital/sveleven as a living example.
+Living examples:
 
-### Option B. Adding to existing 11ty site?
+- https://github.com/anydigital/build-awesome-starter
+- https://github.com/anydigital/bladeswitch
 
-Use as a plugin in `eleventy.config.js` (recommended):
+<mark>Option B.</mark> Adding to existing 11ty site?
+
+Install as a plugin in your `eleventy.config.js` (recommended):
 
 ```js
 import eleventyBladesPlugin from "@anydigital/eleventy-blades";
@@ -38,11 +42,7 @@ export default function (eleventyConfig) {
 }
 ```
 
-<details><summary>
-
-### Option C. Individual imports
-
-</summary>
+<mark>Option C.</mark> Individual imports
 
 For advanced usage, import individual components only in `eleventy.config.js`:
 
@@ -61,6 +61,12 @@ export default function (eleventyConfig) {
 ```
 
 </details>
+
+Or use a fully preconfigured:
+
+[🥷 Build Awesome Starter ↗ &nbsp;<small>11ty + Tailwind + Typography + Blades</small>](https://github.com/anydigital/build-awesome-starter){role=button .outline}
+
+<!--section-->
 
 ## Command Line Tools
 
