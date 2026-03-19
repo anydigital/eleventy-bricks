@@ -5,7 +5,7 @@
 
 <p></p></hgroup>
 
-Ultimate blade kit for 11ty (Build Awesome).
+Ultimate blade kit for 11ty (Build Awesome):
 
 <big>
 
