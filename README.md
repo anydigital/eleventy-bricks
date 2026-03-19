@@ -31,7 +31,7 @@ Ultimate blade kit for 11ty (Build Awesome).
 - [Auto newlines-to-br](    https://blades.ninja/build-awesome-11ty/#auto-nl2br)
 - [Data helpers](           https://blades.ninja/build-awesome-11ty/#data-helpers)
 - [Base eleventy.config.js](https://blades.ninja/build-awesome-11ty/#base-config) {data-marker=🥷}
-- [Reusable npm scripts](   https://blades.ninja/build-awesome-11ty/#npm-scripts) {data-marker=🥷}
+- [Base npm scripts](       https://blades.ninja/build-awesome-11ty/#npm-scripts) {data-marker=🥷}
 
 </div></div><br>
 
