@@ -11,27 +11,27 @@ Ultimate blade kit for 11ty (Build Awesome).
 
 [**Filters**](https://blades.ninja/build-awesome-11ty/filters/):
 
-- [attr_concat](https://blades.ninja/build-awesome-11ty/#attr-concat),
-  [attr_includes](https://blades.ninja/build-awesome-11ty/#attr-includes),
-  [attr_set](https://blades.ninja/build-awesome-11ty/#attr-set)
-- [fetch](https://blades.ninja/build-awesome-11ty/#fetch) {data-marker=🥷}
-- [if](https://blades.ninja/build-awesome-11ty/#if)
-- [merge](https://blades.ninja/build-awesome-11ty/#merge)
-- [remove_tag](https://blades.ninja/build-awesome-11ty/#remove-tag),
-  [strip_tag](https://blades.ninja/build-awesome-11ty/#strip-tag)
-- [section](https://blades.ninja/build-awesome-11ty/#section) {data-marker=🥷}
-- [unindent](https://blades.ninja/build-awesome-11ty/#unindent)
+- [attr_concat](  https://blades.ninja/build-awesome-11ty/filters/#attr-concat),
+  [attr_includes](https://blades.ninja/build-awesome-11ty/filters/#attr-includes),
+  [attr_set](     https://blades.ninja/build-awesome-11ty/filters/#attr-set)
+- [fetch](        https://blades.ninja/build-awesome-11ty/filters/#fetch) {data-marker=🥷}
+- [if](           https://blades.ninja/build-awesome-11ty/filters/#if)
+- [merge](        https://blades.ninja/build-awesome-11ty/filters/#merge)
+- [remove_tag](   https://blades.ninja/build-awesome-11ty/filters/#remove-tag),
+  [strip_tag](    https://blades.ninja/build-awesome-11ty/filters/#strip-tag)
+- [section](      https://blades.ninja/build-awesome-11ty/filters/#section) {data-marker=🥷}
+- [unindent](     https://blades.ninja/build-awesome-11ty/filters/#unindent)
 
 </div><div>
 
 [**Other**](https://blades.ninja/build-awesome-11ty/):
 
-- [Auto link favicons](https://blades.ninja/build-awesome-11ty/#auto-link-favicons) {data-marker=🥷}
-- [Auto-raw tags](https://blades.ninja/build-awesome-11ty/#auto-raw)
-- [Auto newlines-to-br](https://blades.ninja/build-awesome-11ty/#auto-nl2br)
-- [Data helpers](https://blades.ninja/build-awesome-11ty/#data-helpers)
+- [Auto link favicons](     https://blades.ninja/build-awesome-11ty/#auto-link-favicons) {data-marker=🥷}
+- [Auto-raw tags](          https://blades.ninja/build-awesome-11ty/#auto-raw)
+- [Auto newlines-to-br](    https://blades.ninja/build-awesome-11ty/#auto-nl2br)
+- [Data helpers](           https://blades.ninja/build-awesome-11ty/#data-helpers)
 - [Base eleventy.config.js](https://blades.ninja/build-awesome-11ty/#base-config) {data-marker=🥷}
-- [Reusable npm scripts](https://blades.ninja/build-awesome-11ty/#npm-scripts) {data-marker=🥷}
+- [Reusable npm scripts](   https://blades.ninja/build-awesome-11ty/#npm-scripts) {data-marker=🥷}
 
 </div></div><br>
 
