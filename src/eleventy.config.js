@@ -125,7 +125,10 @@ export default function (eleventyConfig) {
   }
   if (markdownItAttrs) md = md.use(markdownItAttrs);
   eleventyConfig.setLibrary("md", md);
+
+  // Filters
   eleventyConfig.addFilter("markdownify", (content) => md.render(String(content ?? "")));
+  eleventyConfig.addFilter("iso_date", (dateVal) => new Date(dateVal).toISOString().split("T")[0]);
 
   /* Data */
   eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
