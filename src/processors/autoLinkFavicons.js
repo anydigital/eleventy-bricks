@@ -109,7 +109,7 @@ export function autoLinkFavicons(eleventyConfig) {
 /*```
 
 <!--section:docs-->
-### `autoLinkFavicons` transformer {#auto-link-favicons}
+### `autoLinkFavicons` postprocessor (transformer) {#auto-link-favicons}
 
 Automatically adds favicon images from Google's favicon service to links that display plain URLs or domain names. This processor processes all HTML output files and adds inline favicon images next to link text that appears to be a plain URL.
 

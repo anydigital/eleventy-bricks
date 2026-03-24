@@ -1,4 +1,4 @@
-import { mdAutoRawTags, mdAutoNl2br, transformAutoRaw, transformNl2br } from "./processors/markdown.js";
+import { mdAutoRawTags, mdAutoNl2br, mdAutoUncommentAttrs, transformAutoRaw, transformNl2br, transformUncommentAttrs } from "./processors/markdown.js";
 import {
   autoLinkFavicons,
   isPlainUrlText,
@@ -38,6 +38,7 @@ try {
  * @param {Object} options - Plugin options
  * @param {boolean} options.mdAutoRawTags - Enable mdAutoRawTags preprocessor (default: false)
  * @param {boolean} options.mdAutoNl2br - Enable mdAutoNl2br for \n to <br> conversion (default: false)
+ * @param {boolean} options.mdAutoUncommentAttrs - Enable mdAutoUncommentAttrs to expand <!--{...}--> to {...} (default: false)
  * @param {boolean} options.autoLinkFavicons - Enable autoLinkFavicons to add favicons to plain text links (default: false)
  * @param {Array<string>} options.filters - Array of filter names to enable: 'attr_set', 'attr_includes', 'merge', 'remove_tag', 'strip_tag', 'if', 'attr_concat', 'section', 'fetch' (default: [])
  * @param {boolean} options.siteData - Enable site.year and site.prod global data (default: false)
@@ -46,6 +47,7 @@ export default function eleventyBladesPlugin(eleventyConfig, options = {}) {
   const plugins = {
     mdAutoRawTags,
     mdAutoNl2br,
+    mdAutoUncommentAttrs,
     autoLinkFavicons,
     siteData,
   };
@@ -84,6 +86,7 @@ export default function eleventyBladesPlugin(eleventyConfig, options = {}) {
 export {
   mdAutoRawTags,
   mdAutoNl2br,
+  mdAutoUncommentAttrs,
   autoLinkFavicons,
   attrSetFilter,
   attrIncludesFilter,
@@ -102,6 +105,7 @@ export {
 export {
   transformAutoRaw,
   transformNl2br,
+  transformUncommentAttrs,
   isPlainUrlText,
   cleanLinkText,
   buildFaviconLink,

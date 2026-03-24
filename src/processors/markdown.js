@@ -57,10 +57,48 @@ export function mdAutoNl2br(eleventyConfig) {
     };
   });
 }
+
+/**
+ * Transform <!--{...}--> sequences to {...}
+ *
+ * This function expands HTML-comment-wrapped attribute blocks back to their
+ * raw form, converting <!--{...}--> to just {...}.
+ *
+ * @param {string} content - The content to transform
+ * @returns {string} The transformed content with <!--{...}--> unwrapped
+ */
+export function transformUncommentAttrs(content) {
+  if (content.includes("<!--{")) {
+    content = content.replace(/<!--(\{[^}]*\})-->/g, "$1");
+  }
+  return content;
+}
+
+/**
+ * mdAutoUncommentAttrs - Auto expand <!--{...}--> to {...} in markdown
+ *
+ * This function amends the markdown library to automatically expand
+ * HTML-comment-wrapped attribute blocks (<!--{...}-->) to their raw form
+ * ({...}), which is useful when attribute syntax needs to be hidden from
+ * HTML parsers but expanded before markdown-it processes them.
+ *
+ * Implemented as a core rule so the transformation runs on the raw source
+ * before markdown-it-attrs (or any other plugin) parses the content.
+ *
+ * @param {Object} eleventyConfig - The Eleventy configuration object
+ */
+export function mdAutoUncommentAttrs(eleventyConfig) {
+  eleventyConfig.amendLibrary("md", (mdLib) => {
+    mdLib.core.ruler.before("normalize", "uncomment_attrs", (state) => {
+      state.src = transformUncommentAttrs(state.src);
+    });
+  });
+}
+
 /*```
 
 <!--section:docs-->
-### mdAutoRawTags preprocessor {#auto-raw}
+### `mdAutoRawTags` preprocessor {#auto-raw}
 
 Prevents Nunjucks syntax from being processed in Markdown files by automatically wrapping `{{`, `}}`, `{%`, and `%}` with `{% raw %}` tags.
 
@@ -76,7 +114,7 @@ Before `mdAutoRawTags`, writing this in Markdown:
 
 Would try to process `{{ variable }}` as a template variable. With `mdAutoRawTags`, it displays exactly as written.
 
-### mdAutoNl2br converter {#auto-nl2br}
+### `mdAutoNl2br` converter {#auto-nl2br}
 
 Automatically converts `\n` sequences to `<br>` tags in Markdown content. This is particularly useful for adding line breaks inside Markdown tables where standard newlines don't work.
 
@@ -123,4 +161,8 @@ Will render as:
 ```
 
 **Note:** This processes literal `\n` sequences (backslash followed by 'n'), not actual newline characters. Type `\n` in your source files where you want line breaks.
+
+### `mdAutoUncommentAttrs` converter 🆕 {#hidden-attrs}
+
+https://github.com/anydigital/eleventy-blades/blob/main/src/processors/markdown.js
 */

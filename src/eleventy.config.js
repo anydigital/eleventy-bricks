@@ -66,6 +66,7 @@ export default function (eleventyConfig) {
   if (eleventyNavigationPlugin) eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addPlugin(eleventyBladesPlugin, {
     mdAutoNl2br: true,
+    mdAutoUncommentAttrs: true,
     mdAutoRawTags: true,
     autoLinkFavicons: true,
     siteData: true,

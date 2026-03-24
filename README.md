@@ -13,24 +13,25 @@ Ultimate blade kit for 11ty (Build Awesome):
     [attr_includes](      https://blades.ninja/build-awesome-11ty/filters/#attr-includes),
     [attr_set](           https://blades.ninja/build-awesome-11ty/filters/#attr-set)
   - [date](               https://blades.ninja/build-awesome-11ty/filters/#date)
-  - [fetch](              https://blades.ninja/build-awesome-11ty/filters/#fetch) {data-marker=🥷}
+  - [fetch](              https://blades.ninja/build-awesome-11ty/filters/#fetch) <!--{data-marker=🥷}-->
   - [if](                 https://blades.ninja/build-awesome-11ty/filters/#if)
   - [markdownify](        https://blades.ninja/build-awesome-11ty/filters/#markdownify)
   - [merge](              https://blades.ninja/build-awesome-11ty/filters/#merge)
   - [remove_tag](         https://blades.ninja/build-awesome-11ty/filters/#remove-tag),
     [strip_tag](          https://blades.ninja/build-awesome-11ty/filters/#strip-tag)
-  - [section](            https://blades.ninja/build-awesome-11ty/filters/#section) {data-marker=🥷}
+  - [section](            https://blades.ninja/build-awesome-11ty/filters/#section) <!--{data-marker=🥷}-->
   - [unindent](           https://blades.ninja/build-awesome-11ty/filters/#unindent)
 - [Processors](           https://blades.ninja/build-awesome-11ty/processors/)
-  - [Auto link favicons]( https://blades.ninja/build-awesome-11ty/processors/#auto-link-favicons) {data-marker=🥷}
+  - [Auto link favicons]( https://blades.ninja/build-awesome-11ty/processors/#auto-link-favicons) <!--{data-marker=🥷}-->
   - [Auto-raw tags](      https://blades.ninja/build-awesome-11ty/processors/#auto-raw)
   - [Auto newlines-to-br](https://blades.ninja/build-awesome-11ty/processors/#auto-nl2br)
+  - [Hidden markdown attrs<i>&nbsp;🆕</i>](https://blades.ninja/build-awesome-11ty/processors/#hidden-attrs) <!--{data-marker=🥷}-->
 - [Power tools](          https://blades.ninja/build-awesome-11ty/tools/)
-  - [Base config file](   https://blades.ninja/build-awesome-11ty/tools/#base-config) {data-marker=🥷}
-  - [Base npm scripts](   https://blades.ninja/build-awesome-11ty/tools/#base-scripts) {data-marker=🥷}
+  - [Base config file](   https://blades.ninja/build-awesome-11ty/tools/#base-config) <!--{data-marker=🥷}-->
+  - [Base npm scripts](   https://blades.ninja/build-awesome-11ty/tools/#base-scripts) <!--{data-marker=🥷}-->
   - [Data helpers](       https://blades.ninja/build-awesome-11ty/tools/#data-helpers)
 
-{.unlist .columns}
+<!--{.unlist .columns}-->
 
 <!--section:index,install-->
 <details><summary role="button" class="outline"><b>Install Eleventy blades</b></summary>
@@ -96,7 +97,7 @@ export default function (eleventyConfig) {
 
 Or use a preconfigured template:
 
-[🥷 Build Awesome Starter ↗ &nbsp;<small style="white-space: nowrap">11ty ⁺ Tailwind ⁺ Typography ⁺ Blades</small>](https://github.com/anydigital/build-awesome-starter){role=button .outline}
+[🥷 Build Awesome Starter ↗ &nbsp;<small style="white-space: nowrap">11ty ⁺ Tailwind ⁺ Typography ⁺ Blades</small>](https://github.com/anydigital/build-awesome-starter)<!--{role=button .outline}-->
 
 <!--section:gh-only-->
 
@@ -104,4 +105,7 @@ Or use a preconfigured template:
 
 Featured by:
 
+- https://11tybundle.dev/blog/11ty-bundle-83/
+- https://11tybundle.dev/categories/getting-started/
 - https://hamatti.org/posts/markdown-content-split-to-sections-in-eleventy-and-nunjucks/#:~:text=anydigital
+- https://github.com/anydigital/awesome-11ty-build-awesome
