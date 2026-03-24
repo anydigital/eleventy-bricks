@@ -1,6 +1,6 @@
 /* <!--section:docs-->
 
-### `mdAutoRawTags` preprocessor {#auto-raw}
+### `mdAutoRawTags` preprocessor {#md-auto-raw}
 
 This preprocessor wraps template syntax `{{, }}, {%, %}` with `{% raw %}` tags
 to prevent them from being processed by the template engine in Markdown files.
@@ -21,7 +21,7 @@ export function transformAutoRaw(content) {
 }
 /*```
 
-### `mdAutoNl2br` converter {#auto-nl2br}
+### `mdAutoNl2br` converter {#md-auto-br}
 
 This function amends the markdown library to automatically convert `\n`
 to `<br>` tags in text content, which is particularly useful for line breaks
@@ -47,7 +47,7 @@ export function transformNl2br(content) {
 }
 /*```
 
-### `mdAutoUncommentAttrs` converter 🆕 {#hidden-attrs}
+### `mdAutoUncommentAttrs` converter 🆕 {#md-hidden-attrs}
 
 This function amends the markdown library to automatically expand
 HTML-comment-wrapped attribute blocks `<!—-{...}-->` to their raw form
