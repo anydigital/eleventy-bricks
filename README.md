@@ -1,9 +1,6 @@
 <!--section:index-->
-<hgroup id="11ty"><small>Build Awesome plugin</small>
 
-## [Eleventy blades](/build-awesome-11ty/)
-
-<p></p></hgroup>
+## <sup>Build Awesome plugin</sup><br> [Eleventy blades](/build-awesome-11ty/) <!--{#11ty}-->
 
 Ultimate blade kit for 11ty (Build Awesome):
 
