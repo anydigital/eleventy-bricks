@@ -2,7 +2,7 @@
 
 ## <sup>Build Awesome plugin</sup><br> [Eleventy blades](/build-awesome-11ty/) <!--{#11ty}-->
 
-Ultimate blade kit for 11ty (Build Awesome):
+Ultimate blade kit for 11ty (Build Awesome).
 
 <!--prettier-ignore-->
 - [Filters](              https://blades.ninja/build-awesome-11ty/filters/)
