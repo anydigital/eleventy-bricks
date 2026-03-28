@@ -35,7 +35,7 @@ export function cleanLinkText(linkText, domain) {
  * @returns {string} The HTML string
  */
 export function buildFaviconLink(attrs, domain, text) {
-  return `<a ${attrs}><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64">&nbsp;</i>${text}</a>`;
+  return `<a ${attrs}><i><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64"></i> ${text}</a>`;
 }
 
 /**
