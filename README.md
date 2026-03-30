@@ -40,9 +40,9 @@ npm install @anydigital/eleventy-blades
 
 Then choose one of the following options:
 
-<mark>Option A.</mark> Starting 11ty from scratch?
+<mark>A. All-in</mark> managed by Eleventy Blades:
 
-Consider symlinking entire `eleventy.config.js`:
+Consider symlinking entire `eleventy.config.js` as a set-and-forget zero-config zero-maintenance solution:
 
 ```sh
 ln -s ./node_modules/@anydigital/eleventy-blades/src/eleventy.config.js
@@ -55,9 +55,22 @@ Living examples:
 - https://github.com/anydigital/build-awesome-starter
 - https://github.com/anydigital/bladeswitch
 
-<mark>Option B.</mark> Adding to existing 11ty site?
+<mark>B. Base config</mark> by Eleventy Blades with your additions/overrides in `eleventy.config.js`:
 
-Install as a plugin in your `eleventy.config.js` (recommended):
+```js
+import baseConfig from "@anydigital/eleventy-blades/base-config";
+
+export default function (eleventyConfig) {
+  baseConfig(eleventyConfig);
+
+  // Your additions/overrides
+  ...
+}
+```
+
+Living example: https://github.com/hostfurl/minformhf/blob/main/eleventy.config.js
+
+<mark>C. Plug-in</mark> Eleventy Blades in your existing `eleventy.config.js`:
 
 ```js
 import eleventyBladesPlugin from "@anydigital/eleventy-blades";
@@ -73,9 +86,7 @@ export default function (eleventyConfig) {
 }
 ```
 
-<mark>Option C.</mark> Individual imports
-
-For advanced usage, import individual components only in `eleventy.config.js`:
+<mark>D. Individual imports</mark> from Eleventy Blades in your `eleventy.config.js`:
 
 ```js
 import { siteData, mdAutoRawTags, mdAutoNl2br, autoLinkFavicons, attrSetFilter, attrConcatFilter, ... } from "@anydigital/eleventy-blades";
