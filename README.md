@@ -107,7 +107,7 @@ export default function (eleventyConfig) {
 }
 ```
 
----
+<div><hr></div>
 
 Or use a <mark>fully preconfigured template</mark> as an alternative option:
 
