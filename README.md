@@ -35,6 +35,8 @@ Ultimate blade kit for 11ty (Build Awesome).
 
 <!--{.unlist .columns}-->
 
+---
+
 ## Install
 
 ```sh
