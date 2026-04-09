@@ -45,7 +45,9 @@ try {
 }
 /* Data */
 import yaml from "js-yaml";
-import { readFileSync } from "node:fs";
+/* System */
+import fs from "node:fs";
+import path from "node:path";
 
 /**
  * Eleventy Configuration
@@ -58,7 +60,13 @@ export default function (eleventyConfig) {
   /* Jekyll parity */
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addGlobalData("layout", "default");
-  eleventyConfig.setLiquidOptions({ dynamicPartials: false }); // allows unquoted Jekyll-style includes
+  eleventyConfig.setLiquidOptions({
+    dynamicPartials: false, // allows unquoted Jekyll-style includes
+    root: [
+      inputDir + "_includes", // default
+      fs.realpathSync(path.resolve("./node_modules/@anyblades/blades/_includes")), // for symlinks to work after https://github.com/harttle/liquidjs/pull/870
+    ],
+  });
   eleventyConfig.addFilter("relative_url", (content) => content); // dummy
 
   /* Plugins */
@@ -96,7 +104,7 @@ export default function (eleventyConfig) {
     eleventyConfig.addCollection("feed", (collectionApi) => collectionApi.getAll().filter((item) => item.data.revised));
     let siteData = {};
     try {
-      siteData = yaml.load(readFileSync(`${inputDir}/_data/site.yml`, "utf8"));
+      siteData = yaml.load(fs.readFileSync(`${inputDir}/_data/site.yml`, "utf8"));
     } catch (e) {
       // _data/site.yml not found
     }
