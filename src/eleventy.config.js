@@ -63,7 +63,8 @@ export default function (eleventyConfig) {
   eleventyConfig.setLiquidOptions({
     dynamicPartials: false, // allows unquoted Jekyll-style includes
     root: [
-      inputDir + "_includes", // default
+      eleventyConfig.directories.includes,
+      inputDir + "../_includes", // for shared multisite includes
       fs.realpathSync(path.resolve("./node_modules/@anyblades/blades/_includes")), // for symlinks to work after https://github.com/harttle/liquidjs/pull/870
     ],
   });
