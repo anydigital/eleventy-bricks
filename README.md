@@ -136,7 +136,7 @@ Or use a <mark>fully preconfigured template</mark> as an alternative option:
 
 </nav>
 
-<!--section:docs-->
+<!--section:docs,featured-->
 
 ---
 
