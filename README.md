@@ -49,9 +49,9 @@ Ultimate blade kit for 11ty (Build Awesome).
 
 ---
 
-## Install
-
 <!--section:install-->
+
+## Install
 
 ```sh
 npm install @anyblades/eleventy-blades
